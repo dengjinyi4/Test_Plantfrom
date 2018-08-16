@@ -1,0 +1,42 @@
+<!DOCTYPE html>  
+<html>  
+    <head>  
+        <meta charset="utf-8" />  
+        <title></title>  
+        <style>  
+            *{  
+                margin: 0;  
+                padding: 0;  
+                font-size: 14px;  
+            }  
+            ul{  
+                list-style: none;  
+                width: 150px;
+            }  
+              
+            a{text-decoration: none;display: block;height: 30px;line-height: 30px;background-color: #ccc;margin-bottom: 1px;text-indent: 10px;}  
+            a:hover{  
+                background-color: coral;color: aliceblue;  
+            }  
+        </style>  
+          
+    </head>  
+    <body>  
+         <ul>
+            <li><a href="{{url_for('hdtmonitor')}}" target="home">互动推监控</a> </li>
+            <li><a href="{{url_for('testhightchar',day=10,advertiser_id=153)}}" target="home">按照广告主展示广告</a></li>
+            <li><a href="{{url_for('adtuodi',days=10)}}" target="home">托底广告</a></li>
+            <li><a href="{{url_for('adtuodiorder',day=1,order=422)}}" target="home">托底广告(24小时)</a></li>
+            <li><a href="{{url_for('hdt_cssc')}}" target="home">互动推测试页面</a></li>
+            <li><a href="{{url_for('jssdk')}}" target="home">jssdk</a></li>
+            <li><a href="{{url_for('hdtapi')}}" target="home">互动推api</a></li>
+            <li><a href="{{url_for('myredis')}}" target="home">redis缓存数据</a></li>
+            <li><a href="{{url_for('voyagerlog')}}" target="home">查询生产环境日志</a></li>
+            <li><a href="{{url_for('launchlist')}}" target="home">上线信息查询</a></li>
+            <li><a href="{{url_for('baidujs')}}" target="home">baidujs 广告</a></li>
+            <li><a href="{{url_for('create_act')}}" target="home">创建活动</a></li>
+            <li><a href="{{url_for('confparas')}}" target="home">数据库配置表</a></li>
+            <li><a href="{{url_for('ad_simulation')}}" target="home">模拟投放接口查询</a></li>
+        </ul>
+    </body>  
+</html>  

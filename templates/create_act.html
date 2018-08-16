@@ -1,0 +1,64 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新建模板和活动</title>
+    <script type="text/javascript">
+        function check_value() {
+            var template_adr = document.getElementById("template_adr").value;
+            var css_adr = document.getElementById('css_adr').value;
+            var template_type_name = document.getElementById('template_type_name').value;
+            var temlate_name = document.getElementById('temlate_name').value;
+            var act_name = document.getElementById('act_name').value;
+            var award_num = document.getElementById('award_num').value;
+            var free_num = document.getElementById('free_num').value;
+
+            if (template_adr && css_adr && template_type_name && act_name && free_num && award_num && temlate_name) {
+                return true;
+            } else {
+                alert('请检查所有字段，不能为空啊');
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+{% block main %}
+    <form action="{{ url_for('create_act')}}" method="post" onsubmit="return check_value()">
+        <div>
+            <h1>请求区域</h1>
+            <table border="2">
+                <tbody>
+                    <tr><td>模板地址：</td><td><input id="template_adr" name='template_adr' type="text" style="width:420px;" placeholder="https://display.adhudong.com/new/lottery_machine.html"></td></tr>
+                    <tr><td>样式地址：</td><td><input id="css_adr" name="css_adr" type="text" style="width: 420px" value="https://display.adhudong.com/activity/favicon.ico"></td></tr>
+                    <tr><td>模板类型名称：</td><td><input id="template_type_name" name="template_type_name" type="text" style="width: 420px" value="" ></td></tr>
+                    <tr><td>模板名称：</td><td><input id="temlate_name" name="temlate_name" type="text" style="width: 420px" placeholder=""></td></tr>
+                    <tr><td>模板配置：</td><td><textarea id="template_conf_items" name="template_conf_items" style="width: 420px;height: 100px" placeholder="输入可定制类模板的配置信息"></textarea></td></tr>
+                    <tr><td>活动名称：</td><td><input id="act_name" name="act_name" type="text" style="width:420px" placeholder=""></td></tr>
+                    <tr><td>奖品个数：</td><td><select id="award_num" name="award_num"><option>6</option><option>8</option></select></td></tr>
+                    <tr><td>抽奖次数：</td><td><input id="free_num" name="free_num" value="15" onkeyup="value=value.replace(/[^\d]/g,'')"></td></tr>
+                </tbody>
+            </table>
+            <input type="submit" value="提交" >
+        </div>
+    </form>
+
+    <div id="result_area">
+        <h1>结果展示区</h1>
+            <li>模板类型创建结果：</li>
+                <p>{{ template_type_re | safe }}</p>
+            <li>模板创建结果：</li>
+                <p>{{ temlate_name_re | safe }}</p>
+            <li>活动创建结果：</li>
+                <p>{{ act_re | safe }}</p>
+            <li>奖品创建结果：</li>
+                <p>{{ awards_re | safe }}</p>
+            <li>测试广告位结果：</li>
+                <p>{{ adzone_re  }}</p>
+            <li>异常错误信息：</li>
+                <p>{{ f_re |safe }}</p>
+    </div>
+{% endblock %}
+</body>
+</html>

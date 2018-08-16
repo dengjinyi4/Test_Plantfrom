@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>report</title>
+<!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>-->
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='highcharts.js') }}"></script>
+</head>
+<body>
+
+<p hidden="hidden">
+报表功能 按照广告主展示广告投放
+http://172.16.17.187:21312/ad_by_advertiser_id/?day=10&advertiser_id=153
+参数说明：
+day=0 是当天 day=1 是昨天 day=2 是前天
+advertiser_id 为广告主id</p>
+<p hidden="hidden">查询语句是：{{sql}}</p>
+<div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {
+   var title = {
+      text: '按照广告主展示广告投放'
+   };
+   var subtitle = {
+      text: 'Source: runoob.com'
+   };
+ var xAxis = {
+      categories: {{xvalue|safe}}
+   }
+   var yAxis = {
+      title: {
+         text: '展示数'
+      }
+   };
+   var plotOptions = {
+      line: {
+         dataLabels: {
+            enabled: true
+         },
+         enableMouseTracking: false
+      }
+   };
+   var series= {{d|safe}};
+
+   var json = {};
+
+   json.title = title;
+   json.subtitle = subtitle;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container').highcharts(json);
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    {% block main %}
+    <li>API概述信息</li>
+    <table border="2">
+        <thead>
+        <td>子系统</td>
+        <td>接口数量</td>
+        <td>覆盖数量</td>
+        <td>用例数量</td>
+        <td>覆盖率</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in re %}
+        <tr>
+{#            <td><a href="hdt_demand" target="_blank">hdt_demand</a></td>#}
+            {% for i in range(col_len) %}
+                {% if i == 0 and row[i] != '总计'%}
+                    <td><a href="{{ row[i] }}" target="_blank">{{ row[i] }}</a></td>
+                {% else %}
+                    <td>{{ row[i] }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+{#        <tr>#}
+{#            <td><a href="hdt_admin" target="_blank">hdt_admin</a></td>#}
+{#            <td>100</td>#}
+{#            <td>60</td>#}
+{#            <td>60%</td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td><a href="hdt_displaynode" target="_blank">hdt_displaynode</a></td>#}
+{#            <td></td>#}
+{#            <td></td>#}
+{#            <td></td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td><a href="egou" target="_blank">egou</a></td>#}
+{#            <td></td>#}
+{#            <td></td>#}
+{#            <td></td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <td><a href="yiqigou" target="_blank">yiqigou</a></td>#}
+{#            <td></td>#}
+{#            <td></td>#}
+{#            <td></td>#}
+{#        </tr>#}
+        </tbody>
+
+    </table>
+    <br>
+    <a href="testCase" target="_blank"><li>API信息维护</li></a>
+    <br>
+    <a href="#" target="_blank"><li>API执行</li></a>
+    {% endblock %}
+</body>
+</html>

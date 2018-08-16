@@ -1,0 +1,90 @@
+{% extends "base.html"%}
+{% block main %}
+  {{ form.hidden_tag() }}
+   <div class="container">
+   <table  border="2">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    {% endfor %}
+    {% block page_content %}{% endblock %}
+    </div>
+    {% from "_field.html" import render_field %}
+    <p hidden="hidden" style="height: 20px">
+    <form action="{{url_for ('version_maintain')}}" method="post">
+       <script>
+function setSecond(obj){
+  var val = obj.value;
+  if(val == '1'){
+    var sec = document.getElementById('job_id');
+    $("#job_id").find("option").remove();
+    sec.options[0] = new Option("api.admin","1");
+    sec.options[1] = new Option("voyageradmin","2");
+    sec.options[2] = new Option("voyager.ypg","4");
+    sec.options[3] = new Option("voyagerbidding","966");
+    sec.options[4] = new Option("voyagerdisplay","967");
+    sec.options[5] = new Option("voyageropen","968");
+    sec.options[6] = new Option("voyagercheating","969");
+    sec.options[7] = new Option("voyagerdemand","970");
+    sec.options[8] = new Option("voyagerreport","971");
+    sec.options[9] = new Option("voyagerconsumer","972");
+    sec.options[10] = new Option("voyager.ad.admin","973");
+    sec.options[11] = new Option("voyager.activity_static","974");
+    sec.options[12] = new Option("voyager.ad.demand","975");
+    sec.options[13] = new Option("voyager.ad.passport_static","976");
+    sec.options[14] = new Option("voyager.ad.www","977");
+    sec.options[15] = new Option("voyager.display_node","978");
+  }if(val == '2'){
+    var sec = document.getElementById('job_id');
+    $("#job_id").find("option").remove();
+    sec.options[0] = new Option("yiqifa-admin","979");
+    sec.options[1] = new Option("yiqifa-earner-front","980");
+    sec.options[2] = new Option("yiqifa-order-collector","983");
+    sec.options[3] = new Option("yiqifa-kafka-high-product","984");
+    sec.options[4] = new Option("yiqifa-platform微信网关","985");
+    sec.options[5] = new Option("yiqifa-push","986");
+    sec.options[6] = new Option("yiqifa-product-api","990");
+    sec.options[7] = new Option("yiqifa-scheduler","991");
+    sec.options[8] = new Option("yiqifa-scheduler-console","992");
+    sec.options[9] = new Option("yiqifa-proxy-web","994");
+    sec.options[10] = new Option("yiqifa-webcenter","997");
+    sec.options[11] = new Option("yiqifa-statics","998");
+    sec.options[12] = new Option("yiqifa-advertiser-front","999");
+    sec.options[13] = new Option("yiqifa-www-front","1004");
+    sec.options[14] = new Option("yiqifa-monitor","1005");
+  }
+}
+</script>
+        <table>
+            <tr>
+                <td>{{ form.group_id.label }}</td>
+                <td>{{ form.group_id(onchange="setSecond(this)" ) }}</td>
+                 <td>{% if form.group_id.errors %}
+                    <ul class=errors>
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                         {% endfor %}
+                            </ul>
+                            {% endif %}
+                  </td>
+            </tr>
+            {{ render_field(form.job_id) }}
+            {{ render_field(form.applicant_id) }}
+            {{ render_field(form.approver) }}
+            {{ render_field(form.ol_type) }}
+            {{ render_field(form.apply_date) }}
+            {{ render_field(form.ol_date) }}
+            {{ render_field(form.version) }}
+            {{ render_field(form.v_tag) }}
+            {{ render_field(form.v_desc) }}
+            {{ render_field(form.tester) }}
+            {{ render_field(form.remark) }}
+            {{ render_field(form.send_email) }}
+{#          {{ render_field(form.submit) }}#}
+        </table>
+        {{ form.submit }}
+    </form>
+       </table>
+    </div>
+{% endblock %}

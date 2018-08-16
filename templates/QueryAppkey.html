@@ -1,0 +1,35 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>根据广告位ID查询APPkey</title>
+</head>
+<body>
+<h1>根据广告位ID查询APPkey</h1>
+<form action="{{url_for('QueryAppkey')}}" method="post">
+    <select  name="env" style="padding: 5px">
+        <option>选择查询环境</option>
+        <option>测试环境</option>
+        <option>生产环境</option>
+        {{env_value|safe}}
+    </select>
+
+    <br>
+    <br>
+    广告位ID: <input type="text" value="{{Adzone_id}}" name="Adzone_id">
+    <br>
+    <br>
+    <input type="submit" value="查询">
+</form>
+
+<p>APPKey:{{appkey}}</p>
+
+</body>
+</html>
+
+{% endblock %}
+

@@ -1,0 +1,46 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ApiTestCase</title>
+    <link rel="stylesheet" href="../static/css/adhd.css" type="text/css">
+    <script type="application/javascript">
+{#        function display_alter(){#}
+{#            alert({{ msg }})#}
+{#        }#}
+{#        alert('ssssssssssssssssssssssss')#}
+        var msg = "{{ msg|safe }}"
+        console.log(msg)
+        if (msg){
+            alert(msg)
+        }
+    </script>
+</head>
+<body>
+    {% block main %}
+    {% from "_field.html" import render_field %}
+{#    <p hidden="hidden">#}
+    <form action="{{url_for ('TestCase')}}" method="post">
+{#    <form action="{{url_for('voyagerlog1')}}" method="post">#}
+{#        {{ form.hidden_tag() }}#}
+        <table>
+{#            <tr>{{ form.apiName.label }}: {{ form.apiName }}</tr><br>#}
+            {{ render_field(form.apiName) }}
+            {{ render_field(form.apiState) }}
+            {{ render_field(form.testCaseName) }}
+            {{ render_field(form.group) }}
+            {{ render_field(form.status) }}
+            {{ render_field(form.level) }}
+            {{ render_field(form.param_type) }}
+            {{ render_field(form.methodurl) }}
+            {{ render_field(form.param) }}
+            {{ render_field(form.actresult) }}
+            {{ render_field(form.expect_value) }}
+            {{ render_field(form.remarks) }}
+        </table>
+        {{ form.submit }}
+    </form>
+{% endblock %}
+</body>
+</html>

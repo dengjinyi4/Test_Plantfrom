@@ -1,0 +1,31 @@
+{% extends "base.html"%}
+
+{% block main %}
+<p hidden="hidden">
+报表功能：查看生产或测试环境缓存数据
+</p>
+
+<form action="{{url_for('myredis')}}" method="post">
+    <table>
+        <tbody>
+        <tr>
+            <td>请选择任务：</td>
+            <td>
+                <select name="jobid">
+                    <option value="110">缓存中的订单预算：测试</option>
+                    <option value="120">缓存中的订单预算：生产</option>
+                </select>
+            </td>
+             <td><input type="submit" value="生成报表"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p align="center"></p>
+</form>
+
+<li>缓存中的订单为：</li>
+<li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>
+{% for i in mybudget %}
+<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}}</li>
+  {% endfor %}
+{% endblock %}

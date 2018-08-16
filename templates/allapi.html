@@ -1,0 +1,32 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{% block main %}
+<form action="{{url_for('hdtapi')}}" method="POST">
+    <table border="2">
+        <tbody>
+            <tr >
+                <td colspan="2">互动推api接口</td >
+            </tr>
+            <tr>
+                <td>
+                    <select name="jobid">
+                    <option value="100">互动推-apidisplay-测试环境</option>
+                    <option value="200">互动推-activity-测试环境</option>
+                    <option value="300">互动推-activity-生产国内</option>
+                    <option value="400">互动推-activity-生产新加坡</option>
+                </select></td>
+                <td><input type="submit" value="api测试"></td>
+            </tr>
+        </tbody>
+    </table>
+    <h1>{{data|safe}}</h1>
+</form>
+{% endblock %}
+</body>
+</html>

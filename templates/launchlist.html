@@ -1,0 +1,44 @@
+{% extends "base.html"%}
+{% block main %}
+<div class="container">
+<form action="{{url_for('launchlist')}}" method="post">
+    {{form.hidden_tag()}}
+    <table  border="2">
+        <tbody>
+            <tr>
+                <td>
+                    {{ form.myyear.label }}:{{ form.myyear }}
+                </td>
+                <td>
+                    {{ form.mymonth.label }}:{{form.mymonth }}
+                <td>
+                {{form.submit }}
+            </td>
+            </tr>
+            <tr><td><strong>上线列表</strong></td></tr>
+            <tr>
+                <td>业务组</td>
+                <td>项目</td>
+                <td>开发</td>
+                <td>测试</td>
+                <td>版本</td>
+                <td>变更内容</td>
+                <!--<td title="1-有效点击 2-无效点击"><font color="red" >状态</font></td>-->
+                <td>createtime</td>
+                <td>操作</td>
+                <!--<td>updatetime</td>-->
+            </tr>
+            {% for trcout in result %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+
+                {% endfor %}
+                <td><a href="#">edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+    </div>
+{% endblock %}

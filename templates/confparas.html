@@ -1,0 +1,46 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .th {
+          background-color:palegreen;
+        }
+        [name] {
+            font-size: 20px;
+            padding: 5px;
+        }
+    </style>
+    <title>{{ title }}</title>
+</head>
+<body>
+{% block main %}
+    <form action="{{url_for('confparas')}}" method="post">
+        <select name="env"  >
+            <option>测试环境</option>
+            <option>生产环境</option>
+        </select>
+        <input type="submit" value="提交">
+    </form>
+    <table border="1" >
+    <tr>
+        <th colspan="4" align="left" class="th" style="background-color:yellowgreen;" >{{env}} 的查询结果是：</th>
+    </tr>
+    <tr class="th">
+        <th>参数类型</th>
+        <th>描述</th>
+        <th>参数值</th>
+        <th>参数值类型</th>
+    </tr>
+    {% for row in paras %}
+    <tr>
+        {% for col in row%}
+         <td>{{ col |safe }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>First</title>
+    </head>
+         <frameset cols="15%,*">
+         <frame src="{{url_for('link')}}" name="index1"/>
+         <!--<frame src="link.html" name="index1"/>-->
+         <frame src="{{url_for('summary')}}" name="home"/>
+            </frameset>
+            <noframes>
+                <body>
+                {% block main %} 
+                走一个再现江湖！！！！！！！！！！！！
+                {% endblock %}
+                </body>
+            </noframes>
+
+
+    </html>

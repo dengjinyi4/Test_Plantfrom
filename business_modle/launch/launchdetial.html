@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="{{url_for('getlanuch')}}" method="post">
+    <table  border="1">
+        <tbody>
+            <tr>
+
+                <td><input type="submit" value="更新"></td>
+            </tr>
+{% for i in result%}
+            <tr><td>id</td><td><input type="text" value={{i[0]|safe}}></td></tr>
+                 <tr><td>group </td><td><input type="text" value={{i[1]|safe}}></td></tr>
+                 <tr><td>status</td><td><input type="text" value={{i[2]|safe}}></td></tr>
+                 <tr><td>project</td><td><input type="text" value={{i[3]|safe}}></td></tr>
+                 <tr><td>src_version</td><td><input type="text" value={{i[4]|safe}}></td></tr>
+                 <tr><td>Changes</td><td><textarea oncontextmenu="" rows="10" cols="30"></td></tr>
+                <!--<td title="1-有效点击 2-无效点击"><font color="red" >状态</font></td>-->
+                 <tr><td>createtime</td><td><input type="text" value={{i[6]|safe}}></td></tr>
+                 <tr><td>updatetime</td><td><input type="text" value={{i[7]|safe}}></td></tr>
+{% endfor %}
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

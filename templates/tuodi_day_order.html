@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>report</title>
+<!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>-->
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='highcharts.js') }}"></script>
+</head>
+<body>
+
+<p hidden="hidden">
+报表功能订单某一天内按小时汇总统计展示
+http://172.16.17.187:21312/adtuodiorder/?day=2&order=414
+参数说明：
+day=0 是当天 day=1 是昨天 day=2 是前天
+order可以为为托广告订单 可以为任意订单</p>
+<p hidden="hidden">查询语句是：{{tmpsqllist}}</p>
+<p hidden="hidden">每小时展示量：{{data}}</p>
+<p hidden="hidden">小时个数是：{{xvalue}}</p>
+<div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {
+   var title = {
+      text: '托底广告展示每天按照时间分布'
+   };
+   var subtitle = {
+      text: 'Source: runoob.com'
+   };
+   var xAxis = {
+      categories: {{xvalue|safe}}
+   };
+   var yAxis = {
+      title: {
+         text: '展示数'
+      }
+   };
+   var plotOptions = {
+      line: {
+         dataLabels: {
+            enabled: true
+         },
+         enableMouseTracking: false
+      }
+   };
+   var series= [{
+         name: 'count',
+         data: {{data|safe}}
+      }
+   ];
+
+   var json = {};
+
+   json.title = title;
+   json.subtitle = subtitle;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container').highcharts(json);
+
+});
+</script>
+<h1>托底广告订单为：</h1>
+{% for i in range(adtuodi_order|length) %}
+<li>订单是：{{adtuodi_order[i]}} 展示个数：{{adtuodi_order_count[i]}}</li>
+  {% endfor %}
+<li>总数是：{{adtuodi_order_count|sum()}}</li>
+<h1></h1>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>report</title>
+<!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>-->
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='highcharts.js') }}"></script>
+</head>
+<body>
+<p hidden="hidden">
+报表功能：广告主为153的每天展现次数
+http://172.16.17.187:21312/adtuodi1/5
+参数说明：
+5 为当天连续往前推五天，算当天
+
+</p>
+<p hidden="hidden">查询语句是：{{tmpsqllist}}</p>
+<p hidden="hidden">展示个数个数是：{{data}}</p>
+<p hidden="hidden">天数是：{{xvalue}}</p>
+<div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {
+   var title = {
+      text: '拖底广告展示数趋势'
+   };
+   var subtitle = {
+      text: 'adhudong.com'
+   };
+   var xAxis = {
+      categories: {{xvalue|safe}}
+   };
+   var yAxis = {
+      title: {
+         text: '展示数'
+      }
+   };
+   var plotOptions = {
+      line: {
+         dataLabels: {
+            enabled: true
+         },
+         enableMouseTracking: false
+      }
+   };
+   var series= [{
+         name: 'count',
+         data: {{data|safe}}
+      }
+   ];
+
+   var json = {};
+
+   json.title = title;
+   json.subtitle = subtitle;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container').highcharts(json);
+
+});
+</script>
+</body>
+</html>

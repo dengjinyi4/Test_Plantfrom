@@ -1,0 +1,45 @@
+{% extends "base.html"%}
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>report</title>
+<!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='highcharts.js') }}"></script>
+<script src="{{ url_for('static', filename='drilldown.js') }}"></script>
+<script src="{{ url_for('static', filename='data.js') }}"></script>-->
+
+<body>
+{% block main %} 
+<p hidden="hidden">
+根据日志查找广告订单未出原因
+</p>
+
+<form action="{{url_for('voyagerlog1')}}" method="post">
+    <h1>最多返回20条数据，稍等片刻</h1>
+    <table>
+        <tbody>
+        <tr>
+                {{ form.hidden_tag() }}
+                {{ form.adzoneClickid.label }}: {{ form.adzoneClickid }}
+                <input type="submit" value="查找">
+        </tr>
+        </tbody>
+    </table>
+
+    <p align="center"></p>
+</form>
+{% for order in data %}
+<li>查询时间： <font color="red" >{{order['mytime']|safe}}</font></li>
+<li>筛选条件： <font color="red" >{{order['bid']|safe}}</font> </li>
+<li>筛选出订单列表： <font color="red" >{{order['tad']|safe}}</font> </li>
+<li>最终筛选出来的订单： <font color="red" >{{order['wad']|safe}}</font> </li>
+    {% for reson in order['fad'] %}
+     <li>广告过滤原因是：<font color="red" >{{reson|safe}}</font> 订单个数为：<font color="red" >{{order['fad'][reson]|count}}</font> 订单列表为：<font color="red" >{{order['fad'][reson]|safe}}</font> </li>
+    {% endfor %}
+    --------------------------------------------------------------------------------------------------------------------
+{% endfor %}
+{% endblock %}
+</body>
+</html>

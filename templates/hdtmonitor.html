@@ -1,0 +1,282 @@
+{% extends "base.html"%}
+<!--<html>-->
+<!--<head>-->
+<!--<meta charset="UTF-8" />-->
+<!--<title>report</title>-->
+<!--&lt;!&ndash;<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+<!--<script src="http://code.highcharts.com/highcharts.js"></script>-->
+<!--<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='highcharts.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='drilldown.js') }}"></script>-->
+<!--<script src="{{ url_for('static', filename='data.js') }}"></script>&ndash;&gt;-->
+
+<!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+<!--<script src="http://code.highcharts.com/highcharts.js"></script>-->
+<!--<script src="http://code.highcharts.com/modules/drilldown.js"></script>-->
+<!--<script src="http://code.highcharts.com/modules/data.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+{% block main %}
+<!--<p hidden="hidden">-->
+<!--报表功能：广告主为153的每天展现次数-->
+<!--http://172.16.17.187:21312/adtuodi1/5-->
+<!--参数说明：-->
+<!--5 为当天连续往前推五天，算当天-->
+<!--</p>-->
+<!--<p hidden="hidden">查询语句是：{{tmpsqllist}}</p>-->
+<!--<p hidden="hidden">展示个数个数是：{{data}}</p>-->
+<!--<p hidden="hidden">天数是：{{xvalue}}</p>-->
+
+<form action="{{url_for('hdtmonitor')}}" method="post">
+    <table>
+        <tbody>
+        <tr>
+            <td>请选择任务：</td>
+            <td>
+                <select name="jobid">
+                    <option value="44">展现/抽奖</option>
+                    <option value="45">谢谢参与次数</option>
+                    <option value="46">托底广告次数</option>
+                    <option value="47">点击/展现</option>
+                    <option value="48">负数个数/总个数</option>
+                    <option value="100">媒体中广告位谢谢参与汇总</option>
+                </select>
+            </td>
+            <td>N天之前 :</td>
+            <td><input name="myday" type="number"></td>
+            <td>媒体id :</td>
+            <td><input name="mymediaid" type="number"></td>
+             <td><input type="submit" value="生成报表"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p align="center"></p>
+</form>
+
+<div id="container" style="width: 1300px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {
+   var chart = {
+      type: 'spline'
+   };
+   var title = {
+      text: '{{mytitle|safe}}'
+   };
+   var subtitle = {
+      text: ''
+   };
+   var xAxis = {
+      categories: {{xvalue|safe}}
+   };
+   var yAxis = {
+      title: {
+         text: 'time'
+      },
+      labels: {
+         formatter: function () {
+            return this.value ;
+         }
+      },
+      lineWidth: 2
+   };
+   var tooltip = {
+      crosshairs: true,
+      shared: true
+   };
+   var plotOptions = {
+      spline: {
+         marker: {
+            radius: 4,
+            lineColor: '#666666',
+            lineWidth: 1
+         }
+      }
+   };
+   var series= [{name: 'count',
+                marker: {symbol: 'square'},
+                data:{{data|safe}}}];
+
+   var json = {};
+   json.chart = chart;
+   json.title = title;
+   json.subtitle = subtitle;
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container').highcharts(json);
+
+});
+</script>
+<div id="container1" style="width: 1300px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {
+   var chart = {
+      type: 'column'
+   };
+   var title = {
+      text: '{{mytitlemedia|safe}}'
+   };
+   var subtitle = {
+      text: 'Source: runoob.com'
+   };
+   var xAxis = {
+      categories: {{xvaluemedia|safe}},
+      crosshair: true
+   };
+   var yAxis = {
+      min: 0,
+      title: {
+         text: '个'
+      }
+   };
+   var tooltip = {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+         '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+   };
+   var plotOptions = {
+      column: {
+         pointPadding: 0.2,
+         borderWidth: 0
+      }
+   };
+   var credits = {
+      enabled: false
+   };
+
+   var series= [{
+        name: '媒体',
+            data: {{datamedia}}
+        }];
+
+   var json = {};
+   json.chart = chart;
+   json.title = title;
+   json.subtitle = subtitle;
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   json.credits = credits;
+   $('#container1').highcharts(json);
+
+});
+</script>
+{% endblock %}
+<!--
+<div id="container2" style="width: 1300px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+
+// Create the chart
+Highcharts.chart('container2', {
+    chart: {
+        type: 'column',//纵型柱状图，column为横向柱状图
+        events: {
+            drilldown: function (e) {
+                if (!e.seriesOptions) {
+                    var chart = this,
+                        drilldowns = {
+                            'Animals': {
+                                id:'Animalsid',
+                                name: 'Animals',
+                                data: [
+                                    ['Cows', 2],
+                                    ['Sheep', 3],
+                                    ['Sheep1', 2]
+                                ]
+                            },
+                            'Fruits': {
+                                id:'Fruitsid',
+                                name: 'Fruits',
+                                data: [
+                                    ['Apples', 5],
+                                    ['Oranges', 7],
+                                    ['Bananas', 2]
+                                ]
+                            },
+                            'Cars': {
+                                id:'Carsid',
+                                name: 'Cars',
+                                data: [
+                                    ['Toyota', 1],
+                                    ['Volkswagen', 2],
+                                    ['Opel', 5]
+                                ]
+                            }
+                        },
+                        series = drilldowns[e.point.name];
+
+                    // Show the loading label
+                    chart.showLoading('Simulating Ajax ...');
+
+                    setTimeout(function () {
+                        chart.hideLoading();
+                        chart.addSeriesAsDrilldown(e.point, series);
+                    }, 1000);
+                }
+
+            }
+
+        }
+    },
+    title: {
+        text: 'Async drilldown'
+    },
+    xAxis: {
+        type: 'category'
+    },
+
+    legend: {
+        enabled: false
+    },
+
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true
+            },
+            events:{
+            click:function(e){//点击事件
+                if(e.point.drilldown!=true){//如果不等于true表明是钻取到了最低层的图表
+                    window.location.href='detailChart.html';
+                }
+
+                }
+             }
+        }
+
+    },
+
+    series: [{
+        name: 'Things',
+        colorByPoint: true,
+        data: [{
+            name: 'Animals',
+            y: 7,
+            drilldown: true
+        }, {
+            name: 'Fruits',
+            y: 2,
+            drilldown: true
+        }, {
+            name: 'Cars',
+            y: 4,
+            drilldown: true
+        }]
+    }],
+
+    drilldown: {
+        series: []
+    }
+});
+</script>-->
+
+<!--</body>-->
+<!--</html>-->

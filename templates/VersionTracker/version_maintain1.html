@@ -1,0 +1,63 @@
+{% extends "base.html"%}
+{% block main %}
+  {{ form.hidden_tag() }}
+   <div class="container">
+   <table  border="2">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    {% endfor %}
+    {% block page_content %}{% endblock %}
+    </div>
+    {% from "_field.html" import render_field %}
+    <p hidden="hidden" style="height: 20px">
+    <form action="{{url_for ('version_maintain')}}" method="post">
+       <script>
+function setSecond(obj){
+  var val = obj.value;
+  if(val == '1'){
+    var sec = document.getElementById('job_id');
+    $("#job_id").find("option").remove();
+    sec.options[0] = new Option("1","11111");
+    sec.options[1] = new Option("2","22222");
+    sec.options[2] = new Option("3","33333");
+  }if(val == '2'){
+    var sec = document.getElementById('job_id');
+    sec.options[0] = new Option("1","one");
+    sec.options[1] = new Option("2","two");
+  }
+}
+</script>
+        <table>
+            <tr>
+                <td>{{ form.group_id.label }}</td>
+                <td>{{ form.group_id(onchange="setSecond(this)" ) }}</td>
+                 <td>{% if form.group_id.errors %}
+                    <ul class=errors>
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                         {% endfor %}
+                            </ul>
+                            {% endif %}
+                  </td>
+            </tr>
+            {{ render_field(form.job_id) }}
+            {{ render_field(form.applicant_id) }}
+            {{ render_field(form.approver) }}
+            {{ render_field(form.ol_type) }}
+            {{ render_field(form.apply_date) }}
+            {{ render_field(form.ol_date) }}
+            {{ render_field(form.version) }}
+            {{ render_field(form.v_tag) }}
+            {{ render_field(form.v_desc) }}
+            {{ render_field(form.tester) }}
+            {{ render_field(form.remark) }}
+            {{ render_field(form.send_email) }}
+{#          {{ render_field(form.submit) }}#}
+        </table>
+        {{ form.submit }}
+    </form>
+       </table>
+    </div>
+{% endblock %}

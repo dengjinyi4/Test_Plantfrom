@@ -1,0 +1,154 @@
+{% extends "base.html"%}
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head lang="en">-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title></title>-->
+<!--</head>-->
+<!--<body>-->
+{% block main %}
+<form action="{{url_for('hdt_cssc')}}" method="post">
+    <table  border="1">
+        <tbody>
+            <tr>
+                <td>请选择环境：</td>
+                <td>
+                <select name="dbtype">
+                    <option value="test">测试环境</option>
+                    <option value="online">生产环境</option>
+                </select></td>
+                <td>请输入adzone_click_id:</td>
+                <td><input name="adzone_click_id" type="search"></td>
+                <td>N天之前 :</td>
+                <td><input name="myday" type="number"></td>
+                <td><input type="submit" value="搜索"></td>
+            </tr>
+            <tr><td><strong>adzone_click_log</strong></td></tr>
+            <tr>
+                <td>活动id</td>
+                <td>广告位id</td>
+                <td>ip</td>
+                <td>地域</td>
+                <td>媒体id</td>
+                <td>站长id</td>
+                <td title="1-有效点击 2-无效点击"><font color="red" >状态</font></td>
+                <td>adzone_click_id</td>
+            </tr>
+            {% for trcout in alladzon %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+        <tr><td><strong>lottery_click_log</strong></td></tr>
+            <tr>
+                <td>奖品id</td>
+                <td>广告主id</td>
+                <td>订单id</td>
+                <td>活动id</td>
+                <td>广告位id</td>
+                <td>媒体id</td>
+                <td>ip</td>
+                <td>地域</td>
+                <td title="1-虚拟实物 2-实物 3-优惠券 4-其他 5-再抽一次 6-谢谢参与 7-幸运奖"><font color="red" >奖品类型</font></td>
+                <td>创意id</td>
+                <td>广告计划</td>
+                <!--<td>广告点击url</td>-->
+                <td>奖品名称</td>
+                <td>choosen_tag</td>
+                <td>奖品id</td>                
+                <!-- <td>广告主id</td> -->
+            </tr>
+            {% for trcout in alllottery %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            <tr><td><strong>ad_show_log</strong></td></tr>
+            <tr>
+                <td>ad_choosen_tag</td>
+                <td>媒体id</td>
+                <td>广告位id</td>
+                <td>活动id</td>
+                <td>坑位id</td>
+                <td>广告计划id</td>
+                <td>广告订单id</td>
+                <td>广告创意id</td>
+                <td>广告主id</td>
+                <td title="1 有效 2 无效"><font color="red" >状态</font></td>
+                <td>mark</td>
+                <td>奖品id</td>
+                <td title="7 幸运奖 15 奖品位"><font color="red" >奖品类型</font></td>
+            </tr>
+            {% for trcout in allshow %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+
+         <tr><td><strong>ad_click_log</strong></td></tr>
+            <tr>
+                <td>媒体id</td>
+                <td>广告位id</td>
+                <td>活动id</td>
+                <td>坑位id</td>
+                <td>广告计划id</td>
+                <td>广告订单id</td>
+                <td>广告创意id</td>
+                <td>扣费(分)</td>
+                <td>广告主id</td>
+                <!--<td>广告主id</td>-->
+                <td>出现次数</td>
+                 <td title="1 有效 2 无效"><font color="red" >状态</font></td>
+                <td title="0 我的奖励 1 获取广告弹层 2广告详情"><font color="red" >点击来源</font></td>
+                <td>无效原因</td>
+                <td>媒体收益 （单位：分）</td>
+                <td>平台溢价收益 （单位：分）</td>
+                <td>奖品id</td>
+                <td title="7 幸运奖 15 奖品位"><font color="red" >奖品类型</font></td>
+            </tr>
+            {% for trcout in allclick %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+         <tr><td><strong>award_show_click_log</strong></td></tr>
+            <tr>
+            <td>奖品id</td>
+            <td>活动id</td>
+            <td>广告位id</td>
+            <td>媒体id</td>
+            <!--<td>用户cookie</td>-->
+            <td>ip</td>
+            <td>地域</td>
+            <td>创建时间</td>
+            <td>广告位点击唯一id</td>
+            <td>奖品类型</td>
+             <td title="1-奖品展示  2-奖品点击"><font color="red" >数据类型</font></td>
+            <td title="1-有效点击 2-无效点击"><font color="red" >状态</font></td>
+            <td>数据无效原因</td>
+            <td>坑位id</td>
+        </tr>
+            {% for trcout in award_show %}
+            <tr>
+            {% for i in trcout %}
+                <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+ {% endblock %}
+<!--</body>-->
+<!--</html>-->

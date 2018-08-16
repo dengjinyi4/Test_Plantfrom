@@ -1,0 +1,93 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <style>
+        .query_title{
+            background-color: khaki;
+        }
+
+        .re_title{
+            background-color: yellowgreen;
+        }
+        .area{
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+{% block main %}
+    <form action="{{ url_for('ad_simulation')}}"} method="post" class="area">
+        <select name="env" style="padding: 5px">
+            <option>测试环境</option>
+            <option>生产环境</option>
+        </select>
+        <input type="submit" value="提交">
+        <table border="1">
+            <th class="query_title " colspan="10">模拟投放接口</th>
+            <tr class="query_title ">
+                <th>广告位id</th>
+                <th>订单id</th>
+                <th>adOrderID</th>
+                <th>adOrderName</th>
+                <th>adCreativeID</th>
+                <th>adCreativeName</th>
+                <th>advertiserId</th>
+                <th> ctr </th>
+            </tr>
+            <tr>
+                <td><input type="text"  name="adzoneID" onkeyup="value=value.replace(/[^\d]/g,'')" ng-pattern="/[^a-zA-Z]/" autocomplete="off" placeholder="请输入广告位id,如372"</td>
+                <td><input type="text"  name="adOrderId" onkeyup="value=value.replace(/[^\d]/g,'')" ng-pattern="/[^a-zA-Z]/" autocomplete="off" placeholder="请输入订单id,如961"</td>
+                <td><input type="checkbox" value="adOrderID" name="chklist" checked></td>
+                <td><input type="checkbox" value="adOrderName" name="chklist" checked></td>
+                <td><input type="checkbox" value="adCreativeID" name="chklist" checked></td>
+                <td><input type="checkbox" value="adCreativeName" name="chklist" checked></td>
+                <td><input type="checkbox" value="advertiserId" name="chklist" checked></td>
+                <td><input type="checkbox" value="ctr" name="chklist"></td>
+            </tr>
+        </table>
+
+    </form>
+    <div class="area">
+        <table border="1">
+            <tr>
+                {% for th in chklist %}
+                <th class="re_title">{{ th|safe}}</th>
+                {% endfor %}
+            </tr>
+
+            {% for no in final_len %}
+            <tr>
+                <td>{{ no}}</td>
+                {% for i in final_k[no] %}
+                <td>{{i}}</td>
+                {% endfor %}
+           </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        {{ emsg}}
+    </div>
+    <table border="1">
+            {% for no in knowledge %}
+                {% if emsg in no %}
+            <tr style="background-color: hotpink">
+            {% else %}
+                    <tr>
+            {% endif %}
+                {% for item in no %}
+{#                    {% if item == emsg %}#}
+{#                        <td style="background-color: hotpink">{{ item }}</td>#}
+{#                    {% else %}#}
+                        <td>{{ item }}</td>
+{#                    {% endif %}#}
+                {% endfor %}
+           </tr>
+            {% endfor %}
+    </table>
+{% endblock %}
+</body>
+</html>

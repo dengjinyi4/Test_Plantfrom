@@ -1,0 +1,9 @@
+{% extends "base.html"%}
+{% block main %}
+       <form method="POST" action="{{ url_for('login') }}">
+    {{ form.hidden_tag() }}
+    {{ form.user.label }}: {{ form.user(size=20) }}
+    <input type="submit" value="Submit">
+</form>
+        <h1>{{name}}</h1>
+{% endblock %}
