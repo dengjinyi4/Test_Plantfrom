@@ -29,9 +29,10 @@ sqls = {
     'group' : "select id, name from test.group where status=1;",
     'applicant' : "select id, ch_name from test.user where status=1 and role in (1,3) ",#and group_id=",
     'approver' : "select id, ch_name from test.user where status=1 and role=3 ",
-    'tester' : "select id, ch_name from test.user where status=1 and role=2 ",#and group_id=",
+    'tester': "select ch_name, ch_name from test.user where status=1 and role=2 ",
     'jenkins_job' : "select id, name from test.jenkins_job where group_id=1 and status=1 ",
-    'ch_name' : "select ch_name,name from test.user where status=1 and id in ({})",
+    'ch_name': "select ch_name,name from test.user where status=1 and ch_name like '%{}%'",
+    'applicant_ch_name' : "select ch_name,name from test.user where status=1 and id in ({})",
     'jenkins_name':"select  name from test.jenkins_job where status=1 and id in ({})"
 }
 
