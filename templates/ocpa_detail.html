@@ -1,0 +1,85 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html> 
+<head>
+    <meta charset="UTF-8" />
+    <title>广告主OCPA出价调整</title>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+<h1>OCPA订单调价趋势图</h1>
+
+<form action="{{url_for('ocpa_price')}}" method="post">
+
+    <br>
+    广告订单ID:<input type="text" name="ad_order_id" value={{ad_order_id}}><br>
+    <br>
+    日期：<input type="date" name="begin_date" value="{{begintime}}">
+
+</form>
+
+<p><b>广告订单{{ad_order_id}}--OCPA初始出价为:</b>{{init_price}}元</p>
+
+
+<div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {
+   var title = {
+      text: '广告订单{{ad_order_id}}--OCPA出价调整'
+   };
+   var subtitle = {
+      text: 'Source: adhudong.com'
+   };
+   var xAxis = {
+      categories: {{xvalue|safe}}
+   };
+   var yAxis = {
+      title: {
+         text: '出价(/元)'
+      },
+      plotLines: [{
+         value: 0,
+         width: 1,
+         color: '#808080'
+      }]
+   };   
+
+   var tooltip = {
+      valueSuffix: '元'
+   }
+
+   var legend = {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle',
+      borderWidth: 0
+   };
+
+    var series= [{
+         name: 'OCPA_adjust_pament',
+         data: {{data|safe}}
+      },{
+         name: 'OCPA_actual_payment',
+         data: {{data2|safe}}
+      }
+   ];
+
+   var json = {};
+
+   json.title = title;
+   json.subtitle = subtitle;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.tooltip = tooltip;
+   json.legend = legend;
+   json.series = series;
+
+   $('#container').highcharts(json);
+});
+</script>
+</body>
+</html>
+{% endblock %}

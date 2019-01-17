@@ -1,0 +1,56 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>优品购订单统计</title>
+</head>
+<body>
+  <h1>优品购订单明细查询</h1><br>
+  <!--<script type="text/javascript">-->
+  <!--var d = new Date();-->
+  <!--var timenow=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();-->
+  <!--document.getElementById('cur_date').value=timenow;-->
+  <!--</script>-->
+  <form action="{{url_for('crm_order')}}" method="post">
+  开始日期:<input type="date" name="begin_date" value="{{begintime}}"/><br>
+  结束日期:<input type="date" name="end_date" value="{{endtime}}"/><br>
+  <br>
+  <input type="submit" name="submit" value="查询"/>
+  <a id="export" download="crm_order" href="../crm_order.xlsx">导出</a>
+  <br>
+
+  </form>
+  <table border="1">
+      <tr>
+          <th>日期</th>
+          <th>提交订单数</th>
+          <th>商品数量</th>
+          <th>销售额</th>
+          <th>待出库订单数</th>
+          <th>出库订单数</th>
+          <th>出库销售额</th>
+          <th>出库率</th>
+          <th>签收订单数</th>
+          <th>无效订单数</th>
+          <th>无效率</th>
+          <th>广告点击数</th>
+          <th>订单转化率</th>
+      </tr>
+      {% for row in paras %}
+      <tr>
+          {% for col in row %}
+          <td>{{ col|safe }}</td>
+          {% endfor %}
+
+
+      </tr>
+      {% endfor %}
+  </table>
+</body>
+</html>
+
+{% endblock %}

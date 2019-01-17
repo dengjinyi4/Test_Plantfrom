@@ -26,6 +26,6 @@
 <li>缓存中的订单为：</li>
 <li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>
 {% for i in mybudget %}
-<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}}</li>
+<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>
   {% endfor %}
 {% endblock %}

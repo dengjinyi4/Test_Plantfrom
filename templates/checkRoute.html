@@ -1,0 +1,58 @@
+{% extends "base.html"%}
+{% from "_field.html" import render_field %}
+{% block main %}
+        <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script>
+  $(document).ready(function() {
+    $('input[type=radio][name=env]').change(function() {
+       if (this.value == '1') {
+            $('input#adzoneLink').val('https://display.adhudong.com/site_login_ijf.htm?app_key=adhuc5f5526ee4664923')
+        }
+        else if (this.value == '0') {
+            $('input#adzoneLink').val('https://display.eqigou.com/site_login_ijf.htm?app_key=adhu307b689d63514835')
+        }
+    });
+});
+</script>
+    <style>
+    li{
+        float: left;
+        margin-right: 30px;;
+    }
+    ul:after{
+        content: '';
+        display: block;
+        clear: both;
+        visibility:hidden;
+        height: 0;;
+    }
+    </style>
+<div class="container">
+<form action="{{url_for('checkRoute')}}" method="post">
+    {{ render_field(form.env) }}
+    {{ render_field(form.adzoneLink) }}
+    <br>
+    {{ form.submit }}
+</form>
+{% if re_type==1 %}
+    <hr>
+    <table border="1">
+        <tr>
+            <td>状态码</td>
+            <td>路由</td>
+{#            <td>请求url</td>#}
+        </tr>
+        {% for i in range(re_len) %}
+        <tr>
+            <td>{{ re[i]['status_code'] }}</td>
+            <td><a target="_blank" href="{{ re[i]['target_url'] }}">{{ re[i]['route'] }}</a></td>
+{#            <td></td>#}
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <hr>
+    <p>{{ re }}</p>
+{% endif %}
+</div>
+{% endblock %}

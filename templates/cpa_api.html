@@ -1,0 +1,70 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>CPA广告主回调接口</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+   <h1>CPA广告主回调接口测试</h1>
+   <form action="{{url_for('cpa_api')}}" method="post">
+
+      ad_choosen_tag: <input type="text" name="choosen_tag" value={{ad_choosen_tag}}><br>
+      <br>
+      device_id: <input type="text" name="device_id" value={{device_id}}><br>
+      <br>
+      timestamp: <input type="datetime-local" name="datetime" value={{timestamp}}>
+
+      <input type="submit" value="提交测试">
+
+
+   </form>
+
+   <br><b>接口调用结果:{{result}}</b>
+
+
+   <form>
+   <br><b>数据入库结果:</b>
+   <table border="1">
+       <tr>
+           <th>广告点击标识</th>
+           <th>转化类型</th>
+           <th>uid</th>
+           <th>广告位id</th>
+           <th>媒体id</th>
+           <th>广告主id</th>
+           <th>广告订单id</th>
+           <th>广告创意id</th>
+           <th>活动id</th>
+           <th>坑位id</th>
+           <th>设备id</th>
+           <th>订单出价</th>
+           <th>创建时间</th>
+           <th>更新时间</th>
+           <th>广告展现标识</th>
+           <th>广告位点击id</th>
+           <th>扣费</th>
+           <th>媒体收益现金</th>
+           <th>媒体收益奖励</th>
+           <th>ua信息</th>
+       </tr>
+       {% for row in paras %}
+       <tr>
+           {% for col in row %}
+           <td>{{ col|safe }}</td>
+           {% endfor %}
+
+
+       </tr>
+       {% endfor %}
+   </table>
+   </form>
+</body>
+</html>
+
+
+{% endblock %}

@@ -12,7 +12,7 @@
     </div>
     {% from "_field.html" import render_field %}
     <p hidden="hidden" style="height: 20px">
-    <form action="{{url_for ('version_maintain')}}" method="post">
+    <form action="{{url_for ('version_maintain',page_name='new')}}" method="post">
        <script>
 function setSecond(obj){
   var val = obj.value;
@@ -23,7 +23,7 @@ function setSecond(obj){
     sec.options[1] = new Option("voyageradmin","2");
     sec.options[2] = new Option("voyager.ypg","4");
     sec.options[3] = new Option("voyagerbidding","966");
-    sec.options[4] = new Option("voyagerdisplay","967");
+    sec.options[4] = new Option("voyagerapidisplay","967");
     sec.options[5] = new Option("voyageropen","968");
     sec.options[6] = new Option("voyagercheating","969");
     sec.options[7] = new Option("voyagerdemand","970");
@@ -53,7 +53,58 @@ function setSecond(obj){
     sec.options[12] = new Option("yiqifa-advertiser-front","999");
     sec.options[13] = new Option("yiqifa-www-front","1004");
     sec.options[14] = new Option("yiqifa-monitor","1005");
+    sec.options[15] = new Option("yiqifa-adcenter","1006");
+    sec.options[16] = new Option("yiqifa-productcenter","1007");
+    sec.options[17] = new Option("yiqifa-usercenter","1008");
+    sec.options[18] = new Option("yiqifa-websitcenter","1009");
+    sec.options[19] = new Option("yiqifa-ordercenter","1010");
+    sec.options[20] = new Option("yiqifa-financecenter","1011");
+    sec.options[21] = new Option("yiqifa-reportcenter","1012");
+    sec.options[22] = new Option("yiqifa-messagecenter","1013");
+    sec.options[23] = new Option("yiqifa-thirdpart-api","995");
+    sec.options[24] = new Option("亿起发小程","1014");
+    sec.options[25] = new Option("yiqifa-adaptorcenter","1034");
+    sec.options[26] = new Option("yiqifa-monitor-cache","1038");
+    sec.options[27] = new Option("yiqifa-data-issue","1039");
+    sec.options[28] = new Option("yiqifa-adaptorcenter","1040");
+    sec.options[29] = new Option("yiqifa-upload","1043");
+
   }
+  if(val == '3'){
+    var sec = document.getElementById('job_id');
+    $("#job_id").find("option").remove();
+    sec.options[0] = new Option("egou-api-act","1015");
+    sec.options[1] = new Option("egou-api-app","1016");
+    sec.options[2] = new Option("egou-api-shop","1017");
+    sec.options[3] = new Option("egou-api-user","1018");
+    sec.options[4] = new Option("egou-union","1019");
+    sec.options[5] = new Option("egou-msite","1020");
+    sec.options[6] = new Option("egou-order","1021");
+    sec.options[7] = new Option("egou-pay","1022");
+    sec.options[8] = new Option("egou-play","1023");
+    sec.options[9] = new Option("egou-service-ordert","1024");
+    sec.options[10] = new Option("egou-service-pay","1025");
+    sec.options[11] = new Option("egou-service-shop","1026");
+    sec.options[12] = new Option("egou-service-user","1027");
+    sec.options[13] = new Option("egou-signmgr","1028");
+    sec.options[14] = new Option("egou-playmgr","1029");
+    sec.options[15] = new Option("voyagerbigou","1030");
+    sec.options[16] = new Option("易购小程序","1031");
+    sec.options[17] = new Option("易购app-ios","1032");
+    sec.options[18] = new Option("易购app-Android","1033");
+    sec.options[19] = new Option("egou-supermgr","1035");
+    sec.options[20] = new Option("egou-api-superf","1036");
+    sec.options[21] = new Option("egou-uc","1037");
+    sec.options[22] = new Option("egou-recommend","1041");
+    sec.options[23] = new Option("egou-passport","1042");
+    sec.options[24] = new Option("egou-jifen","1044");
+    sec.options[25] = new Option("egou-passport","1045");
+    sec.options[26] = new Option("egou-api-temai","1046");
+    sec.options[27] = new Option("egou-temai","1047");
+    sec.options[28] = new Option("egou-api-router","1048");
+    sec.options[29] = new Option("egou-service-router","1049");
+    sec.options[30] = new Option("egou-ubhmgr","1050");
+    }
 }
 </script>
         <table>
@@ -75,10 +126,10 @@ function setSecond(obj){
             {{ render_field(form.ol_type) }}
             {{ render_field(form.apply_date) }}
             {{ render_field(form.ol_date) }}
-            {{ render_field(form.version) }}
+            {{ render_field(form.version,required="required") }}
             {{ render_field(form.v_tag) }}
             {{ render_field(form.v_desc) }}
-            {{ render_field(form.tester) }}
+            {{ render_field(form.tester,required="required") }}
             {{ render_field(form.remark) }}
             {{ render_field(form.send_email) }}
 {#          {{ render_field(form.submit) }}#}

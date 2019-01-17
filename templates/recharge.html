@@ -1,0 +1,60 @@
+﻿{% extends "base.html"%}
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>模拟充值页面</title>
+</head>
+<body>
+<h1>测试环境联动模拟充值页面</h1>
+
+<form action="{{url_for('recharge')}}" method="post">
+
+    代理商ID:<input type="text" name="advertiser_id" value="1789" readonly=''true" ><br>
+    充值金额:<input type="number" name="amount" value="20000" readonly=''true">
+    <input type="submit" name="submit" value="提交">
+
+
+</form>
+<p><b>联动模拟充值结果:</b>{{result}}</p>
+
+<p><b>代理商登录名/密码:联动充值测试代理商/lyj123456</p>
+<p><b>代理商充值返点合同:</b></p>
+<table border="1">
+   <tr>
+    <th>代理商id</th>
+    <th>最低充值金额</th>
+    <th>返点比例(%)</th>
+    <th>返点开始时间</th>
+    <th>返点结束时间</th>
+   </tr>
+
+   {% for row in paras %}
+
+     <tr>
+         {% for col in row %}
+           <td>{{ col|safe }} </td>
+         {% endfor %}
+
+     </tr>
+
+   {% endfor %}
+
+   <!--{% for row in paras %}-->
+   <!--<tr>-->
+       <!--{% for col in row %}-->
+
+       <!--<td>{{ col|safe  }}</td>-->
+       <!--{% endfor %}-->
+
+   <!--</tr>-->
+   <!--{% endfor %}-->
+
+
+</table>
+
+</body>
+</html>
+{% endblock %}

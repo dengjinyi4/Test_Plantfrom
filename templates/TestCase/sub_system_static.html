@@ -1,0 +1,37 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    {% block main %}
+    <p>hi</p>
+{#    <p>{{ static_data }}</p>#}
+    <table border="1">
+        <thead>
+        <tr>
+            <td>子系统</td>
+            <td>接口名称</td>
+            <td>测试状态码</td>
+            <td>测试用例数量</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% if static_data %}
+            {% for i in range(static_count) %}
+            <tr>
+                {% for data in static_data[i] %}
+                <td>{{ data }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+
+    </table>
+
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends "base.html"%}
+{% block main %}
+   <div class="container">
+   <table  border="2">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+     <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+    {% endfor %}
+<form action="{{url_for('version_maintain',page_name='update')}}" method="post">
+
+   <div class="container">
+    <table >
+
+    {% block page_content %}{% endblock %}
+        <tbody>
+            {% for k,v in result.items() %}
+            <tr>
+                <td>
+                        {% if k !='id' %}
+                            <p>{{ k }}</p>
+                        {% endif %}
+                </td>
+                    {% if k ==('状态') %}
+                        <td><select name='status' style="height: 20px"><option value="1" >已上线</option><option value="2">回滚</option><option value="3">未上线</option></select></td>
+                        {% elif k in ('上线描述') %}
+                        <td><input name='v_desc' type="text" value={{ v }} ></td>
+                        {% elif k in ('id') %}
+                        <td><input name='id' type="hidden" value={{ v }}  ></td>
+{#                        {% elif k in ('job名') %}#}
+{#                        <td><input name='job_name'  value={{ v }}  ></td>#}
+                        {% elif k in ('测试者') %}
+                        <td><input name='tester'  value={{ v }}  ></td>
+{#                        {% elif k in ('开发者','业务组') %}#}
+{#                        <td><input type="text" value={{ v }} readonly="readonly" disabled="disabled"></td>#}
+                        {% else %}
+                        <td><input type="text" value={{ v }} readonly="readonly" disabled="disabled"></td>
+                {% endif %}
+{#                {% endfor %}#}
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <input type="submit" value="提交" >
+   </div>
+</form>
+       </table>
+    </div>
+ {% endblock %}
+<!--</body>-->
+<!--</html>-->

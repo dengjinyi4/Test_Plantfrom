@@ -1,0 +1,35 @@
+{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    {% block main %}
+    <p>hi</p>
+    <table border="1" style="word-wrap:break-word; word-break:break-all;">
+        <tbody>
+        {% if detail_data %}
+            {% for i in range(detail_count) %}
+            <tr>
+                {% for data in detail_data[i] %}
+                    <td>
+                    {% if data =='edit' %}
+                        <a href="{{ url_for('TestCase',id=detail_data[i][0]) }}">{{ data }}</a>
+                    {% else %}
+                        <td>{{ data }}</td>
+                    {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+
+            {% endfor %}
+        {% endif %}
+        </tbody>
+
+    </table>
+
+    {% endblock %}
+</body>
+</html>

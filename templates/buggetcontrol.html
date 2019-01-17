@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+
+{% block main %}
+<p hidden="hidden">
+订单小时预算
+</p>
+
+<li>订单中的小时预算为：</li>
+<!--<li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>-->
+{% for i in range(0,24) %}
+        {%if i==myhour%}
+        <li style="color:red;font-size:25px" >小时:{{i}} 总预算：{{tmp_total[i]["total_"~i]|safe}} 剩余预算：{{tmp_rest[i]["rest_"~i]|safe}} </li>
+        {% else %}
+        <li>小时:{{i}} 总预算：{{tmp_total[i]["total_"~i]|safe}} 剩余预算：{{tmp_rest[i]["rest_"~i]|safe}}</li>
+{%endif%}
+  {% endfor %}
+{% endblock %}

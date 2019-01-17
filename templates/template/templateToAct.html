@@ -1,0 +1,68 @@
+{% extends "base.html"%}
+{% block main %}
+{% from "_field.html" import render_field %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>模板活动互助查询</title>
+</head>
+<div class="container">
+<body>
+    <form action="{{url_for('templateToAct',page_name='query')}}" method="post">
+{#        <input type="radio" id="test" name='env' value="1" checked="checked"/><label for="test">测试环境</label>#}
+{#        <input type="radio" id="product" name='env' value="0" /><label for="product">生产环境</label><br>#}
+    {#    <span style="padding: 30px  0px">模板关键字: <input style="width: 400px" name="template_kw" placeholder="如/new/money_tree_turntable.html, 多个关键字请用;分割"></span><br>#}
+    {#    <span style="padding: 30px  0px">活动id: <input name='act_id' placeholder="多个活动id请用,分割"></span>#}
+    {#    <input type="submit" value="查询">#}
+    {#    {{ render_field(form.env) }}#}
+        {{ render_field(form.env) }}
+        {{ render_field(form.template_kws) }}
+        <br>
+        {{ render_field(form.ad_ids) }}
+        {{ form.submit }}
+    </form>
+    <script>
+        function checkIt(){
+            console.log('{{ pos }}')
+            if (('{{ pos }}')=='0')
+            {
+                product = document.getElementById("product").checked ="checked";
+            } else {
+                test = document.getElementById("test").checked="checked";}
+        }
+        window.onload=checkIt()
+
+    </script>
+    {#<p>{{ pos }}</p>#}
+    {% if ts == 'true' %}
+{#        <p>{{ re }}</p>#}
+        <a id="expBtn" download="templateResult.xlsx" href="../../static/result/templateResult.xlsx" >导 出</a>
+        <table border="1">
+            <tr style="background-color: #66cc66">
+                <th>活动id</th>
+                <th>活动名称</th>
+                <th>模板id</th>
+                <th>模板名称</th>
+                <th>模板url地址</th>
+                <th>模板配置</th>
+                <th>查看坑位</th>
+            </tr>
+            {% if flag == 'true' %}
+                {% for row in re %}
+                <tr>
+                    {% for col in row %}
+                    <td>{{ col|safe }}</td>
+                    {% endfor %}
+                <td><a target="_blank" href="{{ url_for("templateToAct",page_name='position',id=row[2]|safe,env=env)}}">查看</a></td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <p>{{ re }}</p>
+            {% endif %}
+        </table>
+    {% endif %}
+</body>
+</div>
+</html>
+{% endblock %}

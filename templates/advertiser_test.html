@@ -1,0 +1,72 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>广告主数据效果收集</title>
+</head>
+<body>
+    <h1>广告主效果收集</h1><br>
+
+    <form action="{{url_for('render_link')}}" method="post">
+
+        <b>广告主落地页地址:</b> <input type="text" name="url" value={{url}}>
+
+        <input type="submit" value="生成测试地址"><br>
+        <br>
+
+        <b>下单测试页地址:</b> {{new_url}}<br>
+
+        <br>
+
+    </form>
+    <form action="{{url_for('query_result') }}" method="post">
+
+
+        <b>测试链接下单完成通过下方查询按钮进行数据结果查询:</b><br>
+
+        <br>
+
+        ad_click_tag:<input type="text" name="ad_click_tag" value={{ad_click_tag}}>
+
+        <input type="submit" value="查询">
+    </form>
+    <br>
+    <br>
+      <b>广告主数据查询结果:</b>
+
+    <br>
+    <br>
+    <form>
+     <table border="1">
+        <tr>
+            <th>点击唯一标识</th>
+            <th>用户唯一标识</th>
+            <th>广告位id</th>
+            <th>媒体id</th>
+            <th>广告主id</th>
+            <th>订单id</th>
+            <th>创建时间</th>
+
+        </tr>
+        {% for row in paras %}
+        <tr>
+            {% for col in row %}
+            <td>{{ col|safe }}</td>
+            {% endfor %}
+
+
+
+        </tr>
+        {% endfor %}
+
+
+     </table>
+    </form>
+</body>
+</html>
+
+{% endblock %}

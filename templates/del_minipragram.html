@@ -1,0 +1,25 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>删除小程序相关数据</title>
+</head>
+<body>
+<h1>删除小程序相关数据</h1>
+<form action="{{url_for('del_minipragram')}}" method='post'>
+    输入OpenId:<input type="text" name="openid" value={{openid}} >
+
+    <input type="submit" name="submit" value="删除" >
+
+
+    <br>
+    <br>
+    {{para}}
+
+</form>
+</body>
+</html>
+{% endblock %}

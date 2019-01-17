@@ -70,6 +70,14 @@ class VersionTracker(object):
         re.append([u'总计', tid_re, tss_re, tcs_re, format(float(tss_re) / float(tid_re), '.2%')])
         return re
 
+    def update_version_desc_state(self,id,status,v_desc,tester):
+        sql = '''update test.version_tracker
+            set v_desc='{}',status={},update_time=now(),tester='{}'
+            where id= {}'''.format(v_desc,status,tester,id)
+        # print sql
+        rowcount = self.db.exe_insert_sql(sql)
+        return rowcount
+
     def __del__(self):
         pass
 

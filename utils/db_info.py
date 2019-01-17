@@ -23,8 +23,8 @@ class DbOperations(object):
                                        passwd="voyager",
                                        charset = 'utf8')
         else:
-            #生产环境
-            self.db = MySQLdb.connect(host="123.59.17.121",
+            #生产环境,            123.59.17.121,
+            self.db = MySQLdb.connect(host="123.59.111.25",
                                       port=3306,
                                       db="voyager",
                                       user="voyager",

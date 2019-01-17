@@ -1,0 +1,109 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>低碳打卡小程序用户信息</title>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+ <h1>低碳打卡小程序用户信息统计</h1>
+
+ <form action="{{url_for('punchcard')}}" method="post">
+
+   查询开始日期:<input type="date" name="begin_date" value="{{begin_date}}">
+   查询结束日期:<input type="date" name="end_date"  value="{{end_date}}" >
+   <input type="submit" name="submit" value="查询">
+   <br>
+   <br>
+ </form>
+ 低碳打卡小程序用户总数：{{total_amount}}
+ <br>
+ <br>
+ 今日新增小程序用户数: {{today_addamount}}  （其中通过邀请新增用户数:{{invite_add}}    通过非邀请新增的用户数:{{non_inviteadd}}）
+ <br>
+ <br>
+ 今日小程序打卡用户数: {{today_sign}}
+ <br>
+ <br>
+ <!--<table border="1">-->
+     <!--<tr>-->
+         <!--<th>openid</th>-->
+         <!--<th>昵称</th>-->
+         <!--<th>用户累计碳积分</th>-->
+         <!--<th>用户碳积分余额</th>-->
+         <!--<th>用户累计步数</th>-->
+         <!--<th>树的等级</th>-->
+     <!--</tr>-->
+     <!--{% for row in paras %}-->
+     <!--<tr>-->
+         <!--{% for col in row %}-->
+         <!--<td>{{ col|safe }}</td>-->
+         <!--{% endfor %}-->
+
+
+     <!--</tr>-->
+     <!--{% endfor %}-->
+ <!--</table>-->
+
+
+ <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+ <script language="JavaScript">
+$(document).ready(function() {
+   var title = {
+      text: '低碳打卡小程序用户新增用户数统计'
+   };
+   var subtitle = {
+      text: 'Source: adhudong.com'
+   };
+   var xAxis = {
+      categories: {{xvalue|safe}}
+   };
+   var yAxis = {
+      title: {
+         text: '用户数(/个)'
+      },
+      plotLines: [{
+         value: 0,
+         width: 1,
+         color: '#808080'
+      }]
+   };
+
+   var tooltip = {
+      valueSuffix: '个'
+   }
+
+   var legend = {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle',
+      borderWidth: 0
+   };
+
+    var series= [{
+         name: '新增用户数',
+         data: {{data|safe}}
+        }
+   ];
+
+   var json = {};
+
+   json.title = title;
+   json.subtitle = subtitle;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;
+   json.tooltip = tooltip;
+   json.legend = legend;
+   json.series = series;
+
+   $('#container').highcharts(json);
+});
+</script>
+</body>
+
+</html>
+{% endblock %}

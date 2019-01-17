@@ -3,10 +3,11 @@
 <head lang="en">
     <meta charset="UTF-8">
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >-->
+    <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <script src="{{url_for('static',filename='jquery.min.js')}}"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/modules/drilldown.js"></script>
@@ -52,8 +53,11 @@
             <li><a href="{{url_for('hdt_cssc')}}">测试页面(互动推)</a></li>
             <li><a href="{{url_for('hdtapi')}}">api&UI测试接口(互动推)</a></li>
             <li><a href="{{url_for('myiframe')}}">iframe测试(互动推)</a></li>
-
-
+            <li><a href="{{url_for('recharge')}}">联动平台模拟充值(互动推)</a></li>
+            <li><a href="{{url_for('cpa_api')}}">CPA广告主回调接口测试</a></li>
+            <li><a href="{{url_for('render_link')}}">广告主数据收集</a></li>
+            <li><a href="{{url_for('del_minipragram')}}">删除小程序相关数据</a></li>
+              <li><a href="{{url_for('checkRoute')}}">活动路由检查</a></li>
             <!-- <li role="separator" class="divider"></li> -->
             <!-- <li><a href="#">Separated linkt</a></li> -->
             <li role="separator" class="divider"></li>
@@ -71,6 +75,14 @@
             <li><a href="{{url_for('create_act')}}">创建活动(互动推)</a></li>
             <li><a href="{{url_for('UpdateAdId')}}">更新Advertiser_ID</a></li>
             <li><a href="{{url_for('QueryAppkey')}}">查询Appkey</a></li>
+            <li><a href="{{url_for('crm_order')}}">优品购订单明细查询</a></li>
+            <li><a href="{{url_for('ocpa_price')}}">OCPA订单调价趋势图</a></li>
+            <li><a href="{{url_for('ocpa_order')}}">OCPA订单明细查询</a></li>
+            <li><a href="{{url_for('effect_order')}}">优品购效果和订单一致性查询</a></li>
+            <li><a href="{{url_for('phoneVaildCode')}}">测试环境手机验证码查询</a></li>
+            <li><a href="{{url_for('punchcard')}}">低碳打卡小程序用户信息统计</a></li>
+            <li><a href="{{url_for('templateToAct',page_name='query')}}">活动模板互查</a></li>
+            <li><a href="{{url_for('mini_mediainfo')}}">小程序推广渠道数据统计</a></li>
             <!-- <li role="separator" class="divider"></li> -->
             <!-- <li><a href="#">Separated linkt</a></li> -->
             <li role="separator" class="divider"></li>
@@ -81,7 +93,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">API套件<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url_for('Api_index')}}">API统计</a></li>
-            <li><a href="{{url_for('TestCase')}}">API用例维护</a></li>
+{#            <li><a href="{{url_for('TestCase')}}">API用例维护</a></li>#}
             <!-- <li role="separator" class="divider"></li> -->
             <!-- <li><a href="#">Separated linkt</a></li> -->
             <li role="separator" class="divider"></li>
@@ -92,7 +104,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">版本管理<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url_for('launchlist')}}">版本列表</a></li>
-            <li><a href="{{url_for('version_maintain')}}">添加版本</a></li>
+            <li><a href="{{url_for('version_maintain',page_name='new')}}">添加版本</a></li>
             <!-- <li role="separator" class="divider"></li> -->
             <!-- <li><a href="#">Separated linkt</a></li> -->
             <li role="separator" class="divider"></li>

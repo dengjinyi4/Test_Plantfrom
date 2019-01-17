@@ -1,0 +1,105 @@
+{#{% extends "base.html"%}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style type="text/css">
+    .pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 12px;
+    }
+    .pagination-page-info b {
+    color: black;
+    background: #6aa6ed;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
+    }
+   ul,li /*这是关键，去掉ul li默认的margin padding 值*/
+        {
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+        ul /*这是关键*/
+        {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+        }
+        li
+        {
+            border: 1px solid;
+            width: 100px; /*每个元素的初始化宽度*/
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            flex:auto;  /*这是关键*/
+            float: left;
+        }
+    </style>
+</head>
+<body>
+{#    {% block main %}#}
+    <div>
+    <p>接口用例列表</p>
+{#    action="{{ url_for('sub_system') }}"#}
+    <form action="{{ url_for('sub_system',sub_system=system_name,page_name='detail') }}" method="post">id:<input  pattern="[0-9]{1-9}"  name="id" ><input type="submit">
+        {% if detail_data.__iter__ %}
+            {{ pagination.info }}
+            {{ pagination.links }}
+    <table border="1" style="word-wrap:break-word; word-break:break-all;">
+        <thead style="background-color: darkseagreen">
+         <td>id</td>
+         <td>apiname</td>
+         <td>param_type</td>
+         <td>testcasename</td>
+         <td>methodurl</td>
+         <td>param</td>
+         <td>expect_value</td>
+        <td>操作</td>
+        </thead>
+        <tbody>
+        {% for i in range(detail_data|length) %}
+            <tr>
+{#            <td>{{ loop.index + pagination.skip }}</td>#}
+{#            <td>{{ loop.index }}</td>#}
+            <td style="width: 3%">{{ detail_data[i]['id'] }}</td>
+            <td>{{ detail_data[i]['apiname'] }}</td>
+            <td>{{ detail_data[i]['param_type'] }}</td>
+            <td>{{ detail_data[i]['testcasename'] }}</td>
+            <td style="width:20%">{{ detail_data[i]['methodurl'] }}</td>
+            <td style="width: 30%">{{ detail_data[i]['param'] }}</td>
+            <td style="width:30%;">{{ detail_data[i]['expect_value'] }}</td>
+            <td style="width:2%;"><a href="{{ url_for('TestCase',sub_system=system_name,page_name='update',id=detail_data[i]['id']) }}" target="_blank">修改</a></td>
+{#            <td style="width:2%;"><a href="{{ url_for('TestCase')}}/{{ sub_system }}/id={{detail_data[i]['id'] }}">修改</a></td>#}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+            {#        {{ pagination.links }}#}
+    {% else %}
+        <table border="1" style="word-wrap:break-word; word-break:break-all;">
+            <thead style="background-color: darkseagreen">
+             <td>id</td>
+             <td>apiname</td>
+             <td>param_type</td>
+             <td>testcasename</td>
+             <td>methodurl</td>
+             <td>param</td>
+             <td>expect_value</td>
+             <td>操作</td>
+            </thead>
+            <tbody><tr><td colspan="8">{{ detail_data }}</td></tr></tbody>
+        </table>
+        {% endif %}
+{#    {% endblock %}#}
+</form>
+</body>
+</html>

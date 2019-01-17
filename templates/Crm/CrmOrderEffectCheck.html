@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CrmOrderEffectCheck</title>
+</head>
+<body>
+    {% block main %}
+        <ul>查询生产环境优品购效果和订单一致性</ul>
+        <form action="{{ url_for('effect_order') }}" method="post">
+            <ul>
+            <input name="date" type="date" required="required">
+            <input type="submit" value="查询">
+            </ul>
+        </form>
+{#        <br>#}
+        <ul><h3>查询结果</h3></ul>
+
+        <ul><table border="1">
+            <tbody>
+            {% if effect or order %}
+                <p>{{ re['msg'] }}</p>
+                <thead>
+                <tr bgcolor="#7fffd4">
+                <td>ad_click_tag</td>
+                <td>表</td>
+                <td>url</td>
+                <td>advertiser_id</td>
+                <td>ad_order_id</td>
+                <td>ad_creative_id</td>
+                <td>order_no</td>
+                <td>product_id</td>
+                </tr>
+                </thead>
+                <tr><td colspan="8">effect的数据：</td></tr>
+                {% for i in range(effect|length) %}
+                <tr>
+                    <td>{{ effect[i]['ad_click_tag'] }}</td>
+                    <td>{{ i }}</td>
+                    <td>{{ effect[i]['url'] }}</td>
+                    <td>{{ effect[i]['advertiser_id'] }}</td>
+                    <td>{{ effect[i]['ad_order_id'] }}</td>
+                    <td>{{ effect[i]['ad_creative_id'] }}</td>
+                    <td> -- </td>
+                    <td> -- </td>
+                </tr>
+                {% endfor %}
+                <tr><td colspan="8">order的数据为：</td></tr>
+                {% for i in range(order|length) %}
+                <tr>
+                    <td>{{order[i]['ad_click_tag'] }}</td>
+                    <td>effect</td>
+                    <td>{{ order[i]['order_url'] }}</td>
+                    <td>{{ order[i]['customer_id'] }}</td>
+                    <td>{{ order[i]['ad_order_id'] }}</td>
+                    <td>--</td>
+                    <td>{{ order[i]['order_no'] }}</td>
+                    <td>{{ order[i]['product_id'] }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>{{ re['msg'] }}</tr>
+            {% endif %}
+            </tbody>
+        </table></ul>
+    {% endblock %}
+</body>
+</html>

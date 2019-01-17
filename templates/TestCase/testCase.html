@@ -1,0 +1,87 @@
+{% extends "base.html"%}
+{% block main %}
+  {{ form.hidden_tag() }}
+   <div class="container">
+
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    {% endfor %}
+    {% block page_content %}{% endblock %}
+    </div>
+    {% from "_field.html" import render_field %}
+    <p hidden="hidden" style="height: 20px">
+   {% if case_detail['id'] %}
+    <form action="{{url_for ('TestCase',sub_system=sub_system,page_name='update',id=case_detail['id'])}}" method="post">
+   {% else %}
+   <form action="{{url_for ('TestCase',sub_system=sub_system,page_name='new')}}" method="post">
+   {% endif %}
+       {% if case_detail %}
+       <table>
+{#       ['id','apiname','','testcasename','group','','','','','','','','']#}
+            {{ render_field(form.apiName,value=case_detail['apiname']) }}
+            {{ render_field(form.apiState,value=case_detail['apiState']) }}
+            {{ render_field(form.testCaseName,value=case_detail['testcasename']) }}
+{#            {{ render_field(form.group,value=case_detail['group']) }}#}
+            {{ render_field(form.status,value=case_detail['status']) }}
+            {{ render_field(form.level,value=case_detail['level']) }}
+            {{ render_field(form.param_type,value=case_detail['param_type']) }}
+            {{ render_field(form.methodurl,onkeyup="this.value=this.value.replace(/\s+/g,'')" ) }}
+{#            {{ render_field(form.param,value=case_detail['param']) }}#}
+            {{ render_field(form.actresult,value=case_detail['actresult']) }}
+            {{ render_field(form.expect_value) }}
+            {{ render_field(form.remarks,value=case_detail['remarks']) }}
+           <script>
+               function echo_info(){
+                   document.getElementById("methodurl").value="{{ methodurl|safe }}";
+{#                   document.getElementById("group-0").checked="checked";#}
+                   document.getElementById("expect_value").value="{{ case_detail['expect_value']|safe }}";
+                   document.getElementById("status").value="{{ case_detail['status'] }}";
+                   document.getElementById("param_type").value="{{ case_detail['param_type'] }}";
+                   if (({{ case_detail['apiState'] }})==1){
+                       document.getElementById("apiState-0").checked="checked";
+                   }else {
+                       document.getElementById("apiState-1").checked="checked";
+                   }
+                   if (({{ case_detail['status'] }})==1){
+                       document.getElementById("status-0").checked="checked";
+                   }else {
+                       document.getElementById("status-1").checked="checked";
+                   }
+
+                   if ('{{ case_detail['param_type'] }}' == 'A'){
+                       document.getElementById("param_type").value.selected="selected"
+{#                               getElementById("param_type").selected="selected"#}
+                   } else if ('{{ case_detail['param_type'] }}' == 'B'){
+                       document.getElementById("param_type").value.selected="selected"
+                   } else{
+                       document.getElementById("param_type").value.selected="selected"
+                   }
+               }
+                window.onload=echo_info()
+           </script>
+        </table>
+           {{ form.submit }}
+       {% else %}
+
+        <table>
+            {{ render_field(form.apiName) }}
+            {{ render_field(form.apiState) }}
+            {{ render_field(form.testCaseName) }}
+{#            {{ render_field(form.group) }}#}
+            {{ render_field(form.status) }}
+            {{ render_field(form.level) }}
+            {{ render_field(form.param_type) }}
+            {{ render_field(form.methodurl,placeholder="http://api.demand.adhudong.com/api/voyager/order/list.htm",onkeyup="this.value=this.value.replace(/\s+/g,'')") }}
+{#            {{ render_field(form.param) }}#}
+            {{ render_field(form.actresult) }}
+            {{ render_field(form.expect_value) }}
+            {{ render_field(form.remarks) }}
+        </table>
+        {{ form.submit }}
+       {% endif %}
+    </form>
+    </div>
+{% endblock %}
+{#    {% endblock %}#}

@@ -1,0 +1,44 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>小程序推广渠道统计</title>
+    <h1>小程序推广渠道数据统计</h1>
+</head>
+<body>
+<form action="{{url_for('mini_mediainfo')}}" method="post">
+    <select name="media_name">
+    渠道选择:
+    <option>有练换换</option>
+    <option>优质福利所</option>
+    <option>步数大联盟</option>
+    {{media_name|safe}}
+    </select>
+    日期选择:<input type="date" name="begin_time" value={{begin_time}} >
+    <input type="submit" value="查询" name="查询">
+    <br>
+    <br>
+    授权用户数:{{authorize_user}}
+    <br>
+    <br>
+    领取微信步数的用户数:{{wxstep_user}}
+    <br>
+    <br>
+    邀请到了好友的用户数:{{invite_user}}
+    <br>
+    <br>
+    邀请到的好友数:{{invited_user}}
+    <br>
+    <br>
+    获得广告任务奖励的用户数:{{task_user}}
+    <br>
+    <br>
+
+</form>
+</body>
+</html>
+{% endblock %}

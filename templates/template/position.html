@@ -1,0 +1,28 @@
+{% extends "base.html"%}
+{% block main %}
+{% from "_field.html" import render_field %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>模板坑位信息</title>
+</head>
+<div class="container">
+<body>
+    <table border="1">
+        <tr style="background-color: #66cc66">
+            <th>坑位名称</th>
+            <th>坑位id</th>
+        </tr>
+        {% for row in re %}
+        <tr>
+            {% for col in row %}
+            <td>{{ col|safe }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</div>
+</html>
+{% endblock %}
