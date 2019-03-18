@@ -144,7 +144,9 @@ class TemplateActCreation(object):
         json_body = {
             "status": 1,
             "awardNum": 3,
-            "expand1": 1,
+            "expand1": 2,
+            "expand2":2,
+            "expand8":'2019-08-09 00:00:00',
             "changeTimes": 2,
             "bannerImageUrl": "https://img3.adhudong.com/award/201802/25/9867c921ca0178820b8a37c677876223.jpg",
             "actRuleInfo": "<p>参与活动即有机会获得大奖。活动为概率中奖，奖品数量有限，祝君好运。</p><p>惊喜一：1000元现金</p><p>惊喜二：500元现金</p><p>惊喜三：200元现金</p><p>惊喜四：100元现金</p><p>惊喜五：50元现金</p><p>惊喜六：幸运奖</p><p>重要声明：</p><p>1、实物类奖品将在活动结束后5-10个工作日内安排发货，请耐心等待</p><p>2、卡券类奖品使用规则详见卡券介绍页</p><p>3、通过非法途径获得奖品的，主办方有权不提供奖品</p>",

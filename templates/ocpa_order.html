@@ -2,28 +2,43 @@
 
 {% block main %}
 
-<!DOCTYPE html>
+<script>$(document).ready(function() {$('#ocpa_order22').DataTable();} );</script>
+
+
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>OCPA订单明细查询</title>
 </head>
 <body>
-<h1>OCPA订单明细查询<a href="{{url_for('ocpa_orderadzone')}}">查看缓存</a></h1>
-<form action="{{url_for('ocpa_order')}}" method="post">
-    查询日期:<<input type="date" name="begin_date" value="{{begintime}}"/><br>
+<h1>OCPA订单<a href="{{url_for('ocpa.ocpa_orderadzone')}}">查看缓存</a></h1>
+<h1>OCPA订单<a href="{{url_for('ocpa.ocpa_ordercost')}}">查看实际成本</a></h1>
+<form action="{{url_for('ocpa.ocpa_order')}}" method="post">
+    查询日期:<input type="date" name="begin_date" value="{{begintime}}"/><br>
     <br>
     <input type="submit" name="submit" value="查询"/>
-    <a id="export" download="ocpa_order.xlsx" href="./ocpa_order.xlsx">导出</a>
+    <a id="export" download="ocpa_order.xlsx" href="../static/result/ocpa_order.xlsx">导出</a>
     <br>
     <br>
-
+    OCPA订单今日总消耗:{{ocpa_consume}}
+    <br>
+    <br>
+    OCPA订单今日消耗占效果数据收集广告主所有订单消耗的百分比:{{ocpa_percent}}
+    <br>
+    <br>
+    OCPA订单试投广告位总消耗:{{ocpa_alltry}}
+    <br>
+    <br>
+    <!--OCPA订单试投广告位总消耗占效果数据收集广告主所有订单消耗的百分比::{{alltry_percent}}-->
 </form>
-<table border="1">
+<div id="ocpa_order11" style="float:left;margin-right:100px;text-align:center">
+ <table id="ocpa_order22" class="display" name="ocpa_order" border="1">
+    <thead style="background:green">
     <tr>
         <th>日期</th>
         <th>OCPA订单id</th>
         <th>OCPA订单预扣</th>
+        <th>订单所属广告主名称</th>
         <th>OCPA订单状态</th>
         <th>OCPA订单展现</th>
         <th>OCPA订单点击</th>
@@ -34,19 +49,26 @@
         <th>预期效果消耗</th>
         <th>效果偏差</th>
         <th>消耗偏差百分比</th>
-        <th>操作</th>
+        <th>查看调价</th>
+        <th>查看试投</th>
+
     </tr>
+    </thead>
+    <tbody>
     {% for row in paras %}
     <tr>
         {% for col in row %}
         <td>{{ col|safe }}</td>
         {% endfor %}
-        <td><a href="{{url_for('ocpaorder_detail',ad_order_id=row[1]|safe,date=row[0]|safe,adzone_id=0)}}">查看订单调价趋势图</a></td>
-
+        <td><a href="{{url_for('ocpa.ocpaorder_detail',ad_order_id=row[1]|safe,date=row[0]|safe,adzone_id=0)}}">查看订单调价趋势图</a></td>
+        <td><a href="{{url_for('ocpa.ocpatry_detail',ad_order_id=row[1]|safe,date=row[0]|safe)}}">查看订单试投明细</a></td>
 
     </tr>
+
     {% endfor %}
-</table>
+    </tbody>
+ </table>
+</div>
 </body>
 </html>
 </body>

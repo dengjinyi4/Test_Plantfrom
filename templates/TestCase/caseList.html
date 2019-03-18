@@ -1,35 +1,47 @@
 {% extends "base.html"%}
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
 </head>
-<body>
     {% block main %}
-    <p>hi</p>
-    <table border="1" style="word-wrap:break-word; word-break:break-all;">
-        <tbody>
-        {% if detail_data %}
-            {% for i in range(detail_count) %}
+    <b><p>接口用例列表</p></b>
+
+        <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+    <table id="example" class="display" style="table-layout:fixed;overflow:hidden;word-break: break-all " border="1" >
+        <thead style="background-color: darkseagreen">
             <tr>
-                {% for data in detail_data[i] %}
-                    <td>
-                    {% if data =='edit' %}
-                        <a href="{{ url_for('TestCase',id=detail_data[i][0]) }}">{{ data }}</a>
-                    {% else %}
-                        <td>{{ data }}</td>
-                    {% endif %}
-                    </td>
-                {% endfor %}
+             <th width="3%">id</th>
+             <th width="10%">apiname</th>
+             <th width="3%">操作</th>
+             <th width="10%">param_type</th>
+             <th style="width: 15%">testcasename</th>
+             <th width="17%">methodurl</th>
+             <th width="32%">param</th>
+             <th width="10%">expect_value</th>
             </tr>
-
-            {% endfor %}
-        {% endif %}
+        </thead>
+        {% if detail_data.__iter__ %}
+        <tbody>
+        {% for i in range(detail_data|length) %}
+            <tr>
+            <td>{{ detail_data[i]['id'] }}</td>
+            <td>{{ detail_data[i]['apiname'] }}</td>
+            <td ><a href="{{ url_for('testCase.TestCase',sub_system=sub_system,page_name='update',id=detail_data[i]['id']) }}" target="_blank">修改</a></td>
+            <td>{{ detail_data[i]['param_type'] }}</td>
+            <td>{{ detail_data[i]['testcasename'] }}</td>
+            <td>{{ detail_data[i]['methodurl'] }}</td>
+            <td>{{ detail_data[i]['param'] }}</td>
+            <td>{{ detail_data[i]['expect_value'] }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
-
     </table>
-
+    {% else %}
+            <tbody><tr><td colspan="8">{{ detail_data }}</td></tr></tbody>
+        </table>
+        {% endif %}
+</form>
     {% endblock %}
-</body>
-</html>

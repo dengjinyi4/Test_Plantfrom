@@ -5,6 +5,7 @@
         <meta charset="utf-8" />
         <title>First</title>
     </head>
+
          <frameset cols="15%,*">
          <frame src="{{url_for('link')}}" name="index1"/>
          <!--<frame src="link.html" name="index1"/>-->
@@ -12,8 +13,18 @@
             </frameset>
             <noframes>
                 <body>
-                {% block main %} 
-                走一个再现江湖！！！！！！！！！！！！
+
+                {% block main %}
+                <p hidden="hidden">
+                    mysql https://pypi.org/project/MySQL-python/#files
+                    gunicorn show:app -b 0.0.0.0:21312
+                    pip install gunicorn
+                    pip install elasticsearch
+                    pip install openpyxl
+                    pip install flask_wtf
+                    pip install redis-py-cluster
+                </p>
+                <p>走一个再现江湖！！！！！！！！！！！！</p>
                 {% endblock %}
                 </body>
             </noframes>

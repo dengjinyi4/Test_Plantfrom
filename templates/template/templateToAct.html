@@ -9,7 +9,7 @@
 </head>
 <div class="container">
 <body>
-    <form action="{{url_for('templateToAct',page_name='query')}}" method="post">
+    <form action="{{url_for('act.templateToAct',page_name='query')}}" method="post">
 {#        <input type="radio" id="test" name='env' value="1" checked="checked"/><label for="test">测试环境</label>#}
 {#        <input type="radio" id="product" name='env' value="0" /><label for="product">生产环境</label><br>#}
     {#    <span style="padding: 30px  0px">模板关键字: <input style="width: 400px" name="template_kw" placeholder="如/new/money_tree_turntable.html, 多个关键字请用;分割"></span><br>#}
@@ -37,7 +37,7 @@
     {#<p>{{ pos }}</p>#}
     {% if ts == 'true' %}
 {#        <p>{{ re }}</p>#}
-        <a id="expBtn" download="templateResult.xlsx" href="../../static/result/templateResult.xlsx" >导 出</a>
+        <a id="expBtn" download="templateResult.xlsx" href="/static/result/templateResult.xlsx" >导 出</a>
         <table border="1">
             <tr style="background-color: #66cc66">
                 <th>活动id</th>
@@ -54,7 +54,7 @@
                     {% for col in row %}
                     <td>{{ col|safe }}</td>
                     {% endfor %}
-                <td><a target="_blank" href="{{ url_for("templateToAct",page_name='position',id=row[2]|safe,env=env)}}">查看</a></td>
+                <td><a target="_blank" href="{{ url_for("act.templateToAct",page_name='position',id=row[2]|safe,env=env)}}">查看</a></td>
                 </tr>
                 {% endfor %}
             {% else %}

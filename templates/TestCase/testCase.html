@@ -13,9 +13,9 @@
     {% from "_field.html" import render_field %}
     <p hidden="hidden" style="height: 20px">
    {% if case_detail['id'] %}
-    <form action="{{url_for ('TestCase',sub_system=sub_system,page_name='update',id=case_detail['id'])}}" method="post">
+    <form action="{{url_for ('testCase.TestCase',sub_system=sub_system,page_name='update',id=case_detail['id'])}}" method="post">
    {% else %}
-   <form action="{{url_for ('TestCase',sub_system=sub_system,page_name='new')}}" method="post">
+   <form action="{{url_for ('testCase.TestCase',sub_system=sub_system,page_name='new')}}" method="post">
    {% endif %}
        {% if case_detail %}
        <table>

@@ -4,14 +4,62 @@
 <p hidden="hidden">
 订单小时预算
 </p>
+        <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+<script>
+     $('.dataTables-example').dataTable({
+         "language": {
+             "aria": {
+                 "sortAscending": ": activate to sort column ascending",
+                 "sortDescending": ": activate to sort column descending"
+             },
+             "emptyTable": "No data available in table",
+             "tmp_total": "Showing _START_ to _END_ of _TOTAL_ entries",
+             "infoEmpty": "No entries found",
+             "infoFiltered": "(filtered1 from _MAX_ total entries)",
+             "lengthMenu": "Show _MENU_ entries",
+             "search": "Search:",
+             "zeroRecords": "No matching records found",
+             "sUrl": "/static/fonts/zh_CN.json"
+         }
+     });
 
-<li>订单中的小时预算为：</li>
-<!--<li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>-->
-{% for i in range(0,24) %}
-        {%if i==myhour%}
-        <li style="color:red;font-size:25px" >小时:{{i}} 总预算：{{tmp_total[i]["total_"~i]|safe}} 剩余预算：{{tmp_rest[i]["rest_"~i]|safe}} </li>
-        {% else %}
-        <li>小时:{{i}} 总预算：{{tmp_total[i]["total_"~i]|safe}} 剩余预算：{{tmp_rest[i]["rest_"~i]|safe}}</li>
-{%endif%}
-  {% endfor %}
+</script>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>小时</th>
+                <th>总预算金额</th>
+                <th>剩余预算金额</th>
+            </tr>
+        </thead>
+         <tbody>
+          {% for trcout in tmp_all %}
+          {%if trcout[0]==myhour%}
+            <tr style="color:red;font-size:25px">
+                {% for i in trcout %}
+                <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+          {% else %}
+           <tr>
+               <td>{{trcout[0]|safe}}</td>
+               <td>{{trcout[1]|safe}}</td>
+               <td>{{trcout[2]|safe}}</td>
+           </tr>
+          {%endif%}
+          {% endfor %}
+
+         </tbody>
+        <tfoot>
+            <tr>
+                <th>小时</th>
+                <th>总预算金额</th>
+                <th>剩余预算金额</th>
+            </tr>
+        </tfoot>
+    </table>
+
 {% endblock %}

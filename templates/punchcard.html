@@ -12,7 +12,7 @@
 <body>
  <h1>低碳打卡小程序用户信息统计</h1>
 
- <form action="{{url_for('punchcard')}}" method="post">
+ <form action="{{url_for('miniprogram.punchcard')}}" method="post">
 
    查询开始日期:<input type="date" name="begin_date" value="{{begin_date}}">
    查询结束日期:<input type="date" name="end_date"  value="{{end_date}}" >
@@ -54,7 +54,7 @@
  <script language="JavaScript">
 $(document).ready(function() {
    var title = {
-      text: '低碳打卡小程序用户新增用户数统计'
+      text: '低碳打卡小程序用户新增用户数/日活数统计'
    };
    var subtitle = {
       text: 'Source: adhudong.com'
@@ -66,6 +66,7 @@ $(document).ready(function() {
       title: {
          text: '用户数(/个)'
       },
+
       plotLines: [{
          value: 0,
          width: 1,
@@ -87,6 +88,10 @@ $(document).ready(function() {
     var series= [{
          name: '新增用户数',
          data: {{data|safe}}
+        },
+        {
+         name: '日活用户数',
+         data: {{data2|safe}}
         }
    ];
 

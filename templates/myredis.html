@@ -1,31 +1,57 @@
 {% extends "base.html"%}
-
 {% block main %}
 <p hidden="hidden">
 报表功能：查看生产或测试环境缓存数据
 </p>
+                <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+<li>缓存中的订单为：</li>
+<li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>
 
-<form action="{{url_for('myredis')}}" method="post">
-    <table>
-        <tbody>
-        <tr>
-            <td>请选择任务：</td>
-            <td>
-                <select name="jobid">
-                    <option value="110">缓存中的订单预算：测试</option>
-                    <option value="120">缓存中的订单预算：生产</option>
-                </select>
-            </td>
-             <td><input type="submit" value="生成报表"></td>
-        </tr>
-        </tbody>
-    </table>
+<form action="{{url_for('hdt_redis.myredis')}}" method="post">
+    {{ form.hidden_tag()}}
+       <table class="display" style="width:80%"><tr>
+
+                 {% for i in form.myenv %}
+                   <td>{{i}}:{{i.label}}</td>
+                   {% endfor %}
+                 <td>{{ form.submit() }}</td></tr>
+       </table>
+      <table  id="example" class="display" style="width:100%">
+
+            <thead>
+                <tr>
+                    <td>订单id</td>
+                    <td>亦庄</td>
+                    <td>上海</td>
+                    <td>华通</td>
+                    <td>亦庄与上海差异</td>
+                    <td>亦庄与华通差异</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for i in mybudget%}
+            <tr>
+                    {% for j in i%}
+                        <td>{{j|safe}}</td>
+                        <!--<td><a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></td>-->
+                    {% endfor %}
+                        <td><a href="{{url_for('hdt_redis.budget_control',orderno=i[0]|safe,myenv=myenv|safe)}}">查看小时预算</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
     <p align="center"></p>
 </form>
 
-<li>缓存中的订单为：</li>
-<li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>
-{% for i in mybudget %}
-<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>
-  {% endfor %}
+
+<!--{% for i in mybudget %}-->
+<!--<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>-->
+  <!--{% endfor %}-->
 {% endblock %}
+

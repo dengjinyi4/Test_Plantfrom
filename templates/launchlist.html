@@ -3,54 +3,56 @@
 <div class="container">
 <form action="{{url_for('launchlist')}}" method="post">
     {{form.hidden_tag()}}
-    <table  border="2">
+    <tr>
+        <td>
+            {{ form.myyear.label }}:{{ form.myyear }}
+        </td>
+        <td>
+            {{ form.mymonth.label }}:{{form.mymonth }}
+        </td>
+        <td>
+            {{ form.groups }}
+        </td>
+        <td>
+            {{ form.testers }}
+        </td>
+        <td>
+        {{form.submit }}
+        </td>
+        <td>
+        <button><a id="expBtn" download="result.xlsx" href="../static/result/result.xlsx" >导 出</a></button>
+        </td>
+        <td><b>&nbsp;&nbsp;&nbsp;已上线数量：{{ result|length  }}</b></td>
+    </tr>
+
+            <hr>
+    <script>
+        $(document).ready(function() {
+        $('#launchlist').DataTable()} );
+    </script>
+    <table id="launchlist"  border="2">
+        <thead style="background-color: #66cc66">
+            <tr>
+                <th style="display: none">序号</th>
+                <th>id</th>
+                <th>业务组</th>
+                <th>项目</th>
+                <th>开发</th>
+                <th>测试</th>
+                <th>版本</th>
+                <th>变更内容</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
         <tbody>
-            <tr>
-                <td>
-                    {{ form.myyear.label }}:{{ form.myyear }}
-                </td>
-                <td>
-                    {{ form.mymonth.label }}:{{form.mymonth }}
-                </td>
-                <td>
-                    {{ form.groups }}
-                </td>
-                <td>
-                    {{ form.testers }}
-                </td>
-                <td>
-                {{form.submit }}
-                </td>
-                <td>
-{#                <a download="result.xlsx" href="../FlaskVv/FlaskVv/result/result.xlsx">导 出</a>#}
-                <a id="expBtn" download="result.xlsx" href="../static/result/result.xlsx" >导 出</a>
-                </td>
-            </tr>
-            <tr style="background-color: aquamarine"><td><strong>上线列表</strong></td>
-                <td>总计</td>
-                <td>{{ result|length  }}</td>
-            </tr>
-            <tr>
-                <td>id</td>
-                <td>业务组</td>
-                <td>项目</td>
-                <td>开发</td>
-                <td>测试</td>
-                <td>版本</td>
-                <td>变更内容</td>
-                <!--<td title="1-有效点击 2-无效点击"><font color="red" >状态</font></td>-->
-                <td>createtime</td>
-                <td>操作</td>
-                <!--<td>updatetime</td>-->
-            </tr>
             {% for trcout in result %}
             <tr>
+                <td style="display: none">{{ loop.index }}</td>
                 {% for i in trcout %}
                     <td>{{i|safe}}</td>
                 {% endfor %}
-{#                <td><a href="{{url_for('getlanuch',id=trcout[0]|safe)}}">edit</a></td>#}
                 <td><a href="{{url_for('getlanuch',id=trcout[0]|safe)}}">编辑</a></td>
-                <!--<td><a href="#">edit</a></td>-->
             </tr>
             {% endfor %}
         </tbody>

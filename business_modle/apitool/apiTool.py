@@ -48,9 +48,9 @@ class Api(object):
         pass
 
     #查询每个子系统的用例明细数据
-    def query_case_list(self,sub_system,pageNumber,pagesize,id=None):
+    def query_case_list(self,sub_system,pageNumber=None,pagesize=None,id=None):
         # print pageNumber,pagesize
-        tmp=(int(pageNumber) - 1)*int(pagesize)
+        # tmp=(int(pageNumber) - 1)*int(pagesize)
         if id:
             sql = r'''
                 select id,apiname,
@@ -60,7 +60,7 @@ class Api(object):
                 when param_type='C' then '状态码'
                 end param_type,
                 testcasename,methodurl,param,expect_value
-                from test.testcase_adv where `group`='{}'  and id={};'''.format(sub_system,id)
+                from test.testcase_adv where `group`='{}'  and id={} ;'''.format(sub_system,id)
         else:
             sql = r'''
                 select id,apiname,
@@ -70,8 +70,8 @@ class Api(object):
                 when param_type='C' then '状态码'
                 end param_type,
                 testcasename,methodurl,param,expect_value
-                from test.testcase_adv where `group`='{}'  group by id desc
-                limit {},{};'''.format(sub_system,tmp,pagesize)
+                from test.testcase_adv where `group`='{}'  group by id desc;'''.format(sub_system)
+                # format(sub_system,tmp,pagesize)
         re = self.db.execute_sql(sql)
         total = int(self.db.execute_sql("select count(*) from test.testcase_adv where `group`='{}' ".format(sub_system))[0][0])
         # re.insert(0,('id','apiname','param_type','testcasename','methodurl','param','expect_value','edit'))

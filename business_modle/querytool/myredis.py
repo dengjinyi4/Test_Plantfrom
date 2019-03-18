@@ -1,28 +1,72 @@
 ﻿#!/usr/bin/env python
 #encoding: utf-8
 # from rediscluster import StrictRedisCluster
+import time
 from rediscluster import  RedisCluster
-def mygetredis(jobid1,key):
+def mygetredis(myenv,key):
     # 测试
-    if jobid1=='110':
+    if myenv=='test':
         redis_nodes=[{"host":'101.254.242.12',"port":'17001'},]
+        r = RedisCluster(startup_nodes=redis_nodes,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
     else:
         redis_nodes=[{"host":'123.59.17.118',"port":'13601'},{"host":'123.59.17.85',"port":'13601'},{"host":'123.59.17.11',"port":'13601'}]
-    r = RedisCluster(startup_nodes=redis_nodes,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
-
+        redis_nodesh=[{"host":'101.227.103.243',"port":'13601'},{"host":'101.227.103.244',"port":'101.227.103.245'}]
+        redis_nodeht=[{"host":'221.122.127.148',"port":'13601'}]
+        r = RedisCluster(startup_nodes=redis_nodes,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
+        rsh = RedisCluster(startup_nodes=redis_nodesh,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
+        rht = RedisCluster(startup_nodes=redis_nodeht,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
     # print r.hgetall('voyager:budget')
     # 剩余预算
+    # 负数订单的个数
+    negativecount=0
     if key=='voyager:budget':
-        # mybudget=r.hgetall('voyager:budget')
-        mybudget=r.hgetall('voyager:budget')
-        # print type(mybudget)
-        # 负数的订单个数
-        j=0
-        for i in  mybudget:
-            if str(mybudget[i])[:1]=='-':
-                j=j+1
-            print '订单为:'+str(i)+' 金额为: '+str(mybudget[i])
-        return mybudget,len(mybudget),j
+        if myenv=='test':
+            # mybudget=r.hgetall('voyager:budget')
+            mybudget=r.hgetall('voyager:budget')
+            # print type(mybudget)
+            # 负数的订单个数
+            tmp_budget=[]
+            for i in  mybudget:
+                tmpdict=()
+                tmpdict=(i,float(mybudget[i])/100000,0,0,float(mybudget[i])/100000,float(mybudget[i])/100000)
+                # print i
+                tmp_budget.append(tmpdict)
+                if str(mybudget[i])[:1]=='-' or int(mybudget[i])==0:
+                    negativecount=negativecount+1
+                print '订单为:'+str(i)+' 金额为: '+str(mybudget[i])
+        else:
+            mybudget=r.hgetall('voyager:budget')
+            mybudgetsh=rsh.hgetall('voyager:budget')
+            # time.sleep(5)
+            mybudgetht=rht.hgetall('voyager:budget')
+            for i in  mybudget:
+                if str(mybudget[i])[:1]=='-':
+                    negativecount=negativecount+1
+                print '订单为:'+str(i)+' 金额为: '+str(mybudget[i])
+            # print mybudget
+            # print mybudgetsh
+            if len(mybudget)>len(mybudgetsh):
+                print '订单没有完全同步'
+            tmp_budget=[]
+            tmp_budgetdis=[]
+            for i,j in mybudget.items():
+                tmpdict=()
+                # print i
+                # print j
+                if (i in(mybudgetsh)) and (i in (mybudgetht)):
+                    # 如果有差异放到单独一个列表中
+                    tmpdict=(i,float(j)/100000,float(mybudgetsh[i])/100000,float(mybudgetht[i])/100000,(float(j)-float(mybudgetsh[i]))/100000,(float(j)-float(mybudgetht[i]))/100000)
+                    if float(j)-float(mybudgetsh[i])>0:
+                        tmp_budgetdis.append(tmpdict)
+                    else:
+                        tmp_budget.append(tmpdict)
+                else:
+                    tmpdict=(i,float(j)/100000,0,0,float(j)/100000,float(j)/100000)
+                    tmp_budget.append(tmpdict)
+            # 有差异的在前面显示
+            tmp_budget=tmp_budgetdis+tmp_budget
+        print tmp_budget
+        return tmp_budget,len(tmp_budget),negativecount
     # ocpa广告位可投放的订单
     elif key=='voyager:ocpa_adzones':
         mybudget=r.hgetall('voyager:ocpa_adzones')
@@ -34,6 +78,14 @@ def mygetredis(jobid1,key):
                 tmplist.append({k:v})
             elif "indu" in k:
                 tmplist.append({k:v})
+        return tmplist
+    # 查看ocpa订单实际成本
+
+    elif key=='voyager:ocpa_actual_cost':
+        mycost=r.hgetall('voyager:ocpa_actual_cost')
+        tmplist = []
+        for k,v in mycost.items():
+            tmplist.append({k:v})
         return tmplist
     # 小时预算
     else:
@@ -51,18 +103,25 @@ def mygetredis(jobid1,key):
                 total_value=float(mybudget.get(total_key))/100000
                 tmp_rest.append({rest_key:rest_value})
                 tmp_total.append({total_key:total_value})
-        print tmp_rest
-        print tmp_total
-        return tmp_total,tmp_rest
+        tmp_all=[]
+        tmp_list=()
+        for i in range(0,24):
+            tmp_list=(i,str(tmp_total[i]['total_'+str(i)]),str(tmp_rest[i]['rest_'+str(i)]))
+            tmp_all.append(tmp_list)
+        return tmp_all
+
 if __name__ == '__main__':
     # 测试
     redis_nodes=[{"host":'101.254.242.12',"port":'17001'},]
     # 生产
     # redis_nodes=[{"host":'123.59.17.118',"port":'13601'},{"host":'123.59.17.85',"port":'13601'},{"host":'123.59.17.11',"port":'13601'}]
     # tmp=mygetredis('111','voyager:ocpa_adzones')
-    tmp_total,tmp_rest=mygetredis('110','voyager:budget_control:1713')
-    print tmp_total,tmp_rest
-    # for i in range(0,24):
+    tmp_list=mygetredis('dev','voyager:budget')
+    # print tmp_list
+
+    # tmplist=['a','b','c','d','e','f','g','h','j','k']
+    # print tmplist[8:12]
+    # for i in range(5,10):
     #     print i
     # tmpdict=[{'rest_0': u'38888888'}, {'total_1': 0}, {'total_2': 0}, {'total_3': 0}, {'total_4': 0}, {'rest_5': u'38883222'}, {'rest_6': u'43743625'}, {'rest_7': u'43743625'}, {'rest_8': u'49992714'}, {'rest_9': u'49992714'}, {'rest_10': u'58324833'}, {'rest_11': u'58316333'}, {'rest_12': u'69979600'}, {'rest_13': u'69969400'}, {'rest_14': u'87436250'}, {'rest_15': u'87385250'}, {'total_16': 0}, {'total_17': 0}, {'total_18': 0}, {'rest_19': u'116462666'}, {'rest_20': u'116411666'}, {'rest_21': u'116411666'}, {'rest_22': u'116411666'}, {'total_23': 0}]
     # # print tmpdict[0]['rest_0']

@@ -94,6 +94,46 @@ class Punchcard(object):
          return result
 
 
+##输出今日日期
+    def today_date(self):
+
+        return datetime.datetime.now().strftime("%Y-%m-%d")
+
+##输出昨日日期
+
+    def yesterday_date(self):
+
+        return (datetime.datetime.now()+datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+
+##输出当前年月份
+
+    def mon(self):
+
+        return time.strftime("%Y%m")
+
+
+##查询每日用户日活数
+
+    def user_live(self,beginDate,endDate):
+
+        beginDate=self.begin_date
+        endDate=self.end_date
+        timelist=Punchcard(beginDate,endDate,env_value=False).dateRange(beginDate,endDate)
+        print timelist
+        len_time = len(timelist)
+        usernum=[]
+        for i in range(0,len_time):
+            sql='''SELECT COUNT(DISTINCT(open_id)) FROM voyagerlog.`wx_user_log{}` WHERE DATE_FORMAT( create_time, '%Y-%m-%d') = '{}' '''.format(self.mon(),timelist[i])
+            result=self.dbinfo.execute_sql(sql)[0][0]
+            usernum.append(int(result))
+
+        return usernum
+
+
+
+##输出昨日日期
+
+
 
 
 #查询低碳打卡用户明细数据
@@ -120,15 +160,21 @@ class Punchcard(object):
 
 if  __name__=='__main__':
 
-    re = Punchcard("2018-12-18","2018-12-24")
+    re = Punchcard("2019-02-01","2019-02-12")
 
-    print re.total_amount()
-    print re.today_addamount()
+    # print re.total_amount()
+    # print re.today_addamount()
     # print re.user_info()
-    print re.dateRange("2018-12-01","2018-12-23")
-    print re.add_user("2018-12-01","2018-12-23")
-    print re.invite_add()
-    print re.non_inviteadd()
+    # print re.dateRange("2018-12-01","2018-12-23")
+    # print re.add_user("2018-12-01","2018-12-23")
+    print re.user_live('2019-02-01','2019-02-12')
+    # print re.invite_add()
+    # print re.non_inviteadd()
+    #
+    # print re.today_date()
+    # print re.yesterday_date()
+    # print re.mon()
+
 
 
 

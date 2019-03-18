@@ -37,7 +37,7 @@ class templateAct():
                 INNER JOIN base_template_info t ON a.template_id = t.id
                 LEFT JOIN template_type v ON t.template_type_id = v.id
                 WHERE v.location_adress like '%{}%'
-                ORDER BY v.location_adress DESC;""".format(template_kws)
+                ORDER BY v.location_adress DESC;""".format(template_kws.strip())
                 result_tmp = self.db.execute_sql(template_sql)
                 if result_tmp:
                     for item in result_tmp:
@@ -54,7 +54,7 @@ class templateAct():
                     on tt.id = bti.template_type_id
                     join voyager.base_act_info bai
                     on bai.template_id=bti.id
-                    where bai.id='{}'""".format(id_item)
+                    where bai.id='{}'""".format(id_item.strip())
 
                     result_tmp2 = self.db.execute_sql(act_sql)
                     if result_tmp2:
@@ -90,7 +90,6 @@ class templateAct():
                 wb.save('./static/result/templateResult.xlsx')
             except IOError as e:
                 print e
-            print 'finiiiiiiiiiiiiiiiiiiiiiiiii'
 
     #查询坑位信息
     def get_position(self,template_id):

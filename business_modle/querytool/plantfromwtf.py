@@ -1,7 +1,7 @@
 ﻿#!flask/bin/env python
 #coding:utf-8
 from flask_wtf import Form
-from wtforms import StringField, SelectField, IntegerField, TextAreaField, SubmitField,BooleanField,RadioField,SelectMultipleField
+from wtforms import StringField, SelectField, IntegerField, TextAreaField, SubmitField,BooleanField,RadioField,SelectMultipleField,DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange
 from config import sub_systems
 from config import sub_systems,sqls
@@ -11,7 +11,17 @@ import datetime
 class MyForm(Form):
     adzoneClickid = StringField('adzoneClickid', validators=[Length(min=4, max=25)])
     myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
-
+    # submit=SubmitField(u'提交')
+class myredis(Form):
+    myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
+    submit=SubmitField(u'提交')
+class orderresion1(Form):
+    begindate=DateTimeField('begindate',validators=[DataRequired()],default=datetime.datetime.now())
+    enddate=DateTimeField('enddate',validators=[DataRequired()],default=datetime.datetime.now())
+    myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
+    adzone_id = StringField('adzone_id', validators=[Length(min=1, max=25)])
+    ad_order_id = StringField('ad_order_id', validators=[Length(min=1, max=25)])
+    submit=SubmitField(u'提交')
 # class Mylaunchlist(Form):
 #     def mymonth(self):
 #         return int(datetime.datetime.now().month)
@@ -85,7 +95,7 @@ class Mylaunchlist(Form):
     #增加获取当前年和月
     current_year= int(datetime.datetime.now().year)
     current_month=int(datetime.datetime.now().month)
-    myyear = SelectField(u'年', validators=[DataRequired()], choices=[(2018, 2018), (2019, 2019), (2010, 2010), ],
+    myyear = SelectField(u'年', validators=[DataRequired()], choices=[(2018, 2018), (2019, 2019), (2020, 2020),(2021, 2021), ],
                          default=current_year)
     mymonth = SelectField(u'月', validators=[DataRequired()],
                           choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10),
