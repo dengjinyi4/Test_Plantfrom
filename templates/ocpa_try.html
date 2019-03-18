@@ -1,0 +1,54 @@
+{% extends "base.html"%}
+
+{% block main %}
+
+<script>$(document).ready(function() {$('#ocpa_try').DataTable();} );</script>
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>OCPA订单试投明细查询</title>
+</head>
+
+<h1>OCPA订单试投明细查询</h1>
+<body>
+
+
+<form action="{{url_for('ocpa.ocpatry_detail')}}" method="post">
+
+
+{% if try_consum %}
+试投订单总消耗:{{try_consum}}
+{% endif %}
+<br>
+
+
+</form>
+<br>
+<table id="ocpa_try" class="display" name="ocpa_try" border="1">
+    <thead style="background:green">
+    <tr>
+        <th>日期</th>
+        <th>广告位id</th>
+        <th>广告订单id</th>
+        <th>广告展现量</th>
+        <th>广告点击量</th>
+        <th>消耗</th>
+        <th>效果数</th>
+        <th>状态</th>
+    </tr>
+    </thead>
+    {% for row in ocpatry %}
+    <tr>
+        {% for col in row %}
+        <td>{{ col|safe }}</td>
+        {% endfor %}
+    {% endfor %}
+
+</table>
+
+</body>
+
+</html>
+{% endblock %}

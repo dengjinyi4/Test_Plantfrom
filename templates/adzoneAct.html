@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block main %}
+{% from "_field.html" import render_field %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<div class="container">
+    <body>
+        <form action="{{ url_for ('act.adzoneAct') }}" method="POST">
+            {{ render_field(form.adzoneId,pattern="[0-9]{3,7}") }}
+{#            {{ render_field(form.version,required="required") }}#}
+            {{ render_field(form.acts) }}
+            {{form.submit}}
+        </form>
+        {% if pos ==1 %}
+            <hr>
+            <span>广告位链接是:</span><br>
+            <b><span>{{ link|safe }}</span></b><br>
+            <hr>
+            <table border="1" >
+                <tr bgcolor="#7fffd4">
+                    <th>广告位</th>
+                    <th>活动id</th>
+                    <th>活动名称</th>
+                </tr>
+                {% for i in range(adzone|length)%}
+                    <tr>
+                    <td>{{ adzone[i]['adzoneId'] }}</td>
+                    <td>{{ adzone[i]['actId'] }}</td>
+                    <td>{{ adzone[i]['actName'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </body>
+</div>
+</html>
+{% endblock %}

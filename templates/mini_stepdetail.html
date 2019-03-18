@@ -1,0 +1,38 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>低碳打卡小程序用户步数明细</title>
+</head>
+<body>
+<h1>低碳打卡小程序用户步数明细</h1>
+<form action="{{url_for('miniprogram.step_detail')}}" method="post">
+
+</form>
+<br>
+<br>
+<table border="1">
+    <tr>
+        <th>OPEN_ID</th>
+        <th>获取步数类型</th>
+        <th>步数</th>
+        <th>获取步数时间</th>
+    </tr>
+    {% for row in paras %}
+    <tr>
+        {% for col in row %}
+        <td>{{ col|safe }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+
+{% endblock %}
+
+</table>
+</body>
+</html>

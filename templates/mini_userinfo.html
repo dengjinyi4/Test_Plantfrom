@@ -1,0 +1,53 @@
+﻿{% extends "base.html"%}
+
+{% block main %}
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>低碳打卡小程序用户信息查询</title>
+</head>
+<body>
+<h1>低碳打卡小程序用户信息查询</h1>
+<form action="{{url_for('miniprogram.mini_userinfo')}}" method="post">
+    请输入用户昵称: <input type="text" name="nick_name"  value={{nick_name}}>
+
+
+    <input type="submit" name="submit" value="查询" >
+
+</form>
+<br>
+<br>
+<table border="1">
+    <tr>
+        <th>来源ID</th>
+        <th>来源类型</th>
+        <th>OPEN_ID</th>
+        <th>微信昵称</th>
+        <th>用户性别</th>
+        <th>总碳积分</th>
+        <th>碳积分余额</th>
+        <th>树的级别</th>
+        <th>总的步数</th>
+        <th>今日微信步数</th>
+        <th>今日微信步数领取时间</th>
+        <th>今日赠送步数</th>
+        <th>今日赠送步数领取时间</th>
+        <th>是否领取连续打卡奖励</th>
+        <th>连续打卡天数</th>
+        <th>领取连续打卡奖励时间</th>
+    </tr>
+    {% for row in paras %}
+    <tr>
+        {% for col in row %}
+        <td>{{ col|safe }}</td>
+        {% endfor %}
+        <td><a href="{{url_for('miniprogram.step_detail',open_id=row[2]|safe,nick_name=row[3]|safe)}}">查看小程序用户步数明细</a></td>
+    </tr>
+    {% endfor %}
+
+
+</table>
+</body>
+</html>
+{% endblock %}

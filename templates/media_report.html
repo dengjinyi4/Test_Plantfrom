@@ -1,0 +1,136 @@
+{% extends "base.html"%}
+
+{% block main %}
+
+<script>$(document).ready(function() {$('#example').DataTable();} );</script>
+<script>$(document).ready(function() {$('#example1').DataTable();} );</script>
+<script>$(document).ready(function() {$('#example2').DataTable();} );</script>
+
+<!--<html>-->
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>低碳打卡小程序媒体报表</title>
+</head>
+<body>
+<h1>低碳打卡小程序媒体报表</h1>
+
+
+<form action="{{url_for('miniprogram.media_report')}}" method="post">
+
+    日期: <input type="date" name="begin_date" value="{{begin_date}}"> 到
+         <input  type="date" name="end_date" value="{{end_date}}">
+    <br>
+    <br>
+    媒体<select name="media_name">
+       <option>全部</option>
+       <option>有练换换</option>
+       <option>优质福利所</option>
+       <option>步数大联盟</option>
+       <option>易购赚</option>
+       <option>遇见球球</option>
+       <option>开心游戏大乱斗</option>
+       <option>十一光年</option>
+       <option>福礼惠公众号</option>
+       <option>我蹦我再蹦</option>
+       <option>弹球大乱斗</option>
+       <option>APP-DSP光速动力</option>
+       <option>手机弹幕小程序</option>
+       {{media_name|safe}}
+    </select>
+    <br>
+    <br>
+
+    留存<input type="radio" name="live_type" value="新增留存">新增留存
+        <input type="radio" name="live_type" value="活跃留存">活跃留存
+    <br>
+    <br>
+    <input type="submit" name="submit" value="查询">
+    <!--<a id="export" download="mediareport.xlsx" href="../static/result/mediareport.xlsx">导出</a>-->
+
+</form>
+
+<br>
+<br>
+<div id="adduser" style="float:left;margin-right:100px;text-align:center">
+    <a  download="adduser.xlsx" href="../static/result/adduser.xlsx">导出</a>
+    <h3>新增用户数</h3>
+    <table id="example" class="display" name="media_report" border="1" >
+        <thead style="background:green">
+        <tr>
+            <th>日期</th>
+            <th>媒体/活动</th>
+            <th>新用户数</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if adduser %}
+        {% for rows in adduser %}
+        <tr>
+            {% for col in rows %}
+            <td>{{ col|safe }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        {% endif %}
+
+
+</tbody>
+    </table>
+</div>
+
+<div id="liveuser" style="float:left;margin-right:100px;text-align:center">
+    <a  download="liveuser.xlsx" href="../static/result/liveuser.xlsx">导出</a>
+    <h3>活跃用户数</h3>
+    <table id="example1" name="media_report" border="1">
+        <thead style="background:green">
+        <tr>
+            <th>日期</th>
+            <th>媒体/活动</th>
+            <th>活跃用户数</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rows in liveuser %}
+        <tr>
+            {% for col in rows %}
+            <td>{{ col|safe }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div id="authuser" style="float:left;margin-right:100px;text-align:center">
+    <a  download="authuser.xlsx" href="../static/result/authuser.xlsx">导出</a>
+    <h3>授权用户数</h3>
+    <table id="example2" name="media_report" border="1">
+
+        <thead style="background:green">
+        <tr>
+            <th>日期</th>
+            <th>媒体/活动</th>
+            <th>授权用户数</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rows in authuser %}
+        <tr>
+            {% for col in rows %}
+            <td>{{ col|safe }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+</body>
+<!--</html>-->
+
+{% endblock %}

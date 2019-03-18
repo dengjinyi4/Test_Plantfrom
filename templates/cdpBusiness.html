@@ -1,0 +1,61 @@
+{% extends "base.html"%}
+{% block main %}
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+  <style>
+      .w3cschool{text-align:center}
+  </style>
+<div >
+<form action="{{url_for('CDP.yiqifaCdpES')}}" method="post">
+    <h4 >查询CDP ES数据</h4>
+    <table border="1" bordercolor="#000000" >
+        <!--<tbody style="vertical-align: top;">-->
+        <tbody >
+        <tr>
+            <td>{{ form.hidden_tag() }}</td>
+            <td> 环境{{ form.myenv() }}</td>
+            <td> 行为类型{{ form.actionType() }}</td>
+            <td > 来源：{{ form.dataSource() }}</td>
+            <td>索引值： {{ form.Indexes() }}</td>
+            <td>搜索键值： {{ form.esKeyValue() }}</td>
+            <td>值：{{ form.cdpValue() }}</td>
+            <td> {{ form.submit() }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p align="center"></p>
+</form>
+</div>
+        {% if cdplist !=null %}
+          <table id="example" border="1" bordercolor="#000000">
+            <thead>
+              <tr>
+                 <th>下单时间(行为时间)</th>
+                 <th>订单编号（点击id）</th>
+                 <th>商品名称</th>
+                 <th>订单额</th>
+                 <th>预计佣金</th>
+                 <th>商品现价</th>
+                 <th>商家名称</th>
+                 <th>wechatUnionid</th>
+                 <th>手机号</th>
+                 <th>egouid</th>
+                 <th>活动</th>
+                 <th>来源</th>
+                 <th>订单状态</th>
+                 <th>行为类型</th>
+                 <th>对比数据库</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for rs in cdplist %}
+                 <tr >
+                     <td>{{rs['actionTime']}}</td><td>{{rs['actionNo']}}</td><td>{{rs['productName']}}</td><td>{{rs['cost']}}</td><td>{{rs['commission']}}</td><td>{{rs['productPresentPrice']}}</td><td>{{rs['advertiserName']}}</td><td>{{rs['wechatUnionid']}}</td><td>{{rs['phone']}}</td><td>{{rs['egouId']}}</td><td>{{rs['campaignName']}}</td><td>{{rs['dataSource']}}</td><td>{{rs['actionStatus']}}</td><td>{{rs['actionType']}}</td><td><a href="{{url_for('CDP.yiqifaCdpMysql',myenv=form.data['myenv'],Indexes=form.data['Indexes'],actionNo=rs['actionNo']|safe,dataSource=rs['dataSource'])}}" target="_blank">对比</a></td>
+                 </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+         {% endif %}
+{% endblock %}

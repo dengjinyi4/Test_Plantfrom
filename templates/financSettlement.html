@@ -1,0 +1,68 @@
+{% extends "base.html"%}
+{% block main %}
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+
+<div class="container">
+    <form  action="{{url_for('Finace.yiqiFinace')}}" method="post">
+         网站主ID：<input  id="userId" name="userId"  required="required" value={{userId}}>
+        <select id="financId" name="financId">
+             <option value ="all" {% if financId == 'all' %} selected = "selected" {% endif %}>全部</option>
+             <option value ="yes" {% if financId == 'yes' %} selected = "selected" {% endif %}>已结算</option>
+             <option value="no" {% if financId == 'no' %} selected = "selected" {% endif %}>未结算</option>
+        </select><input type="submit" value="查询">
+    </form>
+    </div>
+     {% if results !=null %}
+        <table id="example" border="1" bordercolor="#000000">
+            <thead>
+              <tr>
+                 <th>id</th>
+                 <th>活动id</th>
+                 <th>广告主id</th>
+                 <th>网站主id</th>
+                 <th>站点id</th>
+                 <th>站点名称</th>
+                 <th>结算时间</th>
+                 <th>是否结算</th>
+                 <th>亿起发佣金</th>
+                 <th>网站主佣金</th>
+                 <th>总佣金</th>
+                 <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for rs in results %}
+                 <tr >
+                     <td>{{rs[0]}}</td><td>{{rs[2]}}</td><td>{{rs[3]}}</td><td>{{rs[4]}}</td><td>{{rs[5]}}</td><td>{{rs[6]|safe}}</td><td>{{rs[22]|safe}}</td>
+                     <td>
+                        {% if rs[25] != 'yes' %} 否
+                        {% else  %}是
+                        {% endif %}
+                     </td>
+                     <td>{{rs[10]}}</td> <td>{{rs[11]}}</td> <td>{{rs[12]}}</td>
+                     <td><a href="{{url_for('getlanuch',id=rs[0]|safe)}}">编辑</a></td>
+                 </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+               <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th>亿起发佣金</th>
+                  <th>网站主佣金</th>
+                  <th>总佣金</th>
+                  <th></th>
+              </tr>
+            </tfoot>
+          </table>
+     {% endif %}
+{% endblock %}
