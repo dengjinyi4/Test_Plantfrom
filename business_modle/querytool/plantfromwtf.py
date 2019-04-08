@@ -2,11 +2,11 @@
 #coding:utf-8
 from flask_wtf import Form
 from wtforms import StringField, SelectField, IntegerField, TextAreaField, SubmitField,BooleanField,RadioField,SelectMultipleField,DateTimeField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange
+from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange,Regexp
 from config import sub_systems
 from config import sub_systems,sqls
 from business_modle.VersionTracker.VersionTracker import VersionTracker
-import datetime
+import datetime,time
 
 class MyForm(Form):
     adzoneClickid = StringField('adzoneClickid', validators=[Length(min=4, max=25)])
@@ -16,11 +16,12 @@ class myredis(Form):
     myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
     submit=SubmitField(u'提交')
 class orderresion1(Form):
-    begindate=DateTimeField('begindate',validators=[DataRequired()],default=datetime.datetime.now())
-    enddate=DateTimeField('enddate',validators=[DataRequired()],default=datetime.datetime.now())
+    begindate=StringField('begindate',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="开始时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
+    enddate=StringField('enddate',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="结束时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
+    # enddate=DateTimeField('enddate',validators=[DataRequired()],default=datetime.datetime.now())
     myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
-    adzone_id = StringField('adzone_id', validators=[Length(min=1, max=25)])
-    ad_order_id = StringField('ad_order_id', validators=[Length(min=1, max=25)])
+    adzone_id = StringField('adzone_id', validators=[DataRequired(),Length(min=1, max=20,message='广告位长度1-20')])
+    ad_order_id = StringField('ad_order_id', validators=[DataRequired(),Length(min=1, max=20,message='订单长度1-20')])
     submit=SubmitField(u'提交')
 # class Mylaunchlist(Form):
 #     def mymonth(self):

@@ -63,6 +63,7 @@
           <ul class="dropdown-menu">
             <li><a href="{{url_for('hdt_redis.myredis')}}">redis缓存数据-订单预算(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.myredis_status')}}">redis缓存数据-订单状态(互动推)</a></li>
+            <li><a href="{{url_for('hdt_redis.adzone_limit_diff')}}">redis缓存数据-同一广告位多个订单，三地同步比对(互动推)</a></li>
             <li><a href="{{url_for('voyagerlog1')}}">查询生产环境日志(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.orderresion')}}">查询生产环境日志-订单选中详情(互动推)</a></li>
             <li><a href="{{url_for('confparas')}}">数据库配置(互动推)</a></li>
@@ -92,6 +93,7 @@
               <ul class="dropdown-menu">
                   <li><a href="{{url_for('ocpa.ocpa_price')}}">OCPA订单调价趋势图</a></li>
                   <li><a href="{{url_for('ocpa.ocpa_order')}}">OCPA订单明细查询</a></li>
+                  <li><a href="{{url_for('ocpa.ocpa_data')}}">OCPA数据准备</a></li>
                   <li role="separator" class="divider"></li>
               </ul>
           </li>
@@ -117,6 +119,10 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CDP业务<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url_for('CDP.yiqifaCdpES')}}">CDP查询es相关数据</a></li>
+            <li><a href="http://172.16.105.36:19190/index.do" target="_blank">CDP数据比对 - 优品购订单/集效表单总数比对</a></li>
+            <li><a href="http://172.16.105.36:19190/phonequery.do" target="_blank">CDP数据比对 - 优品购/集效行为日志数据比对</a></li>
+            <li><a href="http://172.16.105.36:19190/userphoto.do" target="_blank">CDP数据比对 - 优品购/集效用户画像图表数据比对</a></li>
+            <li><a href="http://172.16.105.36:19190/cdpquery.do" target="_blank">CDP数据比对 - 优品购/集效抽样比对</a></li>
             <!--<li><a href="{{url_for('CDP.yiqifaCdpMysql')}}">CDP查询数据库相关数据</a></li>-->
             <li role="separator" class="divider"></li>
           </ul>

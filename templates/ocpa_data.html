@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>OCPA数据准备</title>
+</head>
+<script type="text/javascript">
+var d = new Date();
+var timenow=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+document.getElementById('字段').value=timenow;
+</script>
+
+<h1>OCPA数据准备</h1>
+<body>
+<form action="{{url_for('ocpa.ocpa_data')}}" method="post">
+
+请选择当前时间:<input type="date"  name="beigin_date" value="{{begin_time}}"/>
+
+
+<input type="submit" name="submit" value="生成数据" />
+
+
+
+
+</form>
+
+</body>
+</html>

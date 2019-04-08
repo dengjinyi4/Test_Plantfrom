@@ -6,6 +6,7 @@ from flask import Blueprint ,render_template,request
 from business_modle.querytool.ocpa_order import  *
 from business_modle.querytool.adjust_ocpa import *
 from business_modle.querytool.ocpa_try import  *
+from business_modle.querytool.ocpa_data import *
 from business_modle.querytool import myredis as mr
 
 ocpa = Blueprint('ocpa',__name__)
@@ -90,6 +91,42 @@ def ocpatry_detail(env=False):
     try_consum=ocpa.try_consum()
 
     return render_template('ocpa_try.html',ocpatry=ocpatry,try_consum=try_consum)
+
+
+@ocpa.route('/ocpa_data',methods=('POST','GET'))
+
+def ocpa_data(env=True):
+    title=u"OCPA数据准备"
+    if request.method == 'GET':
+
+        return render_template('ocpa_data.html',title=title)
+
+    else:
+        begin_time=request.form.get('beigin_date')
+        url='https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171'
+        url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_2'
+
+        ocpadata=Ocpa_data(begin_time,url,url2,env_value=True)
+
+        ocpadata.show_stat1()
+        print "今日ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
+
+        ocpadata.show_stat2()
+        print "昨天ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
+
+        ocpadata.show_stat3()
+        print "前天ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
+
+        ocpadata.cvr_data()
+        print "cvr_log表数据导入完成"
+
+        ocpadata.adzonedo()
+        print "广告位定时任务执行完成"
+        ocpadata.creative_active()
+        print "report_order表数据导入成功"
+
+        return render_template('ocpa_data.html',begin_time=begin_time)
+
 
 
 

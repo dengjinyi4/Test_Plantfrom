@@ -9,7 +9,7 @@ class MyForm(Form):
     # esKeyValue = BooleanField('I accept the Terms of Use', default='checked', validators=[DataRequired()],**kwargs)
     esKeyValue = SelectField('esKeyValue',choices=[('actionNo',u'订单号（点击id）'),('cdpid',u'cdpid')],default='actionNo')
     # esKeyValue = SelectField('esKeyValue',choices=[('actionNo',u'订单号（点击id）'),('phone',u'手机号'),('phoneDeviceCode',u'手机设备号'),('wechatUnionid',u'微信unionid'),('egouId',u'egouid'),('cdpid',u'cdpid')],default='actionNo')
-    myenv=RadioField('myenv',choices=[('development',u'开发环境'),('test',u'测试环境')],default='test')
+    myenv=RadioField('myenv',choices=[('development',u'开发环境'),('test',u'测试环境'),('dev',u'生产环境')],default='test')
     actionType=RadioField('actionType',choices=[('order',u'order'),('export',u'export'),('all',u'all')],default='order')
     dataSource = SelectField('dataSource',choices=[('egou',u'易购')],default='egou')
     cdpValue = StringField('cdpValue')

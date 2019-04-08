@@ -121,7 +121,9 @@ def media_reportnew():
                     u'八斗优选':'wxb09486b4d08778c7',
                     u'薪头条':'appID',
                     u'你包我猜':'wxdc39e4684804a8a5',
-                    u'悦头条':'yuetoutiao'}
+                    u'悦头条':'yuetoutiao',
+                    u'车来了':'wx71d589ea01ce3321',
+                    u'同程艺龙':'wx336dcaf6a1ecf632'}
 
         media_info= request.form.get('media_name').strip()
 

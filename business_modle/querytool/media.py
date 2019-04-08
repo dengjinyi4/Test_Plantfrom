@@ -28,7 +28,8 @@ def ad_bidding():
     url='http://172.16.105.11:17091/ad_bidding.do'
     s=requests.session()
     r=s.get(url,params=param)
-    # print r.json()
+    print 111111
+    print r.url
     # print r.json()['data']['{"id":1,"positionSize":"640x300","positionType":1,"occurrenceTime":0}'][0]['adCreative']['image']
     return r,param['cookie']
 # 模拟投放展现后点击点击
@@ -72,9 +73,9 @@ if __name__ == '__main__':
     while count<2:
         time.sleep(2)
         # 展现
-        # ad_bidding()
+        ad_bidding()
         # 点击
-        ad_bidding_brige()
+        # ad_bidding_brige()
         # 效果
         # ad_bidding_brige_effect()
         count=count+1

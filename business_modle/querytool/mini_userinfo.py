@@ -67,6 +67,15 @@ class Mini_userinfo(object):
 
         return result
 
+
+    ######查询年月
+
+    def mon(self):
+
+        mon =datetime.datetime.now().strftime("%Y%m")
+
+        return mon
+
     #####查看小程序用户步数明细
 
     def step_detail(self):
@@ -97,8 +106,8 @@ class Mini_userinfo(object):
                   step 步数,
                   create_time 获取步数时间
                 FROM
-                  voyager.`wx_steplogs`
-                WHERE open_id = '{}' order by id desc '''.format(self.open_id)
+                  voyagerlog.wx_steplogs{}
+                WHERE open_id = '{}' order by id desc '''.format(self.mon(),self.open_id)
         result=self.db.execute_sql(sql)
 
         return result
@@ -122,7 +131,8 @@ class Mini_userinfo(object):
 
 if __name__=='__main__':
 
-    miniinfo = Mini_userinfo('Beyond','o0hyf4lMU7CcdWQJLbF5NUcoDtco',env_value=False)
+    miniinfo = Mini_userinfo('Beyond','o0hyf4ulHQCtplkonNoPURK1r6zA',env_value=False)
 
     miniinfo.userinfo()
     miniinfo.step_detail()
+    miniinfo.mon()

@@ -191,7 +191,7 @@ def alladzonetup(begindate,enddate,adzone_id,ad_orderid,myenv):
     tmptable=begindate[0:10].replace('-','')
     # print tmptable
     sql='''SELECT adzone_click_id FROM voyagerlog.ad_show_log{0} where create_time>'{1}'
-     and create_time<'{2}' and adzone_id={3} limit 2'''.format(tmptable,begindate,enddate,adzone_id,)
+     and create_time<'{2}' and adzone_id={3} limit 10'''.format(tmptable,begindate,enddate,adzone_id,)
     print sql
     if myenv=='dev':
         result=db.selectsql('devvoyager',sql)

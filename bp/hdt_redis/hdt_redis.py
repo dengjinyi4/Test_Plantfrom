@@ -5,6 +5,8 @@ from business_modle.querytool import myredis as mr
 from business_modle.querytool import myredis_status as mrs
 from business_modle.querytool import plantfromwtf as ft
 from business_modle.querytool import bidding_analysis as ba
+from adzone_limit import AdzoneOrders
+
 hdtredis = Blueprint('hdt_redis', __name__,template_folder='templates')
 # 查看缓存中订单的预算
 @hdtredis.route('/myredis/',methods=('POST','GET'))
@@ -59,3 +61,9 @@ def orderresion():
         print mydata
         return render_template('orderresion.html',form1=myform1,mydata1=mydata)
     return render_template('orderresion.html',form1=myform1)
+
+@hdtredis.route('/adzone_limit/',methods=['GET'])
+def adzone_limit_diff():
+    aod = AdzoneOrders()
+    re = aod.find_diff()
+    return render_template('adzone_limit_diff.html',adzoneID=re[1],consum=re[0])

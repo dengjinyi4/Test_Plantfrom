@@ -115,7 +115,8 @@ class Media_reportnew(object):
                   WHEN a.source_id='appID'  THEN '薪头条'
                   WHEN a.source_id='wxdc39e4684804a8a5' THEN'你包我猜'
                   WHEN a.source_id='yuetoutiao'  THEN'悦头条'
-
+                  WHEN a.source_id='wx71d589ea01ce3321' THEN '车来了'
+                  WHEN a.source_id='wx336dcaf6a1ecf632' THEN '同程艺龙'
                   ELSE '自然流量'
                   END  媒体 ,
                   a.new_user_num 新用户数,
@@ -190,6 +191,8 @@ class Media_reportnew(object):
                   WHEN a.source_id='appID'  THEN '薪头条'
                   WHEN a.source_id='wxdc39e4684804a8a5' THEN'你包我猜'
                   WHEN a.source_id='yuetoutiao'  THEN'悦头条'
+                  WHEN a.source_id='wx71d589ea01ce3321' THEN '车来了'
+                  WHEN a.source_id='wx336dcaf6a1ecf632' THEN '同程艺龙'
                 ELSE '自然流量'
                 END  媒体 ,
                 a.new_user_num 新用户数,
@@ -326,6 +329,8 @@ class Media_reportnew(object):
                   WHEN a.source_id='appID'  THEN '薪头条'
                   WHEN a.source_id='wxdc39e4684804a8a5' THEN'你包我猜'
                   WHEN a.source_id='yuetoutiao'  THEN'悦头条'
+                  WHEN a.source_id='wx71d589ea01ce3321' THEN '车来了'
+                  WHEN a.source_id='wx336dcaf6a1ecf632' THEN '同程艺龙'
 
                   ELSE '自然流量'
                   END  媒体 ,
@@ -404,6 +409,8 @@ class Media_reportnew(object):
                   WHEN a.source_id='appID'  THEN '薪头条'
                   WHEN a.source_id='wxdc39e4684804a8a5' THEN'你包我猜'
                   WHEN a.source_id='yuetoutiao'  THEN'悦头条'
+                  WHEN a.source_id='wx71d589ea01ce3321' THEN '车来了'
+                  WHEN a.source_id='wx336dcaf6a1ecf632' THEN '同程艺龙'
                   ELSE '自然流量'
                   END  媒体 ,
                   a.new_user_num 新用户数,

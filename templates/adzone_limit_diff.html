@@ -1,0 +1,47 @@
+{% extends "base.html"%}
+{% block main %}
+<p hidden="hidden">
+报表功能：查看生产或测试环境缓存数据
+</p>
+                <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+<li>根据voyager:adzone_limit查询订单消耗，参考广告位 {{ adzoneID }}：</li>
+    <hr>
+       <table class="display" style="width:80%"><tr>
+       </table>
+      <table  id="example" class="display" style="width:100%">
+
+            <thead>
+                <tr>
+                    <td hidden>id</td>
+                    <td>广告位Id</td>
+                    <td>订单id</td>
+                    <td>亦庄</td>
+                    <td>上海</td>
+                    <td>华通</td>
+                    <td>亦庄与上海差异</td>
+                    <td>亦庄与华通差异</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for row in consum%}
+            <tr>
+                <td hidden>{{ loop.index }}</td>
+                <td>{{ row['adzoneId'] }}</td>
+                <td>{{ row['orderId'] }}</td>
+                <td>{{ row['bj_consum'] }}</td>
+                <td>{{ row['sh_consum'] }}</td>
+                <td>{{ row['ht_consum'] }}</td>
+                <td>{{ row['bj_sh_diff'] }}</td>
+                <td>{{ row['bj_ht_diff'] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    <p align="center"></p>
+{% endblock %}
+

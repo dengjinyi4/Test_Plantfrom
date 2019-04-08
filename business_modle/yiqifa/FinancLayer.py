@@ -2,7 +2,7 @@
 __author__ = 'Hui Ma'
 
 
-from hdt_tools.utils import DbConnection as fb
+# from hdt_tools.utils import DbConnection as fb
 def getFinaceValue(earnerID,financId):
     # c查询网站主佣金结算数据，并且渲染页面
     # sqlDb = 'SELECT * FROM effect_balance WHERE earner_id = '+str(earnerID)+' ORDER BY id DESC '

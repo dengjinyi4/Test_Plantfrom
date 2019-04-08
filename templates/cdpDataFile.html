@@ -5,49 +5,42 @@
     {% if esResults  %}
     <table  border="1" bordercolor="#000000">
         <tr><td colspan =30>数据库查询</td></tr>
-        <tr><td colspan =9 align=center>订单相关</td><td colspan =3 align=center>会员相关</td><td colspan =8 align=center>商品相关</td><td colspan =10 align=center>点击相关</td></tr>
+        <tr><td colspan =9 align=center>订单相关</td><td colspan =3 align=center>会员相关</td><td colspan =7 align=center>商品相关</td><td colspan =10 align=center>点击相关</td></tr>
         <tr>
           <td>订单编号<br>ORDER_NO</td><td>活动id</td><td>商品编号<br>COMMODITY_NO</td><td>商家名称<br>advertiserName</td><td>实付金额<br>EXPECTED_MONEY</td><td>下单时间<br>ORDER_TIME</td><td>预计佣金<br>EXPECTED_COMMISSION</td><td>订单状态<br>STATUS</td><td>渠道</td>
           <td>会员id<br>USER_ID</td><td>手机号<br>PHONE</td><td>微信union</td>
-          <td>商品名称<br>productName</td><td>一级类目<br>productCategory1</td><td>二级类目<br>productCategory2</td><td>现价<br>productPresentPrice</td><td>优惠金额</td><td>优惠金额<br>isCoupon</td><td>是否包邮<br>isPostageFree</td><td>是否优惠券</td>
-          <td>点击id</td><td>浏览器</td><td>城市</td><td>手机区域</td><td>点击时间</td><td>客户端</td><td>手机品牌</td><td>操作系统</td><td>省会</td><td>手机城市</td>
+          <td>商品名称<br>productName</td><td>一级类目<br>productCategory1</td><td>二级类目<br>productCategory2</td><td>现价<br>productPresentPrice</td><td>原价<br>reserve_price</td><td>是否包邮<br>isPostageFree</td><td>是否优惠券</td>
+          <td>点击id</td><td>ip</td><td>点击时间</td><td>ua</td>
         </tr>
         {% for dl in dictList %}
         <tr>
            <!--订单相关-->
-           <td>{{dl['ORDER_NO']}}</td>
+           <td>{{dl['actionNo']}}</td>
            <td>{{dl['UNION_CAMPAIGN_ID']}}</td>
            <td>{{dl['COMMODITY_NO']}}</td>
            <td>{{dl['advertiserName']}}</td>
-           <td>{{dl['EXPECTED_MONEY']}}</td>
-           <td>{{dl['ORDER_TIME']}}</td>
-           <td>{{dl['EXPECTED_COMMISSION']}}</td>
+           <td>{{dl['cost']}}</td>
+           <td>{{dl['actionTime']}}</td>
+           <td>{{dl['commission']}}</td>
            <td>{{dl['STATUS']}}</td>
            <td>{{dl['channel']}}</td>
            <!--会员相关-->
-           <td>{{dl['USER_ID']}}</td>
-           <td>{{dl['PHONE']}}</td>
-           <td>{{dl['BIND_UID']}}</td>
+           <td>{{dl['user_id']}}</td>
+           <td>{{dl['phone']}}</td>
+           <td>{{dl['exportId']}}</td>
            <!--商品相关-->
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
+           <td>{{dl['title']}}</td>
+           <td>{{dl['category_lv1']}}</td>
+           <td>{{dl['category_lv2']}}</td>
+           <td>{{dl['productPresentPrice']}}</td>
+           <td>{{dl['reserve_price']}}</td>
+           <td>{{dl['isCoupon']}}</td>
+           <td>{{dl['isPostageFree']}}</td>
            <!--点击相关-->
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
-           <td>{{dl['channel']}}</td>
+           <td>{{dl['exportId']}}</td>
+           <td>{{dl['ip']}}</td>
+           <td>{{dl['to_time']}}</td>
+           <td>{{dl['ua']}}</td>
         {% endfor %}
     </table>
     {% else %}
