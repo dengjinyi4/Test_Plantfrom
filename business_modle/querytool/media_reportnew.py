@@ -5,7 +5,7 @@ import time
 import datetime
 import  sys
 import re
-from utils.db_info import *
+from utils.dtdb_info import *
 
 # 有练换换	wx0a051787252f83fa
 # 步数大联盟	wxe65c34b4ec242be
@@ -24,7 +24,7 @@ class Media_reportnew(object):
 
     def __init__(self,source_id,begin_date,end_date,env_value=False):
 
-        self.dbinfo=DbOperations(env_value=env_value)
+        self.dbinfo=DtdbOperations(env_value=env_value)
         self.begin_date=begin_date
         self.end_date=end_date
         self.source_id =source_id
@@ -65,7 +65,7 @@ class Media_reportnew(object):
                   CONCAT(TRUNCATE((SUM(a.day6_new_retain)/SUM(a.new_user_num)  ) * 100, 2), '%')   新增六日留存率 ,
                   CONCAT(TRUNCATE((SUM(a.day7_new_retain)/SUM(a.new_user_num)  ) * 100, 2), '%')   新增七日留存率
                   FROM
-                  voyager.wx_user_report a WHERE
+                  ditandaka.wx_user_report a WHERE
 
                   a.date>='{}' AND a.date <='{}'
                   GROUP BY a.date,媒体  ORDER BY  a.date DESC '''.format(self.begin_date,self.end_date)
@@ -129,7 +129,7 @@ class Media_reportnew(object):
                   CONCAT(TRUNCATE(( a.day6_new_retain/a.new_user_num  ) * 100, 2), '%')   新增六日留存率 ,
                   CONCAT(TRUNCATE(( a.day7_new_retain/a.new_user_num  ) * 100, 2), '%')   新增七日留存率
                 FROM
-                   voyager.wx_user_report a
+                   ditandaka.wx_user_report a
 
                 WHERE
 
@@ -205,7 +205,7 @@ class Media_reportnew(object):
                 CONCAT(TRUNCATE(( a.day6_new_retain/a.new_user_num  ) * 100, 2), '%')   新增六日留存率 ,
                 CONCAT(TRUNCATE(( a.day7_new_retain/a.new_user_num  ) * 100, 2), '%')   新增七日留存率
                 FROM
-                voyager.wx_user_report a
+                ditandaka.wx_user_report a
 
                 WHERE
                 a.source_id ='{}' and
@@ -274,7 +274,7 @@ class Media_reportnew(object):
                   CONCAT(TRUNCATE((SUM(a.day6_active_retain)/SUM(a.active_user_num) ) * 100, 2), '%')   活跃六日留存率 ,
                   CONCAT(TRUNCATE((SUM(a.day7_active_retain)/SUM(a.active_user_num) ) * 100, 2), '%')   活跃七日留存率
                 FROM
-                   voyager.wx_user_report a
+                   ditandaka.wx_user_report a
 
                 WHERE
 
@@ -344,7 +344,7 @@ class Media_reportnew(object):
                   CONCAT(TRUNCATE(( a.day6_active_retain/a.active_user_num ) * 100, 2), '%') 活跃六日留存率,
                   CONCAT(TRUNCATE(( a.day7_active_retain/a.active_user_num ) * 100, 2), '%') 活跃七日留存率
                 FROM
-                   voyager.wx_user_report a
+                   ditandaka.wx_user_report a
 
                 WHERE
 
@@ -423,7 +423,7 @@ class Media_reportnew(object):
                   CONCAT(TRUNCATE(( a.day6_active_retain/a.active_user_num ) * 100, 2), '%') 活跃六日留存率,
                   CONCAT(TRUNCATE(( a.day7_active_retain/a.active_user_num ) * 100, 2), '%') 活跃七日留存率
                 FROM
-                   voyager.wx_user_report a
+                   ditandaka.wx_user_report a
 
                 WHERE
                    a.source_id = '{}' and

@@ -60,8 +60,8 @@
         {% for col in row %}
         <td>{{ col|safe }}</td>
         {% endfor %}
-        <td><a href="{{url_for('ocpa.ocpaorder_detail',ad_order_id=row[1]|safe,date=row[0]|safe,adzone_id=0)}}">查看订单调价趋势图</a></td>
-        <td><a href="{{url_for('ocpa.ocpatry_detail',ad_order_id=row[1]|safe,date=row[0]|safe)}}">查看订单试投明细</a></td>
+        <td><a href="{{url_for('ocpa.ocpaorder_detail',ad_order_id=row[1]|safe,date=row[0]|safe,adzone_id=0)}} " target="_blank">查看订单调价趋势图</a></td>
+        <td><a href="{{url_for('ocpa.ocpatry_detail',ad_order_id=row[1]|safe,date=row[0]|safe)}}" target="_blank">查看订单试投明细</a></td>
 
     </tr>
 

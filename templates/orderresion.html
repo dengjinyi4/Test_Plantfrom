@@ -26,11 +26,19 @@
             <tr>
                 <td>{{ form1.adzone_id.label }}: {{ form1.adzone_id }}</font></td>
                 <td>{{ form1.ad_order_id.label }}: {{ form1.ad_order_id }}</font></td>
+            </tr>
+            <tr>
+                    <td><font color="red">{{ form1.adzone_id.errors[0]}}</font></td>
+                    <td><font color="red">{{ form1.ad_order_id.errors[0] }}</font></td>
+
+            </tr>
+            <tr>
+                <td>{{ form1.adzoneClickid.label }}: {{ form1.adzoneClickid }}</font></td>
                 <td>{{ form1.submit }}</td>
             </tr>
             <tr>
-                <td><font color="red">{{ form1.adzone_id.errors[0]}}</font></td>
-                <td><font color="red">{{ form1.ad_order_id.errors[0] }}</font></td>
+                <td><font color="red">{{ form1.adzoneClickid.errors[0] }}</font></td>
+
             </tr>
         </tbody>
     </table>

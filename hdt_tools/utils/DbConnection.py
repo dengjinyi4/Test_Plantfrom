@@ -9,7 +9,7 @@ def ConnectDB(mysqlname):
     # cp = ReadDBConfig();  #读取数据库配置文件
     # db =cp.get(mysqlname, "db")
     # host = cp.get(mysqlname, "host")
-    # user = cp.get(mysqlname, "user")
+    # user = cp.get(mysqlname,      "user")
     # passwd = cp.get(mysqlname, "passwd")
     # port = int(cp.get(mysqlname, "port"))
     # 打开数据库连接

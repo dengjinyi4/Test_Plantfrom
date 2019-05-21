@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+<script>$(document).ready(function() {$('#report_byadzone2').DataTable();} );</script>
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>按广告位查询报表</title>
+</head>
+<body>
+<h1>按广告位查询报表</h1>
+
+<form action="{{url_for('report_byadzone')}}" method="post">
+
+    查询日期: <input type="date"  name="begin_date" value="{{begin_date}}">
+    <br>
+    <br>
+    广告位ID:<input type="text" name="adzone_id" value="{{adzone_id}}">
+
+    <input type="submit" name="submit" value="查询">
+
+    <a id="export" download="report_byadzone.xlsx" href="../static/result/report_byadzone.xlsx">导出</a>
+
+<br>
+<br>
+</form>
+
+<div id="report_byadzone" style="float:left;margin-right:100px;text-align:center">
+    <table id="report_byadzone2" class="display" name="report_byadzone2" border="1">
+        <thead style="background:green">
+        <tr>
+           <th>日期</th>
+           <th>小时</th>
+           <th>广告位ID</th>
+           <th>广告位点击数</th>
+           <th>广告点击数</th>
+           <th>小时消耗</th>
+           <th>均价</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for row in paras %}
+        <tr>
+           {% for col in row %}
+           <td>{{col|safe}}</td>
+
+           {% endfor %}
+        {% endfor %}
+
+        </tr>
+        </tbody>
+      </table>
+</div>
+
+</body>
+</html>
+{% endblock %}

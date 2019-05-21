@@ -68,7 +68,7 @@ def orderbylog(zclk):
     return tmplist
 
 # 根据点击id查询出所有的过滤原因的订单
-def orderbylognew(zclk,env):
+def orderbylognew(zclk):
     es=Elasticsearch([{"host":"221.122.127.41"}],port=9200);
     # res = es.search(index="logstash-voyagerjavalog-*", body={"query": {"zclk":"B3J3JDC11HP5D1KDOM"}, "_source": "BID_INFO"})
     body={

@@ -5,7 +5,7 @@ __author__ = 'aidinghua'
 import sys
 import datetime
 import time
-from utils.db_info import  *
+from utils.dtdb_info import  *
 
 
 class Mini_userinfo(object):
@@ -14,7 +14,7 @@ class Mini_userinfo(object):
 
         self.nick_name=nick_name
         self.open_id=open_id
-        self.db = DbOperations(env_value=env_value)
+        self.db = DtdbOperations(env_value=env_value)
 
 
     ###查询低碳打卡小程序用户个人信息
@@ -60,7 +60,7 @@ class Mini_userinfo(object):
             continu_days 连续打卡天数,
             receive_continu_card_time 领取连续打卡奖励时间
             FROM
-            wx_user_info
+            ditandaka.wx_user_info
             WHERE nick_name = '{}' """.format(self.nick_name)
 
         result = self.db.execute_sql(sql)
@@ -106,7 +106,7 @@ class Mini_userinfo(object):
                   step 步数,
                   create_time 获取步数时间
                 FROM
-                  voyagerlog.wx_steplogs{}
+                  ditandaka.wx_steplogs{}
                 WHERE open_id = '{}' order by id desc '''.format(self.mon(),self.open_id)
         result=self.db.execute_sql(sql)
 

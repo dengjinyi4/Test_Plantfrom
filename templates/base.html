@@ -2,13 +2,15 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <!--<script src="{{url_for('static',filename='jquery.min.js')}}"></script>-->
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >
     <!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}"crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >
     <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
-    <script src="{{url_for('static',filename='jquery.min.js')}}"></script>
+    >
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <!--<script src="{{url_for('static',filename='bootstrap.min.js')}}"  crossorigin="anonymous"></script>-->
     <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
     <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -72,9 +74,11 @@
             <li><a href="{{url_for('QueryAppkey')}}">查询Appkey</a></li>
             <li><a href="{{url_for('crm_order')}}">优品购订单明细查询</a></li>
 
+
             <li><a href="{{url_for('effect_order')}}">优品购效果和订单一致性查询</a></li>
             <li><a href="{{url_for('phoneVaildCode')}}">测试环境手机验证码查询</a></li>
-
+            <li><a href="{{url_for('orderQueryCreative') }}">根据订单id、创意查询</a></li>
+            <li><a href="{{url_for('report_byadzone')}}">根据广告位查询报表</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -94,6 +98,7 @@
                   <li><a href="{{url_for('ocpa.ocpa_price')}}">OCPA订单调价趋势图</a></li>
                   <li><a href="{{url_for('ocpa.ocpa_order')}}">OCPA订单明细查询</a></li>
                   <li><a href="{{url_for('ocpa.ocpa_data')}}">OCPA数据准备</a></li>
+                  <li><a href="{{url_for('ocpa.ocpa_report')}}">OCPA汇总报表</a></li>
                   <li role="separator" class="divider"></li>
               </ul>
           </li>
@@ -105,6 +110,9 @@
                   <li><a href="{{url_for('miniprogram.mini_userinfo')}}">小程序用户数据查询</a></li>
                   <li><a href="{{url_for('miniprogram.media_report')}}">小程序媒体报表</a></li>
                   <li><a href="{{url_for('miniprogram.media_reportnew')}}">小程序媒体报表最新版</a></li>
+                  <li><a href="{{url_for('miniprogram.mini_mediaconfig')}}">小程序媒体配置</a></li>
+                  <li><a href="{{url_for('miniprogram.mini_add')}}">小程序卡用户增加可用碳积分</a></li>
+
                   <li role="separator" class="divider"></li>
               </ul>
           </li>
@@ -114,8 +122,13 @@
             <li><a href="{{url_for('testCase.Api_index')}}">API统计</a></li>
             <li role="separator" class="divider"></li>
           </ul>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">叮当柚子<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{url_for('ddyzinfo')}}">叮当柚子总代-代理关系表</a></li>
+          </ul>
         </li>
-             <li class="dropdown">
+         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CDP业务<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url_for('CDP.yiqifaCdpES')}}">CDP查询es相关数据</a></li>
@@ -123,17 +136,29 @@
             <li><a href="http://172.16.105.36:19190/phonequery.do" target="_blank">CDP数据比对 - 优品购/集效行为日志数据比对</a></li>
             <li><a href="http://172.16.105.36:19190/userphoto.do" target="_blank">CDP数据比对 - 优品购/集效用户画像图表数据比对</a></li>
             <li><a href="http://172.16.105.36:19190/cdpquery.do" target="_blank">CDP数据比对 - 优品购/集效抽样比对</a></li>
-            <!--<li><a href="{{url_for('CDP.yiqifaCdpMysql')}}">CDP查询数据库相关数据</a></li>-->
             <li role="separator" class="divider"></li>
           </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">亿起发业务<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{url_for('Yiqifa.shortJump')}}">短链跳转缓存至redis集群</a></li>
+            <!--<li><a href="{{url_for('Finace.yiqiFinace')}}">网站主财务结算信息</a></li>-->
+            <li role="separator" class="divider"></li>
+          </ul>
+        </li>
         </li>
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">版本管理<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url_for('launchlist')}}">版本列表</a></li>
             <li><a href="{{url_for('version_maintain',page_name='new')}}">添加版本</a></li>
+            <li><a href="{{url_for('version_stat')}}">版本趋势图</a></li>
             <li role="separator" class="divider"></li>
           </ul>
+        </li>
+          <li class="dropdown">
+          <a href="{{url_for('test_tools_tracker')}}" >测试平台功能管理<span class="caret"></span></a>
         </li>
       </ul>
 

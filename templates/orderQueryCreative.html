@@ -1,0 +1,100 @@
+{% extends "base.html"%}
+{% block main %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>根据订单查创意</title>
+</head>
+
+<div class="container">
+<body>
+<script type="text/javascript">
+    function checkRequired(){
+        var orderId = document.getElementById('orderId');
+        var creativeUrl = document.getElementById('creativeUrl');
+        var creativeId = document.getElementById('creativeId');
+        if (orderId.value.length == 0 && creativeUrl.value.length==0 && creativeId.value.length ==0){
+            alert('不能都为空，请至少输入一个');
+            orderId.focus();
+            return false;
+        }
+    }
+
+    $(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
+<form action="{{url_for('orderQueryCreative')}}" method="post" onsubmit="return checkRequired() ">
+    <p class="text-warning"><span class="glyphicon glyphicon-cloud"> 可以用任意一种方式进行查询; 同时输入创意id和url时,优先按照url进行查询</p>
+    <input type="radio" id="test" name='env' value="1" /><label for="test">测试环境</label>
+    <input type="radio" id="product" name='env' value="0" checked="checked" /><label for="product">生产环境</label>
+    <p>订单id：<input type="text" id="orderId" name="orderId" placeholder="请输入订单id" /></p>
+    <p>创意id：<input  id="creativeId" name="creativeId" placeholder="请输入创意id"/></p>
+    <p>创意url：<input style="width: 640px" id="creativeUrl" name="creativeUrl" placeholder="请输入创意url或关键字"/></p>
+    <input id="submit" type="submit" value="查询">
+</form>
+<br>
+<div class="container">
+{% if type==1 and re%}
+<table border="1" cellspacing="0" cellpadding="0" width="600">
+    <tr>
+        <td>订单id</td>
+        <td>订单名称</td>
+        <td>订单状态</td>
+        <td>创意id</td>
+        <td>创意名称</td>
+        <td>创意状态</td>
+        <td>订单/创意绑定状态</td>
+
+    </tr>
+    {% for data in re %}
+        <tr>
+            <td>{{ data["order_id"] }}</td>
+            <td>{{ data["order_name"] }}</td>
+            <td>{{ data["order_state"] }}</td>
+            <td>{{ data["creative_id"] }}</td>
+            <td>{{ data["creative_name"] }}</td>
+            <td>{{ data["creative_state"] }}</td>
+            <td>{{ data["bind_state"] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% elif type==2 %}
+    <div class="container">
+    <em class="text-success">根据report_order表，该创意今天的消耗等数据如下：</em>
+    <table id='example' class="table table-bordered table-striped">
+        <thead style="background-color:green">
+            <th>订单id</th>
+            <th>创意id</th>
+            <th>广告主id</th>
+            <th>付费模式</th>
+            <th>订单状态</th>
+            <th>广告预算</th>
+            <th>广告消耗</th>
+        </thead>
+        <tbody>
+            {% for row in re %}
+                <tr>
+                    <td>{{ row['order_id']}}</td>
+                    <td>{{ row['creative_id']}}</td>
+                    <td>{{ row['report_info']['advertiser_id']}}</td>
+                    <td>{{row['report_info']['payment_mode']}}</td>
+                    <td>{{ row['report_info']['adorder_state']}}</td>
+                    <td>{{ row['report_info']['ad_budget']|float }}</td>
+                    <td>{{ row['report_info']['ad_consume']|float }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    </div>
+{% elif type==0 %}
+    <p class="text-danger">没有符合条件的数据,请检查查询条件</p>
+{% endif %}
+</div>
+
+</body>
+</div>
+</html>
+{% endblock %}

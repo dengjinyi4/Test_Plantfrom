@@ -55,7 +55,7 @@ def getlanuchlist(year,month,group_id, tester_name):
         INNER JOIN  test.group  g on v.group_id=g.id
         INNER JOIN test.jenkins_job j on v.job_id=j.id
         INNER JOIN test.user u on v.applicant_id=u.id
-        where g.status=1 and j.status=1 and u.status=1 and '''#g.id=%s and create_time>'%s' and create_time<'%s'''%(group_id,day_begin+' 00:00:00',day_end+' 23:59:59\'')+'order by create_time desc '
+        where g.status=1 and '''#g.id=%s and create_time>'%s' and create_time<'%s'''%(group_id,day_begin+' 00:00:00',day_end+' 23:59:59\'')+'order by create_time desc '
     if tester_name == 'ALL':
         tmpsql = tmpsql + '''g.id=%s and create_time>'%s' and create_time<'%s'''%(group_id,day_begin+' 00:00:00',day_end+' 23:59:59\'')+'order by create_time desc '
         print tmpsql

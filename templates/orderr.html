@@ -1,0 +1,38 @@
+
+<p hidden="hidden">
+根据日志查找广告订单未出原因
+</p>
+<form action="{{url_for('hdt_redis.orderr')}}" method="post">
+{{ form1.hidden_tag()}}
+
+    <table>
+        <tbody>
+        <tr>
+                {{ form1.csrf_token }}
+                {{ form1.begindate.label }}: {{ form1.begindate }}
+                {{ form1.enddate.label }}: {{ form1.enddate }}
+            </tr>
+                    <tr>
+
+                <td ><font color="red">{{ form1.begindate.errors[0]}}</font></td>
+                <td><font color="red">{{ form1.enddate.errors[0] }}</font></td>
+            </tr>
+            <tr>
+                <td>{{ form1.adzone_id.label }}: {{ form1.adzone_id }}</font></td>
+                <td>{{ form1.ad_order_id.label }}: {{ form1.ad_order_id }}</font></td>
+                <td>{{ form1.submit }}</td>
+            </tr>
+            <tr>
+                <td><font color="red">{{ form1.adzone_id.errors[0]}}</font></td>
+                <td><font color="red">{{ form1.ad_order_id.errors[0] }}</font></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+        <h1>只查询10个广告位点击id，es不挂的情况下大约40秒返回数据</h1>
+    {% for i in mydata1%}
+        <li>{{i|safe}}: <font color="red" >{{mydata1[i]|safe}}</font>次</li>
+
+{% endfor %}
+
+

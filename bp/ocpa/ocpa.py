@@ -7,6 +7,7 @@ from business_modle.querytool.ocpa_order import  *
 from business_modle.querytool.adjust_ocpa import *
 from business_modle.querytool.ocpa_try import  *
 from business_modle.querytool.ocpa_data import *
+from business_modle.querytool.ocpa_report import *
 from business_modle.querytool import myredis as mr
 
 ocpa = Blueprint('ocpa',__name__)
@@ -109,23 +110,39 @@ def ocpa_data(env=True):
         ocpadata=Ocpa_data(begin_time,url,url2,env_value=True)
 
         ocpadata.show_stat1()
-        print "今日ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
 
         ocpadata.show_stat2()
-        print "昨天ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
 
         ocpadata.show_stat3()
-        print "前天ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
 
         ocpadata.cvr_data()
-        print "cvr_log表数据导入完成"
 
+        ocpadata.del_error()
         ocpadata.adzonedo()
-        print "广告位定时任务执行完成"
         ocpadata.creative_active()
-        print "report_order表数据导入成功"
 
-        return render_template('ocpa_data.html',begin_time=begin_time)
+
+
+        return render_template('ocpa_data.html',show1=ocpadata.show_stat1(),show2=ocpadata.show_stat2(),show3=ocpadata.show_stat3(),cvr=ocpadata.cvr_data(),clear=ocpadata.del_error(),adzonedo=ocpadata.adzonedo(),begin_time=begin_time)
+
+
+@ocpa.route('/ocpa_report',methods=['POST','GET'])
+
+def ocpa_report():
+
+    title='OCPA_Report'
+
+    if request.method=='GET':
+
+        return render_template('ocpa_report.html',title=title)
+
+    else:
+        begin_date = request.form.get('begin_date')
+        end_date = request.form.get('end_date')
+        result= Ocpa_report(begin_date,end_date,env_value=False)
+        paras=result.show_result()
+
+    return render_template("ocpa_report.html",title=title,paras=paras,begin_date=begin_date,end_date=end_date)
 
 
 
@@ -136,3 +153,4 @@ if __name__=='__main__':
     print ocpa_price()
     print ocpa_order()
     print ocpa_orderadzone()
+    print ocpa_report()

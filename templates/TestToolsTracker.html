@@ -1,0 +1,180 @@
+{% extends "base.html"%}
+{% block main %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+{#    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"#}
+{#          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+{#    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"#}
+{#            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"#}
+{#            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"#}
+{#            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"#}
+{#            crossorigin="anonymous"></script>#}
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #search {
+            display: inline-block;
+            background: #2b57ff;
+            margin: 0px 0 0 50px;
+        }
+
+        #searchBox {
+            width: 600px;
+            padding: 30px;
+            border: 1px solid #cccccc;
+            margin: 0 auto;;
+        }
+
+        .popup {
+           display:none;
+            position: fixed;
+            z-index: 99;
+            background: rgba(0, 0, 0, 0.6);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .content {
+            position: relative;
+            display:inline-block;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border-radius: 10px;;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+   <div class="container">
+   <table  border="2">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    {% endfor %}
+    {% block page_content %}{% endblock %}
+    </div>
+<a id="search" style="color:#ffffff" class="btn btn-default">新 建</a>
+<hr>
+<div class="popup">
+    <div class="content">
+        <div id="searchBox">
+            <form method="post" action="{{ url_for('test_tools_tracker') }}">
+                <div class="form-group">
+                    <div><span>新建</span></div>
+                    <hr>
+                    {{ form.group_id.label }}
+                    {{ form.group_id }}
+                    <span style="color: #cc0000">*</span>{{ form.func_type.label }}
+                    {{ form.func_type }}
+                    <span style="color: #cc0000">*</span>{{ form.func_name.label }}
+                    {{ form.func_name }}
+                    <span style="color: #cc0000">*</span>{{ form.func_desc.label }}
+                    {{ form.func_desc }}
+                    <span style="color: #cc0000">*</span>{{ form.func_path.label }}
+                    {{ form.func_path }}
+                    <span style="color: #cc0000">*</span>{{ form.submit_date.label }}
+                    {{ form.submit_date }}
+                    <span style="color: #cc0000">*</span>{{ form.tester.label }}
+                    {{ form.tester }}
+{#                    {{ form.submit }}#}
+
+{#                    <label for="group">业务组：</label>#}
+{#                    <select class="form-control" id="group">#}
+{#                        {% for row in groups %}#}
+{#                        <option value="{{ row[0] }}">{{ row[1] }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                    <label for="func_name">功能名称：</label><span style="color: #cc0000">*</span>#}
+{#                    <input type="text" class="form-control" id="func_name" aria-describedby="emailHelp" required>#}
+{#                    <label for="func_desp">功能描述：</label><span style="color: #cc0000">*</span>#}
+{#                    <textarea class="form-control" id="func_desp" aria-describedby="emailHelp" required></textarea>#}
+{#                    <label for="path">访问路由：</label><span style="color: #cc0000">*</span>#}
+{#                    <input type="text" class="form-control" id="path" aria-describedby="emailHelp" required>#}
+{#                    <label for="date">提交日期：</label><span style="color: #cc0000">*</span>#}
+{#                    <input type="text" class="form-control" id="date" aria-describedby="emailHelp" required>#}
+{#                    <label for="tester">提交者：</label><span>*</span>#}
+{#                    <select class="form-control" id="tester" required>#}
+{#                        {% for row in testers %}#}
+{#                        <option value="{{ row[0] }}">{{ row[1] }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+    <table id="example" class="table table-bordered table-striped" style="width:100%">
+        <thead style="background-color: #66cc66">
+            <th hidden></th>
+            <th>Id</th>
+            <th>业务组</th>
+            <th>类型</th>
+            <th>提交日期</th>
+            <th>访问路由</th>
+            <th>功能名称</th>
+            <th>功能描述</th>
+            <th>提交者</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        {% for i in re_len %}
+             <tr>
+                <td hidden>loop.index</td>
+                <td>{{ re[i]['id'] }}</td>
+                <td>{{ re[i]['group_id'] }}</td>
+                <td>{{ re[i]['func_type'] }}</td>
+                <td>{{ re[i]['submit_date'] }}</td>
+                <td>{{ re[i]['func_path'] }}</td>
+                <td>{{ re[i]['func_name'] }}</td>
+                <td>{{ re[i]['func_desc'] }}</td>
+                 <td>{{ re[i]['tester'] }}</td>
+                <td><a href="{{ re[i]['id'] }}">edit</a></td>
+             </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    window.onload = function () {
+        var obj = document.getElementById("searchBox");
+        var oBtn = document.getElementById("search");
+        var popup = document.getElementsByClassName('popup')[0]
+        var content = document.getElementsByClassName('content')[0]
+        oBtn.onclick = function () {
+            popup.style.display = "block"
+        }
+
+        popup.onclick = function(){
+            this.style.display = "none"
+        }
+        content.onclick = function(e){
+            e.stopPropagation();
+        }
+    }
+
+</script>
+</body>
+</html>
+{% endblock %}

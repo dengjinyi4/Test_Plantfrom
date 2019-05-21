@@ -13,6 +13,7 @@
     <table id="example" class="display" style="table-layout:fixed;overflow:hidden;word-break: break-all " border="1" >
         <thead style="background-color: darkseagreen">
             <tr>
+             <th hidden>no</th>
              <th width="3%">id</th>
              <th width="10%">apiname</th>
              <th width="3%">操作</th>
@@ -27,14 +28,15 @@
         <tbody>
         {% for i in range(detail_data|length) %}
             <tr>
-            <td>{{ detail_data[i]['id'] }}</td>
-            <td>{{ detail_data[i]['apiname'] }}</td>
-            <td ><a href="{{ url_for('testCase.TestCase',sub_system=sub_system,page_name='update',id=detail_data[i]['id']) }}" target="_blank">修改</a></td>
-            <td>{{ detail_data[i]['param_type'] }}</td>
-            <td>{{ detail_data[i]['testcasename'] }}</td>
-            <td>{{ detail_data[i]['methodurl'] }}</td>
-            <td>{{ detail_data[i]['param'] }}</td>
-            <td>{{ detail_data[i]['expect_value'] }}</td>
+                <td hidden>i</td>
+                <td>{{ detail_data[i]['id'] }}</td>
+                <td>{{ detail_data[i]['apiname'] }}</td>
+                <td ><a href="{{ url_for('testCase.TestCase',sub_system=sub_system,page_name='update',id=detail_data[i]['id']) }}" target="_blank">修改</a></td>
+                <td>{{ detail_data[i]['param_type'] }}</td>
+                <td>{{ detail_data[i]['testcasename'] }}</td>
+                <td>{{ detail_data[i]['methodurl'] }}</td>
+                <td>{{ detail_data[i]['param'] }}</td>
+                <td>{{ detail_data[i]['expect_value'] }}</td>
             </tr>
         {% endfor %}
         </tbody>

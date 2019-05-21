@@ -1,0 +1,49 @@
+{% extends "base.html"%}
+
+{% block main %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>叮当柚子</title>
+</head>
+<body>
+<h1>叮当柚子总代-代理关系表</h1><br>
+
+<form action="{{url_for('ddyzinfo')}}" method="post">
+    <input type="radio" id="test" name="env" value="1" checked="checked"/><label for="test">测试环境</label>
+    <input type="radio" id="product" name="env" value="0"/><label for="product">正式环境</label>
+    <br>
+    用户userid:<input type="text" value="{{userid}}" name="userid">
+    <!--<br>-->
+    <input type="submit" value="查询">
+</form>
+<!--<p>{{re}}</p>-->
+<br>
+<table border="1">
+    <tr>
+    <th>用户昵称</th>
+    <th>userid</th>
+    <th>手机号码</th>
+    <th>创建时间</th>
+     <th>更新时间</th>
+    <th>用户角色</th>
+    <th>上级id</th>
+    </tr>
+    {% for row in re %}
+    <tr>
+        {% for col in row %}
+        <td>{{col|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+
+</table>
+</body>
+</html>
+
+{% endblock %}
+
+
+

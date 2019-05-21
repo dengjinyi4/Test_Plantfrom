@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+<script>$(document).ready(function() {$('#ocpa_report2').DataTable();} );</script>
+
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>OCPA汇总报表</title>
+</head>
+<body>
+<h1>OCPA汇总报表</h1>
+
+<form action="{{url_for('ocpa.ocpa_report')}}" method="post">
+
+    查询开始日期: <input type="date"  name="begin_date" value="{{begin_date}}">
+    <br>
+    <br>
+    查询结束日期: <input type="date"  name="end_date" value="{{end_date}}">
+
+
+    <input type="submit" name="submit" value="查询">
+
+    <a id="export" download="ocpa_report.xlsx" href="../static/result/ocpa_report.xlsx">导出</a>
+
+    <br>
+    <br>
+</form>
+
+<div id="ocpa_report" style="float:left;margin-right:100px;text-align:center">
+    <table id="ocpa_report2" class="display" name="ocpa_report2" border="1">
+        <thead style="background:green">
+        <tr>
+            <th hidden>ID</th>
+            <th>日期</th>
+            <th>总效果数</th>
+            <th>总广告主个数</th>
+            <th>总广告消耗</th>
+            <th>OCPA效果数</th>
+            <th>OCPA订单消耗</th>
+            <th>数据上报CPC订单消耗</th>
+            <th>OCPA消耗占比</th>
+            <th>OCPA广告主个数</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for row in paras %}
+        <tr>
+            <td hidden>ID</td>
+            {% for col in row %}
+            <td>{{col|safe}}</td>
+
+            {% endfor %}
+            {% endfor %}
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
+{% endblock %}

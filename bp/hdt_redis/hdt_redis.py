@@ -47,9 +47,9 @@ def myredis_status():
             redis_nodes=[{"host":'101.254.242.11',"port":'17001'},{"host":'101.254.242.12',"port":'17001'},{"host":'101.254.242.17',"port":'17001'}]
         order_status,allcount,negativecount=mrs.mygetredis(redis_nodes)
         return render_template('myredis_status.html',order_status=order_status,allcount=allcount,negativecount=negativecount,data=data)
-@hdtredis.route('/orderresion/',methods=('POST','GET'))
-def orderresion():
-    myform1=ft.orderresion1()
+@hdtredis.route('/orderr/',methods=('POST','GET'))
+def orderr():
+    myform1=ft.orderr()
     if myform1.validate_on_submit():
         begindate=myform1.data['begindate']
         enddate=myform1.data['enddate']
@@ -59,11 +59,42 @@ def orderresion():
         mydata=ba.allorderdit(str(begindate),str(enddate),adzoneClickid,ad_order_id,myenv)
         print 111111111111
         print mydata
+        return render_template('orderr.html',form1=myform1,mydata1=mydata)
+    return render_template('orderr.html',form1=myform1)
+@hdtredis.route('/orderresion/',methods=('POST','GET'))
+def orderresion():
+    myform1=ft.orderresion1()
+    if myform1.validate_on_submit():
+        begindate=myform1.data['begindate']
+        enddate=myform1.data['enddate']
+        adzone_id=myform1.data['adzone_id']
+        ad_order_id=myform1.data['ad_order_id']
+        adzoneClickid=str(myform1.data['adzoneClickid'])
+        myenv='dev'
+        if len(adzoneClickid)>36:
+            adzoneClickid=adzoneClickid.split(",")
+            mydata=ba.allorderdit(str(begindate),str(enddate),adzone_id,ad_order_id,myenv,adzoneClickid)
+        else:
+            adzoneClickid=''
+            mydata=ba.allorderdit(str(begindate),str(enddate),adzone_id,ad_order_id,myenv,adzoneClickid)
+        print 111111111111
+        print mydata
         return render_template('orderresion.html',form1=myform1,mydata1=mydata)
     return render_template('orderresion.html',form1=myform1)
+
 
 @hdtredis.route('/adzone_limit/',methods=['GET'])
 def adzone_limit_diff():
     aod = AdzoneOrders()
     re = aod.find_diff()
     return render_template('adzone_limit_diff.html',adzoneID=re[1],consum=re[0])
+
+@hdtredis.route('/kk/',methods=('POST','GET'))
+def kk():
+    myform = ft.mypop()
+    if myform.validate_on_submit():
+        adzoneClickid=myform.data['adzoneClickid']
+        print adzoneClickid
+        # mybudget,allcount,negativecount=mr.mygetredis(myenv,'voyager:budget')
+        return render_template('mypop.html',form=myform,adzoneClickid=adzoneClickid)
+    return render_template('mypop.html',form=myform)

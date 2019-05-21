@@ -1,0 +1,47 @@
+{% extends "base.html"%}
+{% block main %}
+<p hidden="hidden">
+弹窗测试
+</p>
+<script>
+$("#myModal").on("hidden.bs.modal",function(e) {$(this).removeData("adzoneClickid");});
+</script>
+<!--<div hidden>-->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" >
+  测试按钮211
+</button></div>
+    <p>
+{{adzoneClickid|safe}}
+    </p>
+<!-- Modal -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<form method="post" action="{{ url_for('hdt_redis.kk')}}">
+{{ form.hidden_tag()}}
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <table class="display" style="width:80%"><tr>
+              {{ form.adzoneClickid.label }}: {{ form.adzoneClickid }}
+       </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--<button type="submit" class="btn btn-primary" >Save changes</button>-->
+         {{ form.submit }}
+      </div>
+
+    </div>
+  </div>
+    </form>
+</div>
+
+<!--{% for i in mybudget %}-->
+<!--<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>-->
+  <!--{% endfor %}-->
+{% endblock %}
+

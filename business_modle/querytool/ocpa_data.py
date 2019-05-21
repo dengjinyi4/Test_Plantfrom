@@ -24,6 +24,7 @@ class Ocpa_data(object):
 
 
 ##############获取月份##############
+
     def mon(self):
 
         mon =datetime.now().strftime("%m")
@@ -160,7 +161,7 @@ class Ocpa_data(object):
         self.db.execute_sql(sql14)
         self.db.execute_sql(sql15)
 
-        print "今日ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
+        return "今日ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
 
 ############导入昨天ocpa_ad_show_log_stat表,ocpa_ad_click_log_stat表数据##########
 
@@ -224,7 +225,7 @@ class Ocpa_data(object):
         self.db.execute_sql(sql13)
         self.db.execute_sql(sql14)
         self.db.execute_sql(sql15)
-        print "昨日ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
+        return "昨日ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
 
 
 
@@ -290,7 +291,7 @@ class Ocpa_data(object):
         self.db.execute_sql(sql13)
         self.db.execute_sql(sql14)
         self.db.execute_sql(sql15)
-        print "前天ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
+        return "前天ocpa_ad_show_log_stat,ocpa_ad_click_log_stat,ad_effect_log数据导入完成"
 
 
 
@@ -313,9 +314,28 @@ class Ocpa_data(object):
         self.db.execute_sql(sql2)
         self.db.execute_sql(sql3)
 
-        print "cvr_log表数据导入完成"
+        return "cvr_log表数据导入完成"
+
+########清除问题数据##############
 
 
+    def del_error(self):
+
+        sql1='''DELETE  FROM voyagerlog.ocpa_ad_show_log_stat{}  WHERE advertiser_id  NOT IN (SELECT id FROM voyager.advertiser ) '''.format(self.selected_time())
+        sql2='''DELETE  FROM voyagerlog.ocpa_ad_show_log_stat{}  WHERE advertiser_id  NOT IN (SELECT id FROM voyager.advertiser ) '''.format(self.selected1_time())
+        sql3='''DELETE  FROM voyagerlog.ocpa_ad_show_log_stat{}  WHERE advertiser_id  NOT IN (SELECT id FROM voyager.advertiser ) '''.format(self.selected2_time())
+        sql4='''DELETE  FROM voyagerlog.ocpa_ad_click_log_stat{}  WHERE advertiser_id  NOT IN (SELECT id FROM voyager.advertiser ) '''.format(self.selected_time())
+        sql5='''DELETE  FROM voyagerlog.ocpa_ad_click_log_stat{}  WHERE advertiser_id  NOT IN (SELECT id FROM voyager.advertiser ) '''.format(self.selected1_time())
+        sql6='''DELETE  FROM voyagerlog.ocpa_ad_click_log_stat{}  WHERE advertiser_id  NOT IN (SELECT id FROM voyager.advertiser ) '''.format(self.selected2_time())
+
+        self.db.execute_sql(sql1)
+        self.db.execute_sql(sql2)
+        self.db.execute_sql(sql3)
+        self.db.execute_sql(sql4)
+        self.db.execute_sql(sql5)
+        self.db.execute_sql(sql6)
+
+        return "问题数据清理完毕"
 ###########执行广告位定时任务###########
 
     def adzonedo(self):
@@ -324,22 +344,26 @@ class Ocpa_data(object):
 
         result=requests.get(url).text
 
-        return result
+        if  result == '1':
 
-        print "广告位定时任务执行完成"
+            return "广告位定时任务执行完成"
 
+        else:
+            return  "广告位定时任务执行失败",result
 
 ###############导入report_order表数据防止创意暂停#############
 
 
     def creative_active(self):
 
-        sql = '''INSERT INTO voyager.report_order (`date`, `adorder_id`, `agent_id`, `advertiser_id`, `plan_id`, `creative_id`, `adv_industry_id`, `creative_level`, `sales_manager_id`, `service_manager_id`, `payment_mode`, `brand_tag_id`, `adorder_state`, `show_num`, `show_invalid_num`, `show_uv`, `adclick_num`, `adclick_invalid_num`, `adclick_uv`, `ad_consume`, `ad_media_income`, `ad_budget`, `ad_withhold`, `ad_effect_num`, `cash_consume`, `reward_consume`, `cpa_ad_consume`, `cpa_cash_consume`, `ocpa_effect_num`, `ocpa_click_num`, `ocpa_consume`, `ocpa_media_income`, `ocpa_expect_consume`, `update_time`) VALUES('{}','2009','2222557','2222559','308','1884','65','1',NULL,NULL,'4','0','4','2','0','1','2','0','1','20000','145','200000','200000','1','0','0','0','0','1','2','220','145','2000','{} 05:10:09')'''.format(self.selected_time1(),self.selected_time1())
+
+
+        sql = '''INSERT ignore INTO voyager.report_order (`date`, `adorder_id`, `agent_id`, `advertiser_id`, `plan_id`, `creative_id`, `adv_industry_id`, `creative_level`, `sales_manager_id`, `service_manager_id`, `payment_mode`, `brand_tag_id`, `adorder_state`, `show_num`, `show_invalid_num`, `show_uv`, `adclick_num`, `adclick_invalid_num`, `adclick_uv`, `ad_consume`, `ad_media_income`, `ad_budget`, `ad_withhold`, `ad_effect_num`, `cash_consume`, `reward_consume`, `cpa_ad_consume`, `cpa_cash_consume`, `ocpa_effect_num`, `ocpa_click_num`, `ocpa_consume`, `ocpa_media_income`, `ocpa_expect_consume`, `update_time`) VALUES('{}','2009','2222557','2222559','308','1884','65','1',NULL,NULL,'4','0','4','2','0','1','2','0','1','20000','145','200000','200000','1','0','0','0','0','1','2','220','145','2000','{} 05:10:09')'''.format(self.selected_time1(),self.selected_time1())
 
         self.db.execute_sql(sql)
 
 
-        print "report_order表数据导入成功"
+        return  "report_order表数据导入成功"
 
 
 

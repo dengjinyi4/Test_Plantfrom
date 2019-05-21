@@ -38,7 +38,7 @@ class Advertiser_collect(object):
         ad_click_tag
         FROM
         voyagerlog.ad_click_log{}
-        where adzone_id=270 LIMIT 1 """.format(self.date())
+        where adzone_id =1610 LIMIT 1 """.format(self.date())
         result1 = self.db.execute_sql(show_sql1)[0][0]
         return  result1
 

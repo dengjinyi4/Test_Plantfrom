@@ -11,9 +11,6 @@ from utils.db_info import *
 from openpyxl import  Workbook
 
 
-
-
-
 class Ocpa_order(object):
 
     def __init__(self,begin_time,env_value=False):
@@ -29,6 +26,8 @@ class Ocpa_order(object):
     def today(self):
 
         return datetime.datetime.now().strftime("%Y%m%d")
+
+
     def show_result(self):
 
         show_sql ='''SELECT

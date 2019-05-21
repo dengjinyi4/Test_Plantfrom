@@ -37,12 +37,21 @@ from bp.test_case.test_case import testCase
 #引用亿起发类
 from bp.yiqifa.finance import *
 from bp.yiqifa.cdp import *
+from bp.yiqifa.shortjump import *
+from bp.yiqifa.egoubaobei import *
+from business_modle.querytool.orderQueryCreative import *
+from bp.TestToolsTracker.ToolsTracker import ToolsTracker
+from business_modle.querytool.report_byadzone import *
+from bp.TestToolsTracker.ToolsTrackerForm import ToolsTrackerForm
+from business_modle.querytool.ddyzinfo import *
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'txt') #设置一个专门的类似全局变量的东西
 app = Flask(__name__)
 #将亿起发蓝图注册到app
 app.register_blueprint(Finace,url_prefix='/finace')
 app.register_blueprint(cdpRoute,url_prefix='/cdp')
+app.register_blueprint(shortJumpRoute,url_prefix='/yiqifa')
+app.register_blueprint(egoubaobei,url_prefix='/yiqifa')
 #将活动蓝图注册到app
 app.register_blueprint(act,url_prefix='/act')
 app.register_blueprint(hdtredis,url_prefix='/hdtredis')
@@ -463,6 +472,13 @@ def version_maintain(page_name):
             result=lc.getlanuch(id)
             return render_template("launchdetial.html",result=result)
 
+@app.route('/version_stat/')
+def version_stat():
+    vt = VersionTracker()
+    re = vt.get_version_stat()
+    print re
+    return render_template("VersionTracker/version_stat.html",re=re)
+
 @app.route('/recharge',methods=['POST','GET'])
 def recharge():
     title=u'测试环境模拟联动充值'
@@ -593,5 +609,99 @@ def phoneVaildCode():
         re = pp.get_valid_code()
         return  render_template('phoneVaildCode.html',re=re,pos=env[0])
 
+
+@app.route('/orderQueryCreative/',methods=['get','post'])
+def orderQueryCreative():
+    if request.method=='GET':
+        return render_template('orderQueryCreative.html')
+    else:
+        orderId = request.form.get("orderId").strip()
+        creativeUrl = request.form.get("creativeUrl").strip()
+        creativeId = request.form.get("creativeId").strip()
+        print orderId
+        env = request.values.getlist('env')
+        print env[0]
+        pp = orderCreativeQuery(orderId,env[0])
+        if orderId:
+            re = pp.queryCreative()
+            if isinstance(re,list):
+                return render_template("orderQueryCreative.html", re=re,type=1)
+            else:
+                return render_template("orderQueryCreative.html",type=0)
+        if creativeUrl:
+            re = pp.queryByCreative(creativeUrl=creativeUrl)
+        if creativeId:
+            re = pp.queryByCreative(creativeId=creativeId)
+        if isinstance(re,list):
+            return render_template("orderQueryCreative.html", re=re, type=2)
+        else:
+            return render_template("orderQueryCreative.html", type=0)
+
+
+# @app.route('/ttt/<int:post_id>',methods=['get','post'])
+# def test_tools_tracker(post_id):
+#     form = ToolsTrackerForm()
+#     tt = ToolsTracker()
+#     re = tt.get_tracker_list()
+#     if request.method == 'POST':
+#         if post_id == 0:
+#             form_datas = form.data
+#             form_datas.pop('csrf_token')
+#             tt.add_tools_tracker(form_datas)
+#             re = tt.get_tracker_list()
+#             return render_template('TestToolsTracker.html', re=re, re_len=range(len(re)), form=form)
+#     else:
+#         if post_id == 0:
+#             return render_template('TestToolsTracker.html', re=re, re_len=range(len(re)), form=form)
+#         else:
+#             re = tt.get_tools_tracker(post_id)
+#             return '123333'
+
+@app.route('/ttt/',methods=['get','post'])
+def test_tools_tracker():
+    form = ToolsTrackerForm()
+    tt = ToolsTracker()
+    re = tt.get_tracker_list()
+    if request.method == 'POST':
+        form_datas = form.data
+        form_datas.pop('csrf_token')
+        tt.add_tools_tracker(form_datas)
+        re = tt.get_tracker_list()
+        return render_template('TestToolsTracker.html', re=re, re_len=range(len(re)), form=form)
+    else:
+        return render_template('TestToolsTracker.html', re=re, re_len=range(len(re)), form=form)
+
+@app.route('/report_byadzone/',methods=['get','post'])
+
+def report_byadzone():
+
+
+
+    if request.method == 'POST':
+        begin_date=request.form.get('begin_date')
+        adzone_id = request.form.get('adzone_id')
+        rd=Report_byadzone(adzone_id,begin_date,False)
+        paras=rd.show_result()
+
+        return render_template('report_byadzone.html',paras=paras,begin_date=begin_date,adzone_id=adzone_id)
+
+    else:
+
+        return render_template('report_byadzone.html')
+
+@app.route('/ddyzinfo',methods=['get','post'])
+def ddyzinfo():
+    if request.method == 'GET':
+        return render_template('ddyzinfo.html')
+    else:
+        userid = request.form.get('userid')
+        myenv=request.form.get('env')
+        pp = YzInfo(userid,env=myenv)
+        re = pp.show_result()
+        return render_template('ddyzinfo.html',re=re)
+
+
+
+
 if __name__ == '__main__':
-    app.run( host="0.0.0.0",port=21312,debug=True)
+    app.run( host="0.0.0.0",port=21312,debug=True,threaded=True)

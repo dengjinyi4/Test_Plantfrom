@@ -9,7 +9,7 @@ from utils.db_info import *
 
 
 class TemplateActCreation(object):
-    def __init__(self, templateTypeName, act_name, award_num):
+    def __init__(self, templateTypeName, act_name, award_num, adzoneId):
         '''
         :param templateTypeName:模板类型名称
         :param act_name: 活动名称
@@ -22,8 +22,9 @@ class TemplateActCreation(object):
         self.act_name = act_name
         self.award_num = award_num
         self.db = DbOperations()
-        self.adzone = 467
-        self.appkey="https://display.adhudong.com/site_login_ijf.htm?app_key=adhu48787abbd74d4808"
+        # self.adzone = 467
+        self.appkey="https://display.adhudong.com/site_login_ijf.htm?app_key="
+        self.adzoneId = adzoneId
 
     def get_actId(self):
         '''
@@ -260,17 +261,19 @@ class TemplateActCreation(object):
             # print(re[i]['state'])
 
     def adzone_act(self):
-        dsql=r"delete from voyager.adzone_act where adzone_id in ({});".format(self.adzone)
+        dsql=r"delete from voyager.adzone_act where adzone_id in ({});".format(self.adzoneId)
         self.db.execute_sql(dsql)
         isql=r'''INSERT  INTO voyager.adzone_act (adzone_id,act_id,act_begin_time, act_end_time,priority ) VALUES
-            ( '{}','{}','2018-06-20 00:00:00', '2019-09-21 00:00:00', '1' );'''.format(self.adzone, self.get_actId())
+            ( '{}','{}','2018-06-20 00:00:00', '2019-09-21 00:00:00', '1' );'''.format(self.adzoneId, self.get_actId())
         self.db.execute_sql(isql)
-        return self.appkey
+        keysql = '''select app_key from voyager.base_adzone_info where id in ({})'''.format(self.adzoneId)
+        key_re = self.db.execute_sql(keysql)
+        return self.appkey + str(key_re[0][0])
 
 if __name__=='__main__':
     #为模板类型名称
     #__init__(self, templateTypeName, act_name, award_num):
-    ct = TemplateActCreation('九宫格ce2',"九宫格ce2",8)
+    ct = TemplateActCreation('九宫格ce2',"九宫格ce2",8,15,1810)
     #创建模板类型，create_template_type(self, classifi, locationAdress, preview="https://img0.adhudong.com/template/201802/24/999337a35a1a9169450685cc66560a05.png",prizesNum=6)
     ct.create_template_type('https://display.adhudong.com/new/nineBlockBox.html')
     # ct.get_list()

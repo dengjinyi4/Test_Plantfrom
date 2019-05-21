@@ -12,17 +12,38 @@ class MyForm(Form):
     adzoneClickid = StringField('adzoneClickid', validators=[Length(min=4, max=25)])
     myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
     # submit=SubmitField(u'提交')
+class egoubaobei_orderpay(Form):
+    order_status=RadioField(u'订单支付状态',choices=[('True',u'支付成功'),('False',u'支付失败'),('ing',u'待支付')],default='True')
+    orderid = StringField(u'订单id', validators=[DataRequired(),Length(min=5, max=20,message=u'订单id长度5-20')],render_kw={'placeholder':u'订单id'})
+    submit=SubmitField(u'更新')
 class myredis(Form):
-    myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
+    myenv=RadioField('orderstatus',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
     submit=SubmitField(u'提交')
 class orderresion1(Form):
-    begindate=StringField('begindate',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="开始时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
-    enddate=StringField('enddate',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="结束时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
+    begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="开始时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
+    enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="结束时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
     # enddate=DateTimeField('enddate',validators=[DataRequired()],default=datetime.datetime.now())
     myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
-    adzone_id = StringField('adzone_id', validators=[DataRequired(),Length(min=1, max=20,message='广告位长度1-20')])
-    ad_order_id = StringField('ad_order_id', validators=[DataRequired(),Length(min=1, max=20,message='订单长度1-20')])
+    adzone_id = StringField(u'广告位id', validators=[DataRequired(),Length(min=1, max=20,message=u'广告位长度1-20')])
+    ad_order_id = StringField(u'订单id', validators=[DataRequired(),Length(min=1, max=20,message=u'订单长度1-20')])
+    # adzoneClickid = StringField(u'广告位点击id字符串中间逗号分隔',validators=[DataRequired(),Length(min=19, max=2000,message=u'广告位点击id最少两个逗号分隔',default='1')])
+    adzoneClickid = StringField(u'广告位点击id字符串中间逗号分隔',validators=[DataRequired()], render_kw={'placeholder': u'广告位点击id;逗号分隔;最少两个','style':'width350'},default='test')
     submit=SubmitField(u'提交')
+class orderr(Form):
+    begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="开始时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
+    enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="结束时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])
+    # enddate=DateTimeField('enddate',validators=[DataRequired()],default=datetime.datetime.now())
+    myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
+    adzone_id = StringField(u'广告位id', validators=[DataRequired(),Length(min=1, max=20,message=u'广告位长度1-20')])
+    ad_order_id = StringField(u'订单id', validators=[DataRequired(),Length(min=1, max=20,message=u'订单长度1-20')])
+    # adzoneClickid = StringField(u'广告位点击id字符串中间逗号分隔',validators=[DataRequired(),Length(min=19, max=2000,message=u'广告位点击id最少两个逗号分隔',default='1')])
+    # adzoneClickid = StringField(u'广告位点击id字符串中间逗号分隔',validators=[DataRequired()], render_kw={'placeholder': u'广告位点击id;逗号分隔;最少两个'},default='test')
+    submit=SubmitField(u'提交')
+
+class mypop(Form):
+    adzoneClickid = StringField('adzoneClickid',validators=[DataRequired(),Length(min=4, max=25)])
+    submit=SubmitField(u'提交',render_kw={'class':'btn btn-primary'})
+
 # class Mylaunchlist(Form):
 #     def mymonth(self):
 #         return int(datetime.datetime.now().month)

@@ -5,13 +5,13 @@ import sys
 import datetime
 import time
 
-from utils.db_info import * 
+from utils.dtdb_info import *
 
 class Punchcard(object):
 
     def __init__(self,begin_date,end_date,env_value=False):
 
-        self.dbinfo=DbOperations(env_value=env_value)
+        self.dbinfo=DtdbOperations(env_value=env_value)
         self.begin_date=begin_date
         self.end_date=end_date
 
@@ -19,21 +19,21 @@ class Punchcard(object):
 #查询低碳打卡用户总数
     def total_amount(self):
 
-        sql="select  count(1)  FROM  voyager.wx_user_info"
+        sql="select  count(1)  FROM  ditandaka.wx_user_info"
         result=self.dbinfo.execute_sql(sql)[0][0]
         return result
 
 #查询低碳打卡今日新增用户数
     def today_addamount(self):
 
-        sql="select  count(1)   FROM  voyager.wx_user_info  where create_time >= curdate()"
+        sql="select  count(1)   FROM  ditandaka.wx_user_info  where create_time >= curdate()"
         result = self.dbinfo.execute_sql(sql)[0][0]
         return result
 
 #查询今日完成打卡用户数
     def today_sign(self):
 
-        sql="SELECT count(1) FROM `wx_user_punchedcard` WHERE create_time >= CURRENT_DATE()"
+        sql="SELECT count(1) FROM ditandaka.wx_user_punchedcard WHERE create_time >= CURRENT_DATE()"
         result = self.dbinfo.execute_sql(sql)[0][0]
         return result
 
@@ -68,7 +68,7 @@ class Punchcard(object):
         len_time = len(timelist)
         usernum=[]
         for i in range(0,len_time):
-               sql='''SELECT count(1) FROM  voyager.wx_user_info WHERE DATE_FORMAT(create_time,'%Y-%m-%d')='{}' '''.format(timelist[i])
+               sql='''SELECT count(1) FROM  ditandaka.wx_user_info WHERE DATE_FORMAT(create_time,'%Y-%m-%d')='{}' '''.format(timelist[i])
                result=self.dbinfo.execute_sql(sql)[0][0]
                usernum.append(int(result))
 
@@ -79,7 +79,7 @@ class Punchcard(object):
 
     def invite_add(self):
 
-         sql ='''SELECT count(1) FROM voyager.wx_user_info WHERE open_id   IN (SELECT open_id FROM `wx_invite_relation` )
+         sql ='''SELECT count(1) FROM ditandaka.wx_user_info WHERE open_id   IN (SELECT open_id FROM ditandaka.wx_invite_relation )
               AND  create_time >=CURRENT_DATE()'''
          result = self.dbinfo.execute_sql(sql)[0][0]
          return result
@@ -88,7 +88,7 @@ class Punchcard(object):
 
     def non_inviteadd(self):
 
-         sql = ''' SELECT count(1)  FROM voyager.wx_user_info  WHERE open_id NOT IN (SELECT a.open_id FROM wx_user_info a ,wx_invite_relation b
+         sql = ''' SELECT count(1)  FROM ditandaka.wx_user_info  WHERE open_id NOT IN (SELECT a.open_id FROM ditandaka.wx_user_info a ,ditandaka.wx_invite_relation b
                WHERE a.open_id = b.open_id ) AND  create_time >=CURRENT_DATE() '''
          result = self.dbinfo.execute_sql(sql)[0][0]
          return result
@@ -123,7 +123,7 @@ class Punchcard(object):
         len_time = len(timelist)
         usernum=[]
         for i in range(0,len_time):
-            sql='''SELECT COUNT(DISTINCT(open_id)) FROM voyagerlog.`wx_user_log{}` WHERE DATE_FORMAT( create_time, '%Y-%m-%d') = '{}' '''.format(self.mon(),timelist[i])
+            sql='''SELECT COUNT(DISTINCT(open_id)) FROM ditandaka.`wx_user_log{}` WHERE DATE_FORMAT( create_time, '%Y-%m-%d') = '{}' '''.format(self.mon(),timelist[i])
             result=self.dbinfo.execute_sql(sql)[0][0]
             usernum.append(int(result))
 

@@ -41,6 +41,7 @@ def templateToAct(page_name):
         act_ids = request.form.get('ad_ids')
         env = request.form.get('env')
         template_kws = request.form.get('template_kws')
+        print type(form.data)
         tta = templateAct(env)
         if template_kws:
             template_kws = template_kws.encode('utf-8')
@@ -91,9 +92,10 @@ def create_act():
         act_name=request.form.get('act_name').strip()
         award_num =int(request.form.get('award_num'))
         free_num = int(request.form.get('free_num').strip())
+        adzoneId = int(request.form.get("adzoneId").strip())
         request.accept_charsets
         try:
-            ct = TemplateActCreation(template_type_name, act_name,award_num)
+            ct = TemplateActCreation(template_type_name, act_name,award_num,adzoneId)
             # 创建模板类型，create_template_type(self, classifi, locationAdress, preview="https://img0.adhudong.com/template/201802/24/999337a35a1a9169450685cc66560a05.png",prizesNum=6)
             template_type_re = ct.create_template_type(template_adr)
             if template_type_re.json()['code'] == 200:

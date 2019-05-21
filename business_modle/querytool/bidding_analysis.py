@@ -15,7 +15,8 @@ def order_reson():
                 "b":"广告订单媒体广告位定向不符","c":"媒体不可以投放百度广告,活动不支持百度广告","d":"广告位高级屏蔽","e":"小程序广告在非小程序广告位","f":"非小程序广告在小程序广告位","g":"出价过低","h":"活动定制过滤","i":"订单没有坑位尺寸的创意","j":"该广告位达到订单设置的投放数量限制",
                 "k":"托底广告主过滤","l":"商品不存在或不支持cps","m":"商品不在推广期","n":"商品CPS账户保证金账户余额不足","o":"不是微信游戏配置订单",
                 "p":"不是指定的广告订单","q":"ocpa出价过低","r":"ocpa暂停","s":"媒体不支持ocpa","t":"被订单的地域限制(后台)过滤","u":"不在广告位出价范围内",
-                "v":"媒体不支持A3A5广告主通投订单","w":"未找到对应cvr","x":"旧A3A5定向订单","y":"此广告位在该ocpa订单投放范围之外","z":"强推订单不在非强推坑位出现"}
+                "v":"媒体不支持A3A5广告主通投订单","w":"未找到对应cvr","x":"旧A3A5定向订单","y":"此广告位在该ocpa订单投放范围之外","z":"强推订单不在非强推坑位出现",
+                "A1":"ocpa未找到对应首效果类型","A2":"不是纸巾宝指定广告类型"}
     return tmp
 def getorder_rs(mydit):
     orderreson=order_reson()
@@ -119,11 +120,19 @@ def orderbylognew(zclk,env):
             tmpdict={}
             # 时间
             mytime=str(hit["_source"]["message"])[3:22]
+            # 新增加的计算因子
+            if 'exp'in str(hit["_source"]["message"]):
+                print 11
+                # 选出来的订单列表
+                print 3333
+                tad=str(hit["_source"]["message"]).split("tad:[")[1].split("], exp:")[0]
+                exp=str(hit["_source"]["message"]).split("exp:")[1].split(", fad:")[0]
+            else:
+                # 选出来的订单列表
+                tad=str(hit["_source"]["message"]).split("tad:[")[1].split("], fad:")[0]
+                exp='{}'
             # 筛选条件
             bid=str(hit["_source"]["message"]).split("bid:")[1].split(", tad:")[0]
-            # 选出来的订单列表
-            print 3333
-            tad=str(hit["_source"]["message"]).split("tad:[")[1].split("], fad:")[0]
             #选出来的订单
             tmpwad=str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0]
             # 不出广告订单列表
@@ -137,12 +146,21 @@ def orderbylognew(zclk,env):
             tmpdict["mytime"]=mytime
             tmpdict["bid"]=eval(bid)
             tmpdict["tad"]=tad.split(",")
+            tmpdict["exp"]=eval(exp)
             tmplist.append(tmpdict)
     return tmplist
 # 按照订单和广告位查找 查找订单在广告位上不出现原因汇总 tad在选中列表中 wad真正选中
-def allorderdit(begindate,enddate,adzone_id,ad_order_id,myenv):
+def allorderdit(begindate='',enddate='',adzone_id='',ad_order_id='',myenv='',adzone_click_id=''):
     # 筛选的所有广告位点击id
-    adzone_click_ids=alladzonetup(begindate,enddate,adzone_id,ad_order_id,myenv)
+    if len(adzone_click_id)>0:
+        # adzone_click_ids=adzone_click_id
+        tpladzone=[]
+        adzone_click_ids=[]
+        for i in adzone_click_id:
+            tpladzone=[i]
+            adzone_click_ids.append(tpladzone)
+    else:
+        adzone_click_ids=alladzonetup(begindate,enddate,adzone_id,ad_order_id,myenv)
     myfad={}
     tadcount=0
     wadcount=0
@@ -206,8 +224,15 @@ if __name__ == '__main__':
     # mydit={"8893":"B","9102":"D","6350":"D","8894":"B","8135":"K","9100":"D","9189":"D","7202":"K","8930":"D","7201":"K","8777":"D","8810":"L","6871":"K","8895":"B","8896":"K","9105":"D","9061":"L","9182":"L","9183":"B","9180":"L","9181":"L","9186":"L","9066":"D","8098":"B","9187":"L","8252":"K","8370":"B","9184":"K","8371":"B","9064":"K","8090":"K","8922":"D","8526":"B","8768":"B","8889":"L","8805":"L","8783":"D","8781":"D","9199":"K","8782":"D","8661":"B","8028":"B","8821":"K","8268":"K","8664":"D","8027":"K","8665":"D","9193":"D","9194":"D","9191":"D","9192":"K","8384":"K","9077":"L","9198":"B","8260":"M","9195":"B","9196":"B","9190":"K","8658":"K","8779":"D","8937":"D","8673":"D","9004":"B","8036":"B","7343":"L","8671":"Y","9002":"B","8672":"Y","8793":"D","9007":"K","8798":"B","8435":"B","8832":"K","9008":"D","9129":"K","9005":"K","8830":"B","9083":"D","9084":"B","8270":"K","9081":"L","9082":"L","7180":"K","9087":"L","8031":"K","8670":"K","9088":"K","8032":"D","9121":"L","9085":"L","6491":"B","9086":"D","5956":"K","9014":"D","9015":"D","9012":"D","7199":"K","9013":"D","8601":"B","8961":"D","9098":"D","9010":"D","9099":"D","9011":"D","9096":"L","7196":"D","9090":"B","9091":"K","8318":"B","9009":"D","8438":"K","8713":"D","8955":"K","7867":"K","7903":"K","8716":"D","8959":"B","8717":"D","8332":"D","8850":"B","8851":"B","8214":"K","8292":"B","8605":"B","6548":"B","6547":"B","8860":"B","9036":"K","8864":"K","6168":"D","8502":"B","8865":"K","9039":"B","6169":"D","8588":"B","9154":"L","9030":"K","8735":"B","8856":"K","8614":"B","9168":"K","8596":"K","9169":"D","9048":"B","9166":"B","8352":"K","9167":"B","9046":"B","8512":"B","8997":"B","8755":"B","8598":"K","8511":"B","9165":"K","8593":"K","9162":"B","8908":"K","8901":"B","7777":"K","8869":"B","8902":"B","8229":"B","8906":"K","9058":"K","8640":"B","8520":"B","9059":"L","8880":"B","9177":"B","8363":"F","9178":"B","7796":"K","8523":"B","8524":"B","8521":"B","8885":"K","8522":"B","9171":"K","9050":"B","9172":"D","9170":"D","9175":"K","9176":"B","8483":"K","9173":"K","9174":"K","8918":"K","8919":"K","8912":"B","8917":"K","8519":"B"}
     # tmpdit=orderbylognew('B3W1CD6H1J12GV2VKX','test')
     # result=allorderdit('2019-03-15 11:25:03','2019-03-15 11:25:10','3397','27841','dev')
-    result=allorderdit('2019-03-15 17:25:03','2019-03-15 17:25:05','3495','26147','dev')
-    # result=orderbylognew('B3J3JDC01J1AE0ZX7O','dev')
+    tmplist='B3J2GDC11J7TVDTATD,B3J2GDC11J7TVDTATD'
+    tmplist=tmplist.split(',')
+    print tmplist
+    result=allorderdit(adzone_click_id=tmplist,myenv='dev',ad_order_id=28762)
+    result=str(result)
+    print 1100000000000
+    print result
+    print 1100000000000
+    # result=orderbylognew('B0H3CDC01J5I26ISYQ','dev')
     print result
     print type(result)
     # ts=getorder_rs(result)

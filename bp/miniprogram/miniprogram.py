@@ -8,7 +8,10 @@ from business_modle.querytool.mini_mediainfo import *
 from business_modle.querytool.mini_userinfo import *
 from business_modle.querytool.media_report import *
 from business_modle.querytool.media_reportnew import *
-
+from business_modle.querytool.mini_mediaconfig import *
+from business_modle.querytool.utils.adh_bejson import *
+from bp.miniprogram.mini_form import *
+from business_modle.querytool.mini_add import *
 
 miniprogram=Blueprint('miniprogram',__name__)
 
@@ -213,6 +216,52 @@ def step_detail():
         return render_template('mini_stepdetail.html',paras=paras)
 
 
+@miniprogram.route('/mini_mediaconfig',methods=['GET','POST'])
+def mini_mediaconfig():
+    title = u'低碳打卡小程序媒体配置'
+    form = mini_form()
+    mc = Manage_media()
+    re = mc.medialist()
+
+    if request.method == 'GET':
+
+        return render_template('mini_mediaconfig.html', re=re, re_len=range(len(re)), form=form)
+    else:
+
+        form_datas = form.data
+        form_datas.pop('csrf_token')
+        mc.add_media(form_datas)
+        re = mc.medialist()
+        return render_template('mini_mediaconfig.html', re=re, re_len=range(len(re)), form=form)
+
+
+@miniprogram.route('/mini_add',methods=['GET','POST'])
+
+def mini_add():
+
+    title = u'增加低碳打卡用户可用碳积分'
+
+    if request.method == 'GET':
+
+        return render_template('mini_add.html',title=title)
+
+    else:
+
+        open_id = request.form.get('open_id')
+        balance = request.form.get('balance')
+        add= Mini_add(open_id,balance,env_value=True)
+        result= add.update_balance()
+
+        print result
+
+        return render_template('mini_add.html',title=title,result=result,balance=balance)
+
+
+
+
 if __name__=='__main__':
 
-    print punchcard()
+    print mini_mediaconfig()
+
+
+

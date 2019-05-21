@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>增加低碳打卡用户可用碳积分</title>
+</head>
+
+<body>
+<h1>增加低碳打卡用户可用碳积分</h1>
+
+<form action="{{url_for('miniprogram.mini_add')}}" method="post">
+
+</form>
+<br>
+<br>
+请输入open_id:<input type="text" id="open_id" name="open_id">
+<br>
+<br>
+请输入碳积分值:<input type="text" id="balance" name="balance" value={{balance}}>
+
+<input type="submit" name="submit" value="更新">
+</form>
+
+<br>
+<br>
+数据更新结果:{{ result }}
+</body>
+</html>
+
+
+{% endblock %}

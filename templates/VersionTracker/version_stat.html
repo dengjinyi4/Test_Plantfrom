@@ -1,0 +1,71 @@
+{% extends "base.html"%}
+{% block main %}
+<html>
+    <head>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+    </head>
+    <body>
+        <div id="container" style="min-width:400px;height:400px"></div>
+        <script  language="JavaScript">
+            $(document).ready(function() {
+               var title = {
+                  text: '统计'
+               };
+               var subtitle = {
+                  text: '来源:上线版本记录'
+               };
+               var xAxis = {
+                  categories: {{ re['month']|safe }}
+               };
+               var yAxis = {
+                  title: {
+                     text: '次'
+                  },
+                  plotLines: [{
+                     value: 0,
+                     width: 1,
+                     color: '#808080'
+                  }]
+               };
+
+               var tooltip = {
+                  valueSuffix: ' '
+               }
+
+               var legend = {
+                  layout: 'vertical',
+                  align: 'right',
+                  verticalAlign: 'middle',
+                  borderWidth: 0
+               };
+
+                var series= [{
+                     name: '互动推',
+                     data: {{re[1]|safe}}
+                  },{
+                     name: '亿起发',
+                     data: {{re[2]|safe}}
+                  },{
+                     name: '易购',
+                     data: {{re[3]|safe}}
+                  }
+               ];
+
+               var json = {};
+
+               json.title = title;
+               json.subtitle = subtitle;
+               json.xAxis = xAxis;
+               json.yAxis = yAxis;
+               json.tooltip = tooltip;
+               json.legend = legend;
+               json.series = series;
+
+               $('#container').highcharts(json);
+            });
+        </script>
+        </div>
+        <p>版本趋势图</p>
+    </body>
+{% endblock %}
+</html>

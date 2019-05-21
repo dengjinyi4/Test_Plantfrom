@@ -1,0 +1,24 @@
+{% extends "base.html"%}
+{% block main %}
+ <script>
+    $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+ <style>
+      .w3cschool{text-align:center}
+  </style>
+        <form action="{{url_for('Yiqifa.shortJump')}}" method="post">
+            <table  border="1" align="center">
+                <tr><td>查询redis是否存入短链(键值为short_url_短链码)：<input type="text" name = "shortValue" required style="width:250px;" value="{{shortValue}}"></td>
+       <td>
+      <select name="selectRedis" id="selectRedis">
+        <option value="get">get</option>
+      </select>
+                </td><td><input name="myenv" type="radio" value="test" checked="checked"/>测试环境<input name="myenv" type="radio" value="dev" />生产环境</td><td><input type="submit" value="查 询"></td></tr>
+            </table>
+            <br><br>
+            <table id="example" border="1" >
+                <tr align="center"><td>{%if rcalue !=""%}redis存储信息{%endif%}：{{rcalue}}</td></tr>
+            </table>
+        </form>
+{% endblock %}

@@ -24,4 +24,5 @@ class ToBeJson(object):
         return data
 
 if __name__=='__main__':
-    ToBeJson.trans(['id','name','money'],(('1','sd','22'),('2','gg','33')))
+     ToBeJson.trans(['id','name','money'],(('1','sd','22'),('2','gg','33')))
+

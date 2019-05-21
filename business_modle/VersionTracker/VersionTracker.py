@@ -78,6 +78,60 @@ class VersionTracker(object):
         rowcount = self.db.exe_insert_sql(sql)
         return rowcount
 
+    #获得统计数据
+    def get_version_stat(self,year=None):
+        '''
+        :param year: int类型
+        :return:返回字典，month返回月份，1返回互动推数据，2返回亿起发数据，3返回易购数据
+        '''
+        if year:
+            re = {}
+            month_tmp = self.db.execute_sql('''select DISTINCT date_format(a.create_time,'%Y-%m') from test.version_tracker a
+                                where YEAR(a.create_time)={} group by MONTH(a.create_time);'''.format(year))
+            re['month'] = self.to_list(month_tmp,type=2)
+            for group_id in range(1,4):
+                sql = '''select count(1) from test.version_tracker a
+                            join test.`group` b on b.id =a.group_id
+                            where a.group_id={} and YEAR(a.create_time)={}
+                            group by MONTH(a.create_time);'''.format(group_id, year)
+                tmp_re = self.db.execute_sql(sql)
+                re[group_id]=self.to_list(tmp_re,type=1)
+                #因2018-07月，亿起发和易购没有线上记录，特殊处理，7月的亿起发和易购数据为0
+                if year == 2018 and group_id in (2,3):
+                    re[group_id].insert(0,0)
+            return re
+        else:
+            re = {}
+            month_tmp = self.db.execute_sql('''select  DISTINCT date_format(a.create_time,'%Y-%m') from test.version_tracker a
+                            where a.group_id=1 order by YEAR(a.create_time) ,MONTH(a.create_time);''')
+            re['month'] = self.to_list(month_tmp,type=2)
+            for group_id in range(1,4):
+                sql = '''select count(1) from test.version_tracker a
+                            join test.`group` b on b.id =a.group_id
+                            where a.group_id={} group by YEAR(a.create_time) ,MONTH(a.create_time);'''.format(group_id)
+                tmp_re = self.db.execute_sql(sql)
+                re[group_id]=self.to_list(tmp_re,type=1)
+                # 因2018-07月，亿起发和易购没有线上记录，特殊处理，7月的亿起发和易购数据为0
+                if group_id in (2,3):
+                    re[group_id].insert(0,0)
+            return re
+
+
+    def to_list(self,list,type=1):
+        list_len = len(list)
+        if list_len>0:
+            re = []
+            if type == 1:
+                for item in list:
+                    re.append(int(item[0]))
+                return re
+            else:
+                for item in list:
+                    re.append(item[0].encode("utf-8"))
+                return re
+        else:
+            return []
+
     def __del__(self):
         pass
 
