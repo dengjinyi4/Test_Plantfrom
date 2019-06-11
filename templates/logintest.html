@@ -1,9 +1,25 @@
 {% extends "base.html"%}
+
+
 {% block main %}
-       <form method="POST" action="{{ url_for('login') }}">
-    {{ form.hidden_tag() }}
-    {{ form.user.label }}: {{ form.user(size=20) }}
-    <input type="submit" value="Submit">
-</form>
-        <h1>{{name}}</h1>
+ <div style="width:100%;text-align:center">
+ {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+     {{ message }}
+  {% endfor %}
+         </div>
+<div style="width:100%;text-align:center">
+    <form class="form-inline"  action="{{url_for('plantfrom_login.login111')}}" method="post">
+    {{form.hidden_tag()}}
+        <div class="form-group">
+        <table align="center"  width="260" border="0" >
+            <tr><td>{{form.username.label}}:</td><td>{{form.username}}</td></tr>
+            <tr><td>{{form.password.label}}:</td><td> {{form.password}}</td></tr>
+            <tr><td></td></tr>
+            <tr align="center"><td colspan="2">        {{form.submit}}</td></tr>
+          </table>
+            </div>
+    </form>
+    </div>
 {% endblock %}

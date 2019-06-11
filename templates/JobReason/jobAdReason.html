@@ -1,0 +1,224 @@
+{% extends "base.html"%}
+{% block main %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        #search {
+            display: inline-block;
+            background: #2b57ff;
+            margin: 0px 0 0 50px;
+        }
+
+        #searchBox {
+            width: 600px;
+            padding: 30px;
+            border: 1px solid #cccccc;
+            margin: 0 auto;;
+        }
+
+        #updateBox {
+            width: 600px;
+            padding: 30px;
+            border: 1px solid #cccccc;
+            margin: 0 auto;;
+        }
+
+        .popup {
+           display:none;
+            position: fixed;
+            z-index: 99;
+            background: rgba(0, 0, 0, 0.6);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .content {
+            position: relative;
+            display:inline-block;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border-radius: 10px;;
+            overflow: hidden;
+        }
+
+        .popup2 {
+           display:none;
+            position: fixed;
+            z-index: 99;
+            background: rgba(0, 0, 0, 0.6);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .content2 {
+            position: relative;
+            display:inline-block;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border-radius: 10px;;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript"t>
+{#      1. 调用查询广告位点击id的方法#}
+        function query_id(q_id){
+            var aaci =new XMLHttpRequest();
+            aaci.onreadystatechange=function(){
+                if (aaci.readyState == 4 && aaci.status == 200){
+                    setTimeout('window.location.reload()',1000);
+                }
+            }
+            aaci.open("POST","query_click_id?id=" + q_id,true);
+            aaci.send();
+        }
+
+{#    2.调用查看广告位点击id的方法#}
+        function query_es(q_id){
+            var es =new XMLHttpRequest();
+            es.onreadystatechange=function(){
+                if (es.readyState == 4 && aaci.status == 200){
+                    setTimeout('window.location.reload()',1000);
+                }
+            }
+            es.open("POST","query_es?id=" + q_id,true);
+            es.send();
+        }
+    </script>
+</head>
+<body>
+   <div class="container">
+   <table  border="3">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    {% endfor %}
+    {% block page_content %}{% endblock %}
+    </div>
+        <a id="search" style="color:#ffffff" class="btn btn-default">新 建</a>
+        <hr>
+        <div class="popup">
+            <div class="content">
+                <div id="searchBox">
+                    <form method="post" action="{{ url_for('tools.jobReason',page_name='new') }}">
+                        <div class="form-group">
+                            <div><span>新建</span></div>
+                            <hr>
+                            {{ form.jobname.label }}
+                            {{ form.jobname }}
+                            <span style="color: #cc0000">*</span>{{ form.ad_order.label }}
+                            {{ form.ad_order }}
+                            <p class="text-warning"><span class="glyphicon glyphicon-glass"></span>SQL中请标明实例</p>
+                            <span style="color: #cc0000">*</span>{{ form.jobsql.label }}
+                            {{ form.jobsql }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="popup2">
+            <div class="content2">
+                <div id="updateBox">
+                    <form method="post" action="{{ 'test_tools_tracker',post_id }}">
+                        <div class="form-group">
+                            <div><span>编辑</span></div>
+                            <hr>
+                            {{ form.jobname.label }}
+                            {{ form.jobname }}
+                            <span style="color: #cc0000">*</span>{{ form.ad_order.label }}
+                            {{ form.ad_order }}
+                            <span style="color: #cc0000">*</span>{{ form.jobsql.label }}
+                            {{ form.jobsql }}
+                            </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div>
+            <script type="text/javascript">
+                window.onload = function () {
+                    var obj = document.getElementById("searchBox");
+                    var oBtn = document.getElementById("search");
+                    var popup = document.getElementsByClassName('popup')[0];
+                    var content = document.getElementsByClassName('content')[0];
+
+                    oBtn.onclick = function () {
+                        popup.style.display = "block"
+                    };
+
+                    popup.onclick = function(){
+                        this.style.display = "none"
+                    };
+                    content.onclick = function(e){
+                        e.stopPropagation();
+                    }
+                };
+            </script>
+            <table id="example" class="table table-bordered table-striped" style="width:100%; border: 1px">
+                <thead style="background-color: #66cc66">
+                    <th hidden></th>
+                    <th>Id</th>
+                    <th>查询名称</th>
+                    <th>订单Ids</th>
+                    <th>SQL</th>
+                    <th>SQL状态</th>
+                    <th>ES查询状态</th>
+                    <th>广告位点击ID</th>
+                    <th>ES查询结果</th>
+                </thead>
+                <tbody>
+                {% for i in re_len %}
+                     <tr>
+                        <td hidden>loop.index</td>
+                        <td>{{ re[i]['id'] }}</td>
+                        <td>{{ re[i]['jobname'] }}</td>
+                        <td>{{ re[i]['ad_order'] }}</td>
+                        <td>{{ re[i]['jobsql'] }}</td>
+                        <td>{{ re[i]['job_status'] }}</td>
+                        <td>{{ re[i]['run_status'] }}</td>
+                         {% if  re[i]['have_adzone_click_ids'] == '无' and re[i]['run_status'] == '停止' %}
+                            <td><button class="btn-link" onclick="k({{ re[i]['id'] }})">查询</button></td>
+                          {% elif  re[i]['have_adzone_click_ids'] == '无' and re[i]['run_status'] == '正在运行' %}
+                            <td>查询中</td>
+                         {% else %}
+                            <td>已查询</td>
+                         {% endif %}
+                         {% if  re[i]['ES_result'] == '无' and re[i]['run_status'] == '获取广告位点击id完成' %}
+                            <td><button class="btn-link" onclick="query_es({{ re[i]['id'] }})">查询</button></td>
+                         {% elif re[i]['ES_result'] == '有' and re[i]['run_status'] == '读取es完成' %}
+                            <td><a href="{{ url_for('tools.jobReason',page_name='query_chart',id=re[i]['id']) }}" target="_blank">查看结果</a></td>
+                         {% elif re[i]['ES_result'] == '无' and re[i]['run_status'] == '读取es进行中' %}
+                            <td>查询中</td>
+                         {% else %}
+                             <td>无</td>
+                         {% endif %}
+                     </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+   </table>
+   </div>
+</body>
+</html>
+{% endblock %}
+
+

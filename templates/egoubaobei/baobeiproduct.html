@@ -1,0 +1,40 @@
+{% extends "base.html"%}
+{% block main %}
+<p hidden="hidden">
+
+
+</p>
+
+
+<form action="{{url_for('egoubaobei.getproduct')}}" method="post">
+    {{ form.hidden_tag()}}
+       <table class="display" style="width:80%">
+           <tbody>
+                 <tr><td>{{ form.skuid.label }}:{{ form.skuid }}
+                 {{ form.submit() }}</tr>
+                    <tr><td ><font color="red">{{ form.skuid.errors[0] }}</font></tr>
+
+       </table>
+    </tbody>
+    商品名称（goods_name）：<font color="red">{{data.goods_name|safe}}</font><br/>
+    京东分类，分别是1、2、3级分类（category）：<font color="red">{{data.category|safe}}</font><br/>
+    用的是接口里的主图（small_img）：<font color="red">{{data.small_img|safe}}</font><br/>
+    商品规格1名称（goods_spec_1_name）：<font color="red">{{data.goods_spec_1_name|safe}}</font><br/>
+    商品规格1值（goods_spec_1_value）：<font color="red">{{data.goods_spec_1_value|safe}}</font><br/>
+    详情描述图集合（10张图左右）（detail_img）：<font color="red">{{data.detail_img|safe}}</font><br/>
+    状态 0未下架 1已下架（sale_status）：<font color="red">{{data.sale_status|safe}}</font><br/>
+    采购价格（平台从经销商买入的价格），单位分（platform_buy_price）：<font color="red">{{data.platform_buy_price|safe}}</font><br/>
+    心仪购当前sku最多可用的红包额度 单位分（xyg_max_redpacket）：<font color="red">{{data.xyg_max_redpacket|safe}}</font><br/>
+    红包抵扣前价格（心仪购加价后的sku商品价格），单位分（xyg_sell_price）：<font color="red">{{data.xyg_sell_price|safe}}</font><br/>
+
+
+    <!--<p align="center"></p>-->
+</form>
+
+
+
+<!--{% for i in mybudget %}-->
+<!--<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>-->
+  <!--{% endfor %}-->
+{% endblock %}
+

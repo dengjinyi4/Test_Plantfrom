@@ -11,6 +11,7 @@ from business_modle.querytool.utils.db_info import  *
 
 class mini_form(Form):
 
+
     db = DbOperations()
 
     ###构造页面元素

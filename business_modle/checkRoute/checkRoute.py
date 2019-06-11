@@ -97,6 +97,6 @@ if __name__ == '__main__':
     # https://display.adhudong.com/site_login_ijf.htm?app_key=adhud3fa7ec718584104
     # cr = checkNodeRoute('1', "https://display.adhudong.com/site_login_ijf.htm?app_key=adhueab091a2c0194285")
     # cr = checkNodeRoute('1', "https://display.adhudong.com/site_login_ijf.htm?app_key=adhueab091a2c01942")
-    cr = checkNodeRoute('1', "https://display.adhudong.com/site_login_ijf.htm?app_key=adhud3fa7ec718584104")
+    cr = checkNodeRoute('0', "https://display.eqigou.com/site_login_ijf.htm?app_key=adhu307b689d63514835")
     # print cr.get_template_url()
     cr.join_url()

@@ -7,7 +7,7 @@ SECRET_KEY = 'fdasfdasfds&YUJFGGHNMJKLOL:'
 #定义数据库信息
 db_config = {
     'voyager_test': ("221.122.127.183",5701,"voyager","voyager","voyager","utf8"),
-    'voyager_online': ("123.59.17.121",3306,"voyager","voyager","SIkxiJI5r48JIvPh",'utf8'),
+    'voyager_online': ("123.59.17.42",3306,"voyager","voyager","SIkxiJI5r48JIvPh",'utf8'),
     'doc_online': ("123.59.17.245",3306,"doc","doc_reader","fedh0gkM0Wx9",'utf8'),
 }
 

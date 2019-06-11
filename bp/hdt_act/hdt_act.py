@@ -2,7 +2,7 @@
 # @Time    : 2019/1/28 9:52
 # @Author  : wanglanqing
 
-import traceback
+import traceback,time
 from flask import Blueprint, request, render_template
 from business_modle.relate.adzoneActForm import adzoneActForm
 from business_modle.relate.relateAdzoneAds import relateAdzoneAct
@@ -41,11 +41,12 @@ def templateToAct(page_name):
         act_ids = request.form.get('ad_ids')
         env = request.form.get('env')
         template_kws = request.form.get('template_kws')
+        template_ids = request.form.get('template_ids')
         print type(form.data)
         tta = templateAct(env)
         if template_kws:
             template_kws = template_kws.encode('utf-8')
-        re = tta.get_infos(template_kws, act_ids)
+        re = tta.get_infos(template_kws, act_ids, template_ids)
         if isinstance(re,list) and len(re)>0:
             tta.exportTemplateXls(re)
             return render_template('template/templateToAct.html', ts='true', form=form,re=re,env=env, flag='true')
@@ -66,6 +67,7 @@ def checkRoute():
     if request.method == 'GET':
         return render_template('checkRoute.html',form = form,re=re)
     else:
+        t1 = time.time()
         datas = form.data
         env = datas['env'].strip()
         adzoneLink = datas['adzoneLink'].strip()
@@ -73,8 +75,13 @@ def checkRoute():
         re = cr.join_url()
         if isinstance(re,list) and len(re)>0:
             re_len = len(re)
+            t2 =time.time()
+            print (t2-t1)
             return render_template('checkRoute.html', form=form, re=re, re_type=1,re_len=re_len)
         else:
+            t3 = time.time()
+            print '==========================='
+            print (t3-t1)
             return render_template('checkRoute.html',form = form,re=re,re_type=0)
 
 #创建活动

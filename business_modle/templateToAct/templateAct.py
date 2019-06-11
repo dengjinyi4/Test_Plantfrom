@@ -12,7 +12,7 @@ class templateAct():
         self.db = DbOperations(env_value=env_dict[env])
         pass
 
-    def get_infos(self,template_kws=None,act_ids=None):
+    def get_infos(self,template_kws=None,act_ids=None,template_ids=None):
         result_final = []
         if template_kws:
             if ';' in template_kws:
@@ -70,6 +70,32 @@ class templateAct():
                 result_tmp2 = self.db.execute_sql(act_sql)
                 if result_tmp2:
                     result_final.append(result_tmp2[0])
+
+        if template_ids:
+            # 通过活动id查询模板
+            if ';' in template_ids:
+                template_ids_list = template_ids.split(';')
+                for template_id_item in template_ids_list:
+                    act_sql = """SELECT a.id as '活动id',a.act_name  as '活动名称', t.id as '模板id',t.template_name AS '模板名称',
+                v.location_adress,t.remark FROM base_act_info a
+                INNER JOIN base_template_info t ON a.template_id = t.id
+                LEFT JOIN template_type v ON t.template_type_id = v.id
+                WHERE t.id={};""".format(template_id_item)
+                    result_tmp2 = self.db.execute_sql(act_sql)
+                    if result_tmp2:
+                        for result_tmp3 in result_tmp2:
+                            result_final.append(result_tmp3)
+            else:
+                act_sql = """SELECT a.id as '活动id',a.act_name  as '活动名称', t.id as '模板id',t.template_name AS '模板名称',
+                v.location_adress,t.remark FROM base_act_info a
+                INNER JOIN base_template_info t ON a.template_id = t.id
+                LEFT JOIN template_type v ON t.template_type_id = v.id
+                WHERE t.id={};""".format(template_ids)
+                result_tmp2 = self.db.execute_sql(act_sql)
+                if result_tmp2:
+                    for result_tmp3 in result_tmp2:
+                        result_final.append(result_tmp3)
+
         if result_final:
             return result_final
         else:

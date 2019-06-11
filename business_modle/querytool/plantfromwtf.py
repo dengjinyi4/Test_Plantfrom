@@ -1,7 +1,7 @@
 ﻿#!flask/bin/env python
 #coding:utf-8
 from flask_wtf import Form
-from wtforms import StringField, SelectField, IntegerField, TextAreaField, SubmitField,BooleanField,RadioField,SelectMultipleField,DateTimeField
+from wtforms import StringField, SelectField, IntegerField, TextAreaField, SubmitField,BooleanField,RadioField,SelectMultipleField,DateTimeField,PasswordField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange,Regexp
 from config import sub_systems
 from config import sub_systems,sqls
@@ -12,10 +12,17 @@ class MyForm(Form):
     adzoneClickid = StringField('adzoneClickid', validators=[Length(min=4, max=25)])
     myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
     # submit=SubmitField(u'提交')
+class Mylogin(Form):
+    username = StringField('用户名', validators=[Length(min=1, max=25)])
+    password = PasswordField('密   码', validators=[Length(min=1, max=25)])
+    submit=SubmitField(u'登录')
 class egoubaobei_orderpay(Form):
     order_status=RadioField(u'订单支付状态',choices=[('True',u'支付成功'),('False',u'支付失败'),('ing',u'待支付')],default='True')
     orderid = StringField(u'订单id', validators=[DataRequired(),Length(min=5, max=20,message=u'订单id长度5-20')],render_kw={'placeholder':u'订单id'})
     submit=SubmitField(u'更新')
+class egoubaobei_product(Form):
+    skuid = StringField(u'skuid', validators=[DataRequired(),Length(min=5, max=20,message=u'订单id长度5-20')],render_kw={'placeholder':u'订单id'})
+    submit=SubmitField(u'查找')
 class myredis(Form):
     myenv=RadioField('orderstatus',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
     submit=SubmitField(u'提交')

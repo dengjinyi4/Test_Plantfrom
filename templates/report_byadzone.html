@@ -5,17 +5,28 @@
 
 <script>$(document).ready(function() {$('#report_byadzone2').DataTable();} );</script>
 
+<!--<script>-->
+            <!--var defaultDate = document.querySelectorAll('.date-picker');-->
+            <!--for (var i = 0; i<defaultDate.length; i++) {-->
+                <!--defaultDate[i].valueAsDate = new Date();-->
+            <!--}-->
+<!--</script>-->
+
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>按广告位查询报表</title>
 </head>
 <body>
-<h1>按广告位查询报表</h1>
+
+
+<h1>按广告位查询报表（如果不想按广告位ID查询,广告位ID请输入0）</h1>
 
 <form action="{{url_for('report_byadzone')}}" method="post">
 
-    查询日期: <input type="date"  name="begin_date" value="{{begin_date}}">
+     查询日期:<input type="date" name="begin_date" id="aDate"  value="{{begin_date}}">
+
+
     <br>
     <br>
     广告位ID:<input type="text" name="adzone_id" value="{{adzone_id}}">
@@ -24,9 +35,12 @@
 
     <a id="export" download="report_byadzone.xlsx" href="../static/result/report_byadzone.xlsx">导出</a>
 
+
 <br>
 <br>
 </form>
+
+
 
 <div id="report_byadzone" style="float:left;margin-right:100px;text-align:center">
     <table id="report_byadzone2" class="display" name="report_byadzone2" border="1">
@@ -36,7 +50,9 @@
            <th>小时</th>
            <th>广告位ID</th>
            <th>广告位点击数</th>
+           <th>广告展现数</th>
            <th>广告点击数</th>
+           <th>广告导出率</th>
            <th>小时消耗</th>
            <th>均价</th>
         </tr>
@@ -57,5 +73,15 @@
 </div>
 
 </body>
+<script type="text/javascript">
+   function toDouble(value){
+        return value<10?('0'+value):value
+    }
+    var mydateInput = document.querySelectorAll('#aDate')[0]
+    var date = new Date();
+    var dateString = date.getFullYear() + "-" + toDouble((date.getMonth() + 1)) + "-" + toDouble(date.getDate());
+    mydateInput.value = dateString;
+
+    </script>
 </html>
 {% endblock %}

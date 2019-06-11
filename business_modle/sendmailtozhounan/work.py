@@ -1,15 +1,33 @@
-#encoding:utf-8
+from flask import Flask, render_template, request
+from flask import jsonify
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = "dfdfdffdad"
+
+@app.route('/')
+def index():
+    return render_template('../templates/test.html')
+
+@app.route('/mystring')
+def mystring():
+    return 'my string'
+
+@app.route('/dataFromAjax')
+def dataFromAjax():
+    test = request.args.get('mydata')
+    print(test)
+    return 'dataFromAjax'
+
+@app.route('/mydict', methods=['GET', 'POST'])
+def mydict():
+    d = {'name': 'xmr', 'age': 18}
+    return jsonify(d)
+
+@app.route('/mylist')
+def mylist():
+    l = ['xmr', 18]
+    return jsonify(l)
 
 
-if  __name__ == '__main__':
-    tmpcj=["OFFICE_BUILDDING", "FACTORY", "SCHOOL", "FUNERAL_HOME", "SECURITY", "GOVERNMENT","COMMUNICATION_BUSINESS", "GOVERNMENT_INSTITUTIONS", "LIBRARY", "TESTING_ STATION", "INDUSTRIAL_PARK", "COMPANY","MUSEUM", "CRH_STATION", "WHARF", "BUS_STATION", "PARK", "SERVICE_STATION","HIGH_SPEED_SERVICE_AREA", "TEMPLE", "TRAIN_STATION", "AIRPORT", "SUBWAY_STATION", "PUBLIC_TOILET","AIRPORT", "SUBWAY_STATION", "PUBLIC_TOILET", "HOSPITAL", "SCENICSPOT", "MARKET_PLACE","RESTAURANT", "ENTERTAINMENT_VENUE", "INTERNET_BAR", "SUPERMARKET", "BUILDING_MATERIALS_MARKET", "RETAIL_MARKET",                   "CAR_SHOP", "GYM", "THEATRE", "HOTEL", "GYMNASIUM", "CONFERENCE_EXHIBITION_CENTER","OTHER", "CONFERENCE_EXHIBITION_CENTER", "OTHER", "HOUSING_ESTATE", "COMMUNITY"]
-    print len(tmpcj)
-    tmpcjname=['SCENE_WORKING','SCENE_WORKING',' SCENE_WORKING',' SCENE_WORKING',' SCENE_WORKING',' SCENE_WORKING','SCENE_WORKING',' SCENE_WORKING',' SCENE_WORKING',' SCENE_WORKING',' SCENE_WORKING',' SCENE_WORKING','SCENE_WORKING',' SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING','SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING','SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_TRAVELING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING','SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING','SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING','SCENE_SERVICING',' SCENE_SERVICING',' SCENE_SERVICING',' SCENE_LIVING',' SCENE_LIVING']
-    print len(tmpcjname)
-    tmpdict={}
-    tmlist=[]
-    for i in range(0,47):
-        tmpdict={tmpcj[i]:tmpcjname[i]}
-        tmlist.append(tmpdict)
-    # tmlist.sort()
-    print tmlist
+if __name__ == '__main__':
+    app.run( host="0.0.0.0",port=21333,debug=True,threaded=True)

@@ -1,0 +1,83 @@
+{% extends "base.html"%}
+{% block main %}
+<html>
+    <head>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+    </head>
+    <body>
+        <div id="container" style="min-width:400px;height:400px"></div>
+        <script  language="JavaScript">
+             $(document).ready(function() {
+{#使用js的方法，将中文字符串，转换为list#}
+{#                var s = '{{ rex }}';#}
+{#               var dd = s.split(',');#}
+{#               var aa = [];#}
+{#               var x ;#}
+{#               for (x in dd) {#}
+{#                      aa.push(dd[x]);#}
+{#               };#}
+               var chart = {
+                    type: 'column'
+                };
+               var title = {
+                  text: '订单过滤原因'
+               };
+               var subtitle = {
+                  text: '来源:ES查询结果'
+               };
+               var xAxis = {
+                  categories: {{ rex|safe}},
+                  labels: {
+                     rotation: -45,
+                     style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                     }
+                  }
+               };
+               var yAxis = {
+                  title: {
+                     text: '次'
+                  },
+                  plotLines: [{
+                     value: 0,
+                     width: 1,
+                     color: '#808080'
+                  }]
+               };
+
+               var tooltip = {
+                  valueSuffix: ' '
+               }
+
+               var legend = {
+                  layout: 'vertical',
+                  align: 'right',
+                  verticalAlign: 'middle',
+                  borderWidth: 0
+               };
+
+                var series= [{
+                     name: '互动推',
+                     data: {{rey|safe}},
+                  }
+               ];
+
+               var json = {};
+
+               json.title = title;
+               json.subtitle = subtitle;
+               json.xAxis = xAxis;
+               json.yAxis = yAxis;
+               json.tooltip = tooltip;
+               json.legend = legend;
+               json.series = series;
+               json.chart = chart;
+
+               $('#container').highcharts(json);
+            });
+        </script>
+        </div>
+    </body>
+{% endblock %}
+</html>

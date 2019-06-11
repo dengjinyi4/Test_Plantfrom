@@ -17,6 +17,7 @@
     {#    <input type="submit" value="查询">#}
     {#    {{ render_field(form.env) }}#}
         {{ render_field(form.env) }}
+        {{ render_field(form.template_ids) }}<br>
         {{ render_field(form.template_kws) }}
         <br>
         {{ render_field(form.ad_ids) }}
@@ -38,6 +39,7 @@
     {% if ts == 'true' %}
 {#        <p>{{ re }}</p>#}
         <a id="expBtn" download="templateResult.xlsx" href="/static/result/templateResult.xlsx" >导 出</a>
+        {{ form.data.env.label }}
         <table border="1">
             <tr style="background-color: #66cc66">
                 <th>活动id</th>

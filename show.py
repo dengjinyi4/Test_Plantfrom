@@ -3,7 +3,7 @@
 #version:2018/07/10,增加接口统计视图函数
 import os
 
-from flask import jsonify
+from flask import jsonify,redirect,session
 from flask import Flask,request,render_template,flash
 from business_modle.report import hdtmonitor as m
 from business_modle.testtools import hdt_cssc as cssc
@@ -25,6 +25,7 @@ from business_modle.testtools.cpa_api import *
 from business_modle.querytool.crm_order import *
 from business_modle.testtools.adinfo_collect import *
 from business_modle.testtools.del_minipragram import *
+from business_modle.testtools.auto_activity import *
 from utils.Emar_SendMail_Attachments import *
 from config import mail_template,sqls
 from business_modle.Crm.CrmOrderEffectCheck import Crm
@@ -44,6 +45,10 @@ from bp.TestToolsTracker.ToolsTracker import ToolsTracker
 from business_modle.querytool.report_byadzone import *
 from bp.TestToolsTracker.ToolsTrackerForm import ToolsTrackerForm
 from business_modle.querytool.ddyzinfo import *
+from bp.tools.tools import *
+from bp.login.login import mylogin
+from bp.miniprogram.activity_form import *
+
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'txt') #设置一个专门的类似全局变量的东西
 app = Flask(__name__)
@@ -58,6 +63,9 @@ app.register_blueprint(hdtredis,url_prefix='/hdtredis')
 app.register_blueprint(ocpa,url_prefix='/ocpa')
 app.register_blueprint(miniprogram,url_prefix='/miniprogram')
 app.register_blueprint(testCase,url_prefix='/tc')
+app.register_blueprint(tools,url_prefix='/tools/jobAdReason')
+app.register_blueprint(mylogin,url_prefix='/login')
+app.register_blueprint(tools,url_prefix='/tools')
 
 
 # app.jinja_env.add_extension("chartkick.ext.charts")
@@ -393,18 +401,6 @@ def QueryAppkey():
 
         return render_template("QueryAppkey.html",appkey=appkey,title=title,Adzone_id=Adzone_id,env_value='<option selected="selected">'+env+'</option>')
 
-@app.route('/login', methods=('GET', 'POST'))
-def login():
-    form = ft.MyForm()
-    if form.validate_on_submit():
-        # if form.user.data == 'admin':
-        if form.data['user'] == 'admin':
-            name='admin'
-            return render_template('logintest.html', form=form,name=name)
-        else:
-            return 'Wrong user!'
-    return render_template('logintest.html', form=form)
-
 @app.route('/test/')
 def test():
     return render_template("test.html")
@@ -681,13 +677,49 @@ def report_byadzone():
         begin_date=request.form.get('begin_date')
         adzone_id = request.form.get('adzone_id')
         rd=Report_byadzone(adzone_id,begin_date,False)
-        paras=rd.show_result()
+
+        if adzone_id == '0':
+            paras=rd.show_result2()
+
+        else:
+            paras=rd.show_result()
+
 
         return render_template('report_byadzone.html',paras=paras,begin_date=begin_date,adzone_id=adzone_id)
 
     else:
 
         return render_template('report_byadzone.html')
+
+
+@app.route('/auto_activity/',methods=['get','post'])
+
+def auto_activity():
+
+    title=u'自动化活动管理'
+    form=activity_form()
+
+    ma=manage_activity()
+    re=ma.activity_list()
+
+    if request.method == 'GET':
+
+        return render_template('auto_activity.html', re=re, re_len=range(len(re)), form=form)
+    else:
+
+        form_datas = form.data
+        form_datas.pop('csrf_token')
+        ma.add_activity(form_datas)
+        re =ma.activity_list()
+        return render_template('auto_activity.html', re=re, re_len=range(len(re)), form=form)
+
+
+
+
+
+
+
+
 
 @app.route('/ddyzinfo',methods=['get','post'])
 def ddyzinfo():
@@ -699,8 +731,26 @@ def ddyzinfo():
         pp = YzInfo(userid,env=myenv)
         re = pp.show_result()
         return render_template('ddyzinfo.html',re=re)
+#登录权限判断
+@app.before_request
+def islogin():
+    businessuser=['lishichun','qiuting','zhounan']
+    businessuser1=['houlixiu','meijieyunying']
+    if request.path=='/login/login111/':
+        return None
+    if not session.get('username'):
+        return redirect('/login/login111/')
+    # 报表
+    if (session.get('username') in businessuser) :
+        if (request.path != '/report_byadzone/'):
+            return redirect('/report_byadzone/')
+        # else:
+        #     return redirect('/report_byadzone/')
+        # if ( request.path !='/hdtredis/myredis_status/'):
+        #     return redirect('/hdtredis/myredis_status/')
 
-
+    if (session.get('username') in businessuser1) & (request.path !='/hdtredis/orderr/'):
+        return redirect('/hdtredis/orderr/')
 
 
 if __name__ == '__main__':

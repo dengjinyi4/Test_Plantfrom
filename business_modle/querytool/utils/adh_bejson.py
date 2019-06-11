@@ -34,7 +34,7 @@ class adh_bejson(object):
 
 if __name__=='__main__':
 
-    adh_bejson.trans(['id','name','create_time'],(('4','wx239bfcba6aeb0084','2019-02-15 17:31:04'),('5','wxe65c34b4ec242be','2019-02-16 17:31:04')))
+    print adh_bejson.trans(['id','name','create_time'],(('4','wx239bfcba6aeb0084','2019-02-15 17:31:04'),('5','wxe65c34b4ec242be','2019-02-16 17:31:04')))
 
 
 

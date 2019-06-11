@@ -16,7 +16,7 @@ def order_reson():
                 "k":"托底广告主过滤","l":"商品不存在或不支持cps","m":"商品不在推广期","n":"商品CPS账户保证金账户余额不足","o":"不是微信游戏配置订单",
                 "p":"不是指定的广告订单","q":"ocpa出价过低","r":"ocpa暂停","s":"媒体不支持ocpa","t":"被订单的地域限制(后台)过滤","u":"不在广告位出价范围内",
                 "v":"媒体不支持A3A5广告主通投订单","w":"未找到对应cvr","x":"旧A3A5定向订单","y":"此广告位在该ocpa订单投放范围之外","z":"强推订单不在非强推坑位出现",
-                "A1":"ocpa未找到对应首效果类型","A2":"不是纸巾宝指定广告类型"}
+                "A1":"ocpa未找到对应首效果类型","A2":"不是纸巾宝指定广告类型","A3":"微信流量过滤支付宝广告"}
     return tmp
 def getorder_rs(mydit):
     orderreson=order_reson()
@@ -88,7 +88,7 @@ def orderbylog(zclk):
 def orderbylognew(zclk,env):
     # es=Elasticsearch([{"host":"221.122.127.41"}],port=9200);
     if env=='dev':
-        es=Elasticsearch(["123.59.17.100:9200","123.59.17.221:9200",]);
+        es=Elasticsearch(["123.59.17.100:9200","123.59.17.221:9200",],timeout=1000);
         # es=Elasticsearch(["123.59.17.45:9200","123.59.17.158:9200","221.122.127.101:9200","221.122.127.64:9200","221.122.127.79:9200","221.122.127.83:9200",
         #                     "123.59.17.178:9200","123.59.17.78:9200","123.59.17.112:9200","123.59.18.227:9200"]);
         body={
@@ -111,8 +111,9 @@ def orderbylognew(zclk,env):
             "query" : "B3W1CD6H1IROZUCK81" } }}
         body['query']["query_string"]["query"]=zclk
     # print body
-    time.sleep(3)
-    res = es.search(index="logstash-voyagerjavalog-*", body=body)
+    time.sleep(1)
+    # res = es.search(index="logstash-voyagerjavalog-*", body=body)
+    res = es.search(index="logstash-voyagerjavalogwarn-*", body=body)
     # print res
     tmplist=[]
     for hit in res["hits"]["hits"]:
@@ -167,6 +168,7 @@ def allorderdit(begindate='',enddate='',adzone_id='',ad_order_id='',myenv='',adz
     mydit={}
     # ad_order_id='1993'
     for i in adzone_click_ids:
+        print '处理到第{}个广告位点击id'.format(str(adzone_click_ids.index(i)))
         if myenv=='dev':
             tmpdit=orderbylognew(i[0],'dev')
         else:

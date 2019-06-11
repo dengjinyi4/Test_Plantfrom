@@ -57,6 +57,7 @@
             <li><a href="{{url_for('cpa_api')}}">CPA广告主回调接口测试</a></li>
             <li><a href="{{url_for('render_link')}}">广告主数据收集</a></li>
             <li><a href="{{url_for('del_minipragram')}}">删除小程序相关数据</a></li>
+            <li><a href="{{url_for('auto_activity')}}">自动化活动管理</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -143,6 +144,8 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">亿起发业务<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url_for('Yiqifa.shortJump')}}">短链跳转缓存至redis集群</a></li>
+            <li><a href="{{url_for('egoubaobei.payorder')}}">易购宝贝订单支付</a></li>
+            <li><a href="{{url_for('egoubaobei.getproduct')}}">易购宝贝京东商品</a></li>
             <!--<li><a href="{{url_for('Finace.yiqiFinace')}}">网站主财务结算信息</a></li>-->
             <li role="separator" class="divider"></li>
           </ul>
@@ -159,6 +162,10 @@
         </li>
           <li class="dropdown">
           <a href="{{url_for('test_tools_tracker')}}" >测试平台功能管理<span class="caret"></span></a>
+        </li>
+        </li>
+          <li class="dropdown">
+          <a href="{{url_for('tools.jobReason',page_name='new') }}" >订单过滤原因跟踪<span class="caret"></span></a>
         </li>
       </ul>
 
