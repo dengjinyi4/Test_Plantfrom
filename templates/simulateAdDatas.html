@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block main %}
+{% from "_field.html" import render_field %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<div class="container">
+    <p hidden="hidden">1
+        1.输入广告位id和循环次数；
+        2.每次循环，产生一个广告位点击，一个活动点击；
+        3.每次循环，判断抽奖剩余次数，大于0时，进行抽奖；
+        4.每次循环，抽奖接口返回award_type=7的数据，则调用广告点击
+    </p>
+    <body>
+        <form action="{{ url_for ('act.simulateAdDatas') }}" method="POST">
+            {{ render_field(form.adzoneId,pattern="[0-9]{3,7}") }}<br>
+            {{ render_field(form.loop_count, pattern ="[0-9{1,9}") }}<br>
+            <input type="submit" onclick="query_id()">
+        </form>
+    </body>
+</div>
+</html>
+{% endblock %}

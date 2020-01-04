@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>汇总_广告小时报表数据校验</title>
+</head>
+<body>
+<h1>汇总_广告小时报表数据校验</h1>
+<form action="{{url_for('hour_report.hour_report_order')}}" method="post">
+    校验日期: <input type="date" name="begin_date" value="{{begin_date}}"/>
+    <br>
+    <br>
+    开始小时:<input type="number" name="begin_hour" value="{{begin_hour}}"/>
+    <br>
+    <br>
+    结束小时:<input type="number" name="end_hour" value="{{end_hour}}">.
+    <br>
+    <br>
+    请输入广告订单ID:<input type="text" name="order_id" value="{{order_id}}">
+    <br>
+    <br>
+    <input type="submit" name="submit" value="开始校验"/>
+
+</form>
+
+<br>
+<br>
+<div id="hour_report_order" style="float:left;margin-right:100px;text-align:center">
+    <table id="hour_report_order2" class="display" name="hour_report_order2" border="1">
+        <thead style="background:green">
+        <tr>
+            <th>广告消耗</th>
+            <th>广告(媒体)现金收入</th>
+            <th>广告(媒体)奖励收入</th>
+            <th>广告有效点击次数</th>
+            <th>广告无效点击次数</th>
+            <th>广告废弃点击次数</th>
+            <th>广告有效曝光次数</th>
+            <th>广告无效曝光次数</th>
+            <th>广告废弃曝光次数</th>
+            <th>表单预约_效果数</th>
+            <th>下载_效果数</th>
+            <th>激活_效果数</th>
+            <th>注册_效果数</th>
+            <th>付费_效果数</th>
+            <th>下单_效果数</th>
+            <th>加粉_效果数</th>
+
+
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>{{ re1 }}</td>
+            <td>{{ re2 }}</td>
+            <td>{{ re3 }}</td>
+            <td>{{ re4 }}</td>
+            <td>{{ re5 }}</td>
+            <td>{{ re6 }}</td>
+            <td>{{ re7 }}</td>
+            <td>{{ re8 }}</td>
+            <td>{{ re9 }}</td>
+            <td>{{ re10 }}</td>
+            <td>{{ re11 }}</td>
+            <td>{{ re12 }}</td>
+            <td>{{ re13 }}</td>
+            <td>{{ re14 }}</td>
+            <td>{{ re15 }}</td>
+            <td>{{ re16 }}</td>
+
+
+        </tr>
+        </tbody>
+
+    </table>
+
+
+</div>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+{% endblock %}

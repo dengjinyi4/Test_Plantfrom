@@ -16,10 +16,11 @@ class JobAdReason(object):
         self.jobsql = ""
 
     def get_job_ad_reason_list(self):
-        keys=['id','jobname','ad_order','jobsql','job_status','run_status','have_adzone_click_ids','ES_result']
+        keys=['id','jobname','ad_order','jobsql','job_status','create_time','run_status','have_adzone_click_ids','ES_result']
         # ,if(LENGTH(result)>0,'是','否 ,'have_result'
         list_sql = '''SELECT id,jobname,ad_order,jobsql,
              case job_status when 1 then '有效' when 2 then '无效' END,
+             create_time,
              case run_status when 1 then '停止' when 2 then '正在运行' when 3 then '获取广告位点击id完成' when 4 then '读取es进行中' when 5 then '读取es完成'end,
              IF ((LENGTH(adzone_click_ids) > 0)OR (LENGTH(adzone_click_ids_remark)),'有','无') AS have_adzone_click_ids,
              IF ((LENGTH(result_key)>0) and (LENGTH(result_value)>0),'有','无') as ES_result
@@ -69,6 +70,24 @@ class JobAdReason(object):
         re = self.db.execute_sql(sql)[0]
         return re
 
+    def query_multi_chart(self,ids):
+        sql = '''select result_key,result_value from test.job_ad_reason where id in ({})'''.format(ids)
+        re = self.db.execute_sql(sql)
+        print re
+        re_len = len(re)
+        d = {}
+        for i in range(re_len):
+            re_value = eval(re[i][1])
+            re_key = re[i][0].split(",")
+            re_key_len = len(re_key)
+            for n in range(re_key_len) :
+                if re_key[n] in d:
+                    tmp_value = d[re_key[n]] + re_value[n]
+                    d[re_key[n]] =tmp_value
+                else:
+                    d[re_key[n]] = re_value[n]
+        return d.keys(), d.values()
+
 if __name__=='__main__':
     j = JobAdReason()
-    print j.query_chart(3)[0]
+    print j.query_multi_chart((52))

@@ -24,11 +24,13 @@
             <thead>
                 <tr>
                     <td>订单id</td>
-                    <td>亦庄</td>
-                    <td>上海</td>
-                    <td>华通</td>
+                    <td>订单预扣</td>
+                    <td>亦庄剩余预算</td>
+                    <td>上海剩余预算</td>
+                    <td>华通剩余预算</td>
                     <td>亦庄与上海差异</td>
                     <td>亦庄与华通差异</td>
+                    <td>操作</td>
                     <td>操作</td>
                 </tr>
             </thead>
@@ -41,6 +43,7 @@
                         <!--<td><a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></td>-->
                     {% endfor %}
                         <td><a href="{{url_for('hdt_redis.budget_control',orderno=i[0]|safe,myenv=myenv|safe)}}">查看小时预算</a></td>
+                        <td><a href="{{url_for('hdt_redis.advertiser_balance',orderno=i[0]|safe,myenv=myenv|safe)}}">订单预扣及流水</a></td>
             </tr>
             {% endfor %}
             </tbody>

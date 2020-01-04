@@ -1,0 +1,64 @@
+{% extends "base.html"%}
+
+{% block main %}
+<p hidden="hidden">
+    加粉订单试投新媒体消耗情况
+</p>
+<script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+<script>
+     $('.dataTables-example').dataTable({
+         "language": {
+             "aria": {
+                 "sortAscending": ": activate to sort column ascending",
+                 "sortDescending": ": activate to sort column descending"
+             },
+             "emptyTable": "No data available in table",
+             "tmp_total": "Showing _START_ to _END_ of _TOTAL_ entries",
+             "infoEmpty": "No entries found",
+             "infoFiltered": "(filtered1 from _MAX_ total entries)",
+             "lengthMenu": "Show _MENU_ entries",
+             "search": "Search:",
+             "zeroRecords": "No matching records found",
+             "sUrl": "/static/fonts/zh_CN.json"
+         }
+     });
+
+</script>
+
+<form action="{{url_for('hdt_redis.myredis')}}" method="post">
+
+    <table id="example" class="display" style="width:100%">
+    <thead>
+    <tr>
+        <th>订单ID</th>
+        <th>新媒体总消耗金额</th>
+        <th>操作</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for trcout in tmp_all %}
+
+        {% for k,v in trcout.items() %}
+
+
+    <tr>
+
+        <td>{{k|safe}}</td>
+        <td>{{v|safe}}</td>
+
+        <td><a href="{{url_for('hdt_redis.myredis_hourconsume',orderno=k|safe,myenv=myenv|safe)}}">查看新媒体小时消耗</a></td>
+
+    </tr>
+       {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+<p align="center"></p>
+</form>
+
+
+{% endblock %}

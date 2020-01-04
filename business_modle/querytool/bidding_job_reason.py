@@ -50,10 +50,6 @@ class Job_updateAdzoneclickids(threading.Thread):
 class Jobresult(threading.Thread):
     # def __init__(self,*args,**kwargs):
     def __init__(self,jobid):
-        """
-
-        :rtype : object
-        """
         super(Jobresult,self).__init__()
         self.__flag=threading.Event()
         self.__flag.set()
@@ -162,12 +158,12 @@ class jobreason(object):
 
 if __name__ == '__main__':
 
-    # j=Job_updateAdzoneclickids(4)
+    # j=Job_updateAdzoneclickids(52)
     # j.start()
 
 
 
-    r=Jobresult(4)
+    r=Jobresult(52)
     r.start()
 
     # start = time.time()

@@ -2,36 +2,36 @@
 
 {% block main %}
 
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>手机验证号</title>
-</head>
-<body>
-<h1>验证码信息为</h1>
-<div>
 
+<!--<head lang="en">-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>查找手机验证号</title>-->
+<!--</head>-->
+
+<!--<h1>验证码信息为</h1>-->
+<div>
 <form action="{{url_for('phoneVaildCode')}}" method="post">
-    <input type="radio" id="test" name='env' value="1" checked="checked"/><label for="test">测试环境</label>
-    <input type="radio" id="product" name='env' value="0" /><label for="product">生产环境</label>
-    <input type="submit" value="查询">
+    <!--<input type="radio" id="test" name='env' value="1" checked="checked"/><label for="test">测试环境</label>-->
+    <!--<input type="radio" id="product" name='env' value="0" /><label for="product">生产环境</label>-->
+    <!--<input type="submit" value="查询">-->
+    {{ form1.hidden_tag()}}
+     <table>
+        <tbody>
+            <tr>
+                <td>
+                    {{ form1.csrf_token }}
+                    {{ form1.myenv.label }}: {{ form1.myenv }}
+                </td>
+                <td>{{ form1.mydb.label }}: {{ form1.mydb }}</td>
+                <td>  </td>
+                <td>{{ form1.submit }}</td>
+            </tr>
+        </tbody>
+      </table>
+
 </form>
 </div>
-<script>
-    function checkIt(){
-        console.log('{{ pos }}')
-{#        var pos=#}
-{#        if (({{ case_detail['apiState'] }})==1){#}
-        if (('{{ pos }}')=='0')
-        {
-            product = document.getElementById("product").checked ="checked";
-        } else {
-            test = document.getElementById("test").checked="checked";}
-    }
-    window.onload=checkIt()
 
-</script>
 {#<p>{{ pos }}</p>#}
 <table border="1">
     <tr>
@@ -47,8 +47,6 @@
     </tr>
     {% endfor %}
 </table>
-</body>
-</html>
-</body>
-</html>
+
+
 {% endblock %}

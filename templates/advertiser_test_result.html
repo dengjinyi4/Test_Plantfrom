@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>广告主数据效果收集查询结果</title>
+</head>
+<body>
+
+<h1>广告主效果收集结果查询</h1><br>
+
+<form action="{{url_for('query_result') }}" method="post">
+
+
+<b>广告主数据查询结果:</b>
+
+<br>
+<br>
+
+    <table border="1">
+        <tr>
+            <th>点击唯一标识</th>
+            <th>type</th>
+            <th>用户唯一标识</th>
+            <th>广告位id</th>
+            <th>媒体id</th>
+            <th>广告主id</th>
+            <th>订单id</th>
+            <th>创建时间</th>
+
+        </tr>
+     {%if paras%}
+        {% for row in paras %}
+        <tr>
+            {% for col in row %}
+            <td>{{ col|safe }}</td>
+            {% endfor %}
+
+
+
+        </tr>
+        {% endfor %}
+     {% endif %}
+
+
+    </table>
+</form>
+</body>
+</html>
+
+{% endblock %}

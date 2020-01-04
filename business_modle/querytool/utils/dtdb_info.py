@@ -8,7 +8,7 @@ class DtdbOperations(object):
     def __init__(self, env_value=True):
         if env_value == True:
             #测试环境
-            self.db = MySQLdb.connect(host="221.122.127.183",
+            self.db = MySQLdb.connect(host="101.254.242.12",
                                       port=5701,
                                       db="ditandaka",
                                       user="ditandaka_test",

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable = no"/>
+      <meta content="yes" name="apple-mobile-web-app-capable">
+      <meta content="telephone=no" name="format-detection" />
+      <meta name="apple-touch-fullscreen" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" >
+      <meta name="format-detection" content="telephone=no">
+      <style>
+        body, html {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+        }
+      </style>
+    </head>
+    <body>
+        <h3>用于lpm测试，指定+随机</h3>
+        <h3>广告位id=4945， icon</h3>
+        <h3>广告位id=4947， 下拉</h3>
+        <h3>广告位id=4946， 弹窗</h3>
+        <h3>用于lpm测试，指定+随机</h3>
+        <h3>用于lpm测试，指定+随机</h3>
+        <h3>有返回拦截，广告位id=4911</h3>
+
+{#        <input type="button">点击这里出弹窗</input>#}
+
+    </body>
+    <script>
+
+    window.EmarList = window.EmarList || [];
+
+    // 支持多个广告位
+    EmarList.push({
+      appkey: 'adhuc9606742c9424ae5', //  icon广告位appkey,
+      onComplete: function(emar) {
+      },
+    });
+
+    EmarList.push({
+      appkey: 'adhuffc646a94f8748f9', // 4909  下拉广告位appkey
+      onComplete: function(emar) {
+      },
+    });
+
+    EmarList.push({
+      appkey: 'adhuaa7b40efc3664a77', // 4911  返回广告位appkey
+      onComplete: function(emar) {
+      },
+    });
+
+    EmarList.push({
+      appkey: 'adhu6df5b6f14d474387', //4910 弹窗广告位appkey,弹窗
+      onComplete: function(emar) {
+
+        emar.modal(true);
+
+{#        setTimeout(function() {#}
+{#          emar.modal(false);#}
+{#        }, 4000);#}
+
+      },
+    });
+
+
+    // H5 SDK接入全局只需运行一次
+    (function() {
+        var doc = document,
+            h = doc.getElementsByTagName('head')[0],
+            s = doc.createElement('script');
+        s.async = true;
+        s.src = 'http://h5.gouwubang.com/lpm/emar-lpm.min.js?t=' + (new Date()).valueOf();
+        h && h.insertBefore(s, h.firstChild);
+    })();
+
+    </script>
+</html>

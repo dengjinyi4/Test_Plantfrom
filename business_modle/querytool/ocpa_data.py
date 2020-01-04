@@ -45,6 +45,18 @@ class Ocpa_data(object):
 
         return  time
 
+
+
+#######获取页面选择时间年月yyyymm#############
+
+    def yearmon(self):
+
+        time=datetime.now().strftime("%Y%m")
+
+        return  time
+
+
+
 #######获取页面选择时间yyyy-mm-dd############
 
     def selected_time1(self):
@@ -88,7 +100,7 @@ class Ocpa_data(object):
         return time2.strftime("%Y%m%d")
 
 
-    ##########获取页面选择时间前两天yyyy-mm-dd#############
+##########获取页面选择时间前两天yyyy-mm-dd#############
     def selected2_time1(self):
 
         now=datetime.now()
@@ -96,6 +108,73 @@ class Ocpa_data(object):
         time2 = now - timedelta(days=2)
 
         return time2.strftime("%Y-%m-%d")
+
+
+
+
+##########获取页面选择时间前三天yyyymmdd#############
+    def selected3_time(self):
+
+        now=datetime.now()
+
+        time2 = now - timedelta(days=3)
+
+        return time2.strftime("%Y%m%d")
+
+
+##########获取页面选择时间前两天yyyy-mm-dd#############
+    def selected3_time1(self):
+
+        now=datetime.now()
+
+        time2 = now - timedelta(days=3)
+
+        return time2.strftime("%Y-%m-%d")
+
+
+
+
+
+#################获取配置表中配置延迟时间天数(目前写死7)的前三天############
+
+#############延迟时间前一天###################
+    def delay1(self):
+
+        now=datetime.now()
+
+        time1 = now - timedelta(days=8)
+
+        return time1.strftime("%Y-%m-%d")
+
+
+
+###########################延迟时间前两天########################
+    def delay2(self):
+
+        now=datetime.now()
+
+        time2 = now - timedelta(days=9)
+
+        return time2.strftime("%Y-%m-%d")
+
+
+
+    ##############################延迟时间前三天###############
+    def delay3(self):
+
+        now=datetime.now()
+
+        time3 = now - timedelta(days=10)
+
+        return time3.strftime("%Y-%m-%d")
+
+
+
+
+
+
+
+
 
 
 ############导入当天ocpa_ad_show_log_stat,ocpa_ad_click_log_stat表数据##########
@@ -297,7 +376,9 @@ class Ocpa_data(object):
 
 
 
-    ###############更新cvr_log表################
+
+
+    ###############更新最近三天cvr_log表################
 
     def cvr_data(self):
         url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_2'
@@ -315,6 +396,45 @@ class Ocpa_data(object):
         self.db.execute_sql(sql3)
 
         return "cvr_log表数据导入完成"
+
+
+
+#######更新今天之前的效果数
+    def before_effect(self):
+        url='https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171'
+
+        sql1='''insert into voyagerlog.`stat_ocpa_ad_effect_log{}` (`create_time`, `advertiser_id`, `adzone_id`, `url`, `num`) values('{}','2222559','102','{}','2') '''.format(self.yearmon(),self.selected1_time1(),self.url)
+
+        sql2='''insert into voyagerlog.`stat_ocpa_ad_effect_log{}` (`create_time`, `advertiser_id`, `adzone_id`, `url`, `num`) values('{}','2222559','102','{}','2') '''.format(self.yearmon(),self.selected2_time1(),self.url)
+
+        sql3='''insert into voyagerlog.`stat_ocpa_ad_effect_log{}` (`create_time`, `advertiser_id`, `adzone_id`, `url`, `num`) values('{}','2222559','102','{}','2') '''.format(self.yearmon(),self.selected3_time1(),self.url)
+        self.db.execute_sql(sql1)
+        self.db.execute_sql(sql2)
+        self.db.execute_sql(sql3)
+        return "今天之前的效果中间表数据导入完成"
+
+
+
+###############更新延迟时间之前三天的cvr_log表################
+
+    def cvr_data2(self):
+        url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_2'
+        sqldel1='''DELETE FROM  voyager.cvr_log WHERE cvr_key = '{}' AND cvr_time='{}'  '''.format(self.url2,self.delay1())
+        sqldel2='''DELETE FROM  voyager.cvr_log WHERE cvr_key = '{}' AND cvr_time='{}' '''.format(self.url2,self.delay2())
+        sqldel3='''DELETE FROM  voyager.cvr_log WHERE cvr_key = '{}' AND cvr_time='{}'  '''.format(self.url2,self.delay3())
+        sql1='''INSERT INTO voyager.cvr_log ( `cvr_time`, `day_diff`, `cvr_key`, `cvr`, `create_time`) VALUES('{}','7011','{}','0.1733','{} 10:36:35')'''.format(self.delay1(),self.url2,self.delay1())
+        sql2='''INSERT INTO voyager.cvr_log ( `cvr_time`, `day_diff`, `cvr_key`, `cvr`, `create_time`) VALUES('{}','7011','{}','0.1733','{} 10:36:35')'''.format(self.delay2(),self.url2,self.delay2())
+        sql3='''INSERT INTO voyager.cvr_log ( `cvr_time`, `day_diff`, `cvr_key`, `cvr`, `create_time`) VALUES('{}','7011','{}','0.1733','{} 10:36:35')'''.format(self.delay3(),self.url2,self.delay3())
+        self.db.execute_sql(sqldel1)
+        self.db.execute_sql(sqldel2)
+        self.db.execute_sql(sqldel3)
+        self.db.execute_sql(sql1)
+        self.db.execute_sql(sql2)
+        self.db.execute_sql(sql3)
+
+        return "cvr_log表数据导入完成"
+
+
 
 ########清除问题数据##############
 
@@ -377,15 +497,17 @@ if __name__ == '__main__':
     url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_2'
     Ocpadata= Ocpa_data('20190328',url,url2,env_value=True)
 
-    print Ocpadata.selected_time()
+    print Ocpadata.selected_time1()
 
-    print Ocpadata.selected1_time()
+    print Ocpadata.selected1_time1()
 
-    print Ocpadata.selected2_time()
+    print Ocpadata.selected2_time1()
 
     print Ocpadata.mon()
 
     print Ocpadata.adzonedo()
+
+    print Ocpadata.before_effect
 
 
 

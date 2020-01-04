@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>创建订单</title>
+</head>
+<body>
+   <h1>创建互动推订单</h1>
+
+   <h2>代理商账号/密码:OCPA测试代理商/lyj123456</h2>
+   <form action="{{url_for('create_ad')}}" method="post">
+   请选择订单类型:
+   <input type="radio" name="order_type" value="定向" checked="checked">定向
+   <input type="radio" name="order_type" value="通投">通投
+   <br>
+   <br>
+   请选择所属广告主:<select name="advertiser">
+                  <option value="OCPA测试广告主">OCPA测试广告主</option>
+                  <option value="OCPA测试广告主2" selected>OCPA测试广告主2</option>
+                  <option value="OCPA测试广告主3">OCPA测试广告主3</option>
+                  <option value="OCPA测试广告主4">OCPA测试广告主4</option>
+                  <option value="OCPA测试广告主8">OCPA测试广告主8</option>
+                  <option value="自动化测试广告主">自动化测试广告主</option>
+                  </select>
+   <br>
+   <br>
+   请输入订单预算:<input type="text" name="budget" value="{{budget}}" >元<br>
+   <br>
+   请输入订单出价:<input type="text" name="price" value="{{price}}">元
+   <br>
+   <br>
+   <input type="submit" name="submit" value="提交">
+   <br>
+   <br>
+   创建广告计划结果:{{create_plan}}
+   <br>
+   <br>
+   创建广告订单基本信息结果:{{add_base}}
+   <br>
+   <br>
+   创建广告订单定向信息结果:{{add_directinfo}}
+   <br>
+   <br>
+   创建广告订单创意结果:{{add_creative}}
+   <br>
+   <br>
+   广告订单创建结果:{{draft_order}}
+   <br>
+   <br>
+   广告订单提交审核结果:{{subview_order}}
+   <br>
+   <br>
+   创意审核结果:{{review_creative}}
+   <br>
+   <br>
+   </form>
+   </body>
+</html>
+
+{% endblock %}

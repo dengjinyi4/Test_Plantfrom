@@ -26,6 +26,7 @@ from business_modle.querytool.crm_order import *
 from business_modle.testtools.adinfo_collect import *
 from business_modle.testtools.del_minipragram import *
 from business_modle.testtools.auto_activity import *
+from business_modle.querytool.adv_consume_amount import *
 from utils.Emar_SendMail_Attachments import *
 from config import mail_template,sqls
 from business_modle.Crm.CrmOrderEffectCheck import Crm
@@ -34,6 +35,7 @@ from bp.hdt_act.hdt_act import act
 from bp.hdt_redis.hdt_redis import  hdtredis
 from bp.miniprogram.miniprogram import miniprogram
 from bp.ocpa.ocpa import ocpa
+from bp.hour_report.hour_report import  hour_report
 from bp.test_case.test_case import testCase
 #引用亿起发类
 from bp.yiqifa.finance import *
@@ -43,11 +45,14 @@ from bp.yiqifa.egoubaobei import *
 from business_modle.querytool.orderQueryCreative import *
 from bp.TestToolsTracker.ToolsTracker import ToolsTracker
 from business_modle.querytool.report_byadzone import *
+from business_modle.querytool.crmproduct_info import *
 from bp.TestToolsTracker.ToolsTrackerForm import ToolsTrackerForm
 from business_modle.querytool.ddyzinfo import *
+from business_modle.testtools.create_ad import *
 from bp.tools.tools import *
 from bp.login.login import mylogin
 from bp.miniprogram.activity_form import *
+
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'txt') #设置一个专门的类似全局变量的东西
@@ -61,6 +66,7 @@ app.register_blueprint(egoubaobei,url_prefix='/yiqifa')
 app.register_blueprint(act,url_prefix='/act')
 app.register_blueprint(hdtredis,url_prefix='/hdtredis')
 app.register_blueprint(ocpa,url_prefix='/ocpa')
+app.register_blueprint(hour_report,url_prefix='/hour_report')
 app.register_blueprint(miniprogram,url_prefix='/miniprogram')
 app.register_blueprint(testCase,url_prefix='/tc')
 app.register_blueprint(tools,url_prefix='/tools/jobAdReason')
@@ -135,6 +141,7 @@ def testhightchar():
     (xvalue,data,sql)=tuodi_oneviw.mydbnew(int(day),str(advertiser_id))
     print xvalue,data
     return render_template('ad_by_advertiser_id.html',xvalue=xvalue,d=data,sql=sql)
+
 @app.route('/')
 def index():
     print 'ok'
@@ -540,29 +547,24 @@ def render_link():
         result1 = Advertiser_collect(ad_link,env_value=False)
         ad_click_tag = request.form.get('ad_click_tag')
         utm_click = result1.click_tag()
-        print result1
-        new_url = str(ad_link)+'?utm_source=hudongtui&utm_click='+str(utm_click)
-        paras = result1.show_result()
-        print paras
+        if '?' in ad_link:
+
+           new_url = str(ad_link)+'&utm_source=hudongtui&utm_click='+str(utm_click)
+        else:
+           new_url = str(ad_link)+'?utm_source=hudongtui&utm_click='+str(utm_click)
 
         return render_template("advertiser_test.html",title=title,url=ad_link,new_url=new_url,ad_click_tag=utm_click)
 
 @app.route('/query_result',methods=['POST','GET'])
 def query_result():
     title = u'广告主数据收集(查询结果)'
+    result1 = Advertiser_collect(1, env_value=False)
+    ad_click_tag = request.args.get('ad_click_tag')
+    paras = result1.query_result(ad_click_tag)
     if request.method == 'GET':
-        return render_template('advertiser_test.html',title=title)
+        return render_template('advertiser_test_result.html',title=title,paras=paras)
     else:
-        ad_link = request.form.get('url')
-        ad_click_tag = request.form.get('ad_click_tag')
-        result1 = Advertiser_collect(ad_link,env_value=False)
-        utm_click = result1.click_tag()
-        print result1
-        paras = result1.show_result()
-        new_url = str(ad_link)+'?utm_source=hudongtui&utm_click='+str(utm_click)
-        print paras
-
-        return render_template("advertiser_test.html",title=title,url=ad_link,new_url=new_url,paras=paras,ad_click_tag=utm_click)
+        return render_template("advertiser_test_result.html",title=title,paras=paras)
 
 
 @app.route('/crm/effect_order/',methods=['GET','POST'])
@@ -592,18 +594,25 @@ def del_minipragram():
         return render_template('del_minipragram.html',openid=openid,para=para)
 
 
-@app.route('/phoneVaildCode/',methods=['get','post'])
+@app.route('/phoneVaildCode/',methods=['get', 'post'])
 def phoneVaildCode():
-    if request.method=='GET':
-        pp = phoneVaild(env='1')
-        re = pp.get_valid_code()
-        return render_template('phoneVaildCode.html', re=re,pos='1')
-    else:
-        env = request.values.getlist('env')
-        print env[0]
-        pp = phoneVaild(env=env[0])
-        re = pp.get_valid_code()
-        return  render_template('phoneVaildCode.html',re=re,pos=env[0])
+    myform=ft.phoneVaildCode()
+    if myform.validate_on_submit():
+        myenv=myform.data['myenv']
+        mydb=myform.data['mydb']
+        re=get_phonevaild(myenv, mydb)
+        return render_template('phoneVaildCode.html', form1=myform, re=re)
+    return render_template('phoneVaildCode.html', form1=myform)
+    # if request.method=='GET':
+    #     pp = phoneVaild(env='1')
+    #     re = pp.get_valid_code()
+    #     return render_template('phoneVaildCode.html', re=re,pos='1')
+    # else:
+    #     env = request.values.getlist('env')
+    #     print env[0]
+    #     pp = phoneVaild(env=env[0])
+    #     re = pp.get_valid_code()
+    #     return  render_template('phoneVaildCode.html',re=re,pos=env[0])
 
 
 @app.route('/orderQueryCreative/',methods=['get','post'])
@@ -670,26 +679,75 @@ def test_tools_tracker():
 @app.route('/report_byadzone/',methods=['get','post'])
 
 def report_byadzone():
-
-
-
     if request.method == 'POST':
         begin_date=request.form.get('begin_date')
         adzone_id = request.form.get('adzone_id')
         rd=Report_byadzone(adzone_id,begin_date,False)
-
         if adzone_id == '0':
             paras=rd.show_result2()
-
         else:
             paras=rd.show_result()
-
-
         return render_template('report_byadzone.html',paras=paras,begin_date=begin_date,adzone_id=adzone_id)
+    else:
+        return render_template('report_byadzone.html')
+
+@app.route('/create_ad/',methods=['get','post'])
+
+def create_ad():
+    title=u'创建互动推订单'
+    if request.method == 'POST':
+        order_type=request.form.get('order_type')
+        budget=request.form.get('budget')
+        price=request.form.get('price')
+        advertisername=request.form.get('advertiser')
+        newadvertisername = str(advertisername)
+        print  newadvertisername
+
+        advertiser_dict={'OCPA测试广告主2':2222559,'OCPA测试广告主3':2222560,'OCPA测试广告主4':2222561,'OCPA测试广告主8':2222633,'自动化测试广告主':2222647}
+        print advertiser_dict[newadvertisername]
+        advertiser_id= advertiser_dict[newadvertisername]
+        if order_type=='定向':
+            runtype=1
+        else:
+            runtype=2
+        ca = Create_ad(advertiser_id,runtype,budget,price,True)
+        advertiser_list=ca.advertiser_list()
+        create_plan=ca.create_adplan()
+        ca.validorder()
+        add_base=ca.add_baseinfo()
+        ca.get_orderid()
+        add_directinfo=ca.add_directinfo()
+        ca.validcreative()
+        add_creative=ca.add_creative()
+        draft_order=ca.draft_order()
+        subview_order=ca.subview_order()
+        review_creative=ca.review_creative()
+        return render_template('create_ad.html',advertiser_list=advertiser_list,create_plan=create_plan,add_base=add_base,add_directinfo=add_directinfo,add_creative=add_creative,draft_order=draft_order,subview_order=subview_order,review_creative=review_creative,order_type=order_type,budget=budget,price=price)
+    else:
+        return render_template('create_ad.html')
+
+
+
+
+
+
+
+@app.route('/crmproduct_info/',methods=['get','post'])
+
+def crmproduct_info():
+
+    if request.method=='POST':
+        product_id = request.form.get('product_id')
+        cpi=Crmproduct_info(product_id,False)
+        paras=cpi.show_result()
+
+        return render_template('crmproduct_info.html',paras=paras,product_id=product_id)
 
     else:
+        return render_template('crmproduct_info.html')
 
-        return render_template('report_byadzone.html')
+
+
 
 
 @app.route('/auto_activity/',methods=['get','post'])
@@ -716,11 +774,6 @@ def auto_activity():
 
 
 
-
-
-
-
-
 @app.route('/ddyzinfo',methods=['get','post'])
 def ddyzinfo():
     if request.method == 'GET':
@@ -731,27 +784,121 @@ def ddyzinfo():
         pp = YzInfo(userid,env=myenv)
         re = pp.show_result()
         return render_template('ddyzinfo.html',re=re)
+
+@app.route('/aca/',methods=['POST','GET'])
+def adv_consume_amount():
+    if request.method == 'GET':
+        return render_template('adv_consume_amount.html')
+    else:
+        qdate = str(request.form.get('begin_date')).replace('-','')
+        # print str(qdate).replace('-','')
+        aca = AdvConsumeAmount(qdate)
+        re = aca.query_consume_amount()
+        # print 'swwwww'
+        if isinstance(re,list):
+            return render_template('adv_consume_amount.html', re=re, re_len=len(re),pos=1)
+        else:
+            return render_template('adv_consume_amount.html', re=re,pos=0)
+
+
 #登录权限判断
 @app.before_request
 def islogin():
-    businessuser=['lishichun','qiuting','zhounan']
-    businessuser1=['houlixiu','meijieyunying']
+    businessuser=['lishichun','qiuting','zhounan','zhouying']
+    # 客户运营
+    businessuser1=['houlixiu','yunying','jiangshan','sheqingqing','shicuicui','zhouying','yuanchaoxia']
+    # 活动模板
+    businessuser2=['guoxuchang']
+    #短信验证码
+    businessuser3=['hugengwei']
+
+    #优品购信息查询
+    businessuser4=['zhaoyang']
+
+    #广告主数据收集
+    businessuser5=['yuanchaoxia']
+
+    if (request.path == '/lpm_test/'):
+        return None
+
+    if (request.path == '/lpm_test_order_order/'):
+        return None
+
+    if (request.path == '/lpm_test_order_random/'):
+        return None
+
+    if (request.path == '/lpm_test_zhaojing/'):
+        return None
+
+
     if request.path=='/login/login111/':
         return None
     if not session.get('username'):
         return redirect('/login/login111/')
     # 报表
     if (session.get('username') in businessuser) :
-        if (request.path != '/report_byadzone/'):
+        # if (request.path == '/report_byadzone/' or req；。uest.path=='/hdt_cssc/'):
+        if (request.path == '/report_byadzone/'):
+            return None
+        else:
             return redirect('/report_byadzone/')
-        # else:
-        #     return redirect('/report_byadzone/')
-        # if ( request.path !='/hdtredis/myredis_status/'):
-        #     return redirect('/hdtredis/myredis_status/')
+    if (session.get('username') in businessuser1) :
+        if (request.path == '/hdtredis/orderr/'):
+            return None
+        else:
+            return redirect('/hdtredis/orderr/')
+    if (session.get('username') in businessuser2) :
+        if (request.path == '/act/templateToAct/query/'):
+            return None
+        else:
+            return redirect('/act/templateToAct/query/')
+    if (session.get('username') in businessuser3) :
+        if (request.path == '/phoneVaildCode/'):
+            return None
+        else:
+            return redirect('/phoneVaildCode/')
 
-    if (session.get('username') in businessuser1) & (request.path !='/hdtredis/orderr/'):
-        return redirect('/hdtredis/orderr/')
+    if (session.get('username') in businessuser4):
+
+        if (request.path in('/crmproduct_info/')):
+
+            return None
+        else:
+            return redirect('/crmproduct_info/')
+
+
+    if (session.get('username') in businessuser5):
+
+        if (request.path =='/render_link/'):
+
+            return None
+        else:
+            return redirect('/render_link/')
+
+@app.route('/lpm_test/')
+def lpm_page():
+    return render_template('lpm_test.html')
+
+@app.route('/lpm_test_order_order/')
+def lpm_page2():
+    return render_template('lpm_test_order_order.html')
+
+@app.route('/lpm_test_order_random/')
+def lpm_page3():
+    return render_template('lpm_test_order_random.html')\
+
+@app.route('/lpm_test_zhaojing/')
+def lpm_page4():
+    return render_template('lpm_test_zhaojing.html')
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('page_not_found.html')
 
 
 if __name__ == '__main__':
     app.run( host="0.0.0.0",port=21312,debug=True,threaded=True)
+
+
+
+

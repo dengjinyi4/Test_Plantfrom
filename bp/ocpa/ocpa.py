@@ -114,8 +114,9 @@ def ocpa_data(env=True):
         ocpadata.show_stat2()
 
         ocpadata.show_stat3()
-
+        ocpadata.before_effect()
         ocpadata.cvr_data()
+        ocpadata.cvr_data2()
 
         ocpadata.del_error()
         ocpadata.adzonedo()
@@ -150,7 +151,7 @@ def ocpa_report():
 
 if __name__=='__main__':
 
-    print ocpa_price()
-    print ocpa_order()
-    print ocpa_orderadzone()
-    print ocpa_report()
+    # print ocpa_price()
+    # print ocpa_order()
+    # print ocpa_orderadzone()
+    print ocpa_data()

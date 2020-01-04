@@ -38,15 +38,15 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">测试报表<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="{{url_for('hdtmonitor')}}">互动推监控</a></li>
-            <li><a href="{{url_for('testhightchar',day=10,advertiser_id=153)}}">按照广告主展示</a></li>
-            <li><a href="#">托底广告</a></li>
-            <li><a href="#">托底广告(24)</a></li>
-          </ul>
-        </li>
+        <!--<li class="dropdown">-->
+          <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">测试报表<span class="caret"></span></a>-->
+          <!--<ul class="dropdown-menu">-->
+            <!--<li><a href="{{url_for('hdtmonitor')}}">互动推监控</a></li>-->
+            <!--<li><a href="{{url_for('testhightchar',day=10,advertiser_id=153)}}">按照广告主展示</a></li>-->
+            <!--<li><a href="#">托底广告</a></li>-->
+            <!--<li><a href="#">托底广告(24)</a></li>-->
+          <!--</ul>-->
+        <!--</li>-->
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">测试工具<span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -58,6 +58,7 @@
             <li><a href="{{url_for('render_link')}}">广告主数据收集</a></li>
             <li><a href="{{url_for('del_minipragram')}}">删除小程序相关数据</a></li>
             <li><a href="{{url_for('auto_activity')}}">自动化活动管理</a></li>
+            <li><a href="{{url_for('create_ad')}}">创建互动推订单</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -66,6 +67,7 @@
           <ul class="dropdown-menu">
             <li><a href="{{url_for('hdt_redis.myredis')}}">redis缓存数据-订单预算(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.myredis_status')}}">redis缓存数据-订单状态(互动推)</a></li>
+            <li><a href="{{url_for('hdt_redis.myredis_newmedia')}}">redis缓存数据-加粉订单试投新媒体(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.adzone_limit_diff')}}">redis缓存数据-同一广告位多个订单，三地同步比对(互动推)</a></li>
             <li><a href="{{url_for('voyagerlog1')}}">查询生产环境日志(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.orderresion')}}">查询生产环境日志-订单选中详情(互动推)</a></li>
@@ -74,12 +76,13 @@
             <li><a href="{{url_for('UpdateAdId')}}">更新Advertiser_ID</a></li>
             <li><a href="{{url_for('QueryAppkey')}}">查询Appkey</a></li>
             <li><a href="{{url_for('crm_order')}}">优品购订单明细查询</a></li>
-
-
             <li><a href="{{url_for('effect_order')}}">优品购效果和订单一致性查询</a></li>
             <li><a href="{{url_for('phoneVaildCode')}}">测试环境手机验证码查询</a></li>
             <li><a href="{{url_for('orderQueryCreative') }}">根据订单id、创意查询</a></li>
             <li><a href="{{url_for('report_byadzone')}}">根据广告位查询报表</a></li>
+            <li><a href="{{url_for('adv_consume_amount')}}">查询广告主预扣及消耗</a></li>
+            <li><a href="{{url_for('crmproduct_info')}}">查询优品购商品信息</a></li>
+
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -90,6 +93,7 @@
               <li><a href="{{url_for('act.templateToAct',page_name='query')}}">活动模板互查</a></li>
               <li><a href="{{url_for('act.checkRoute')}}">活动路由检查</a></li>
               <li><a href="{{url_for('act.create_act')}}">创建活动(互动推)</a></li>
+              <li><a href="{{url_for('act.simulateAdDatas')}}">创建活动测试数据</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -100,6 +104,17 @@
                   <li><a href="{{url_for('ocpa.ocpa_order')}}">OCPA订单明细查询</a></li>
                   <li><a href="{{url_for('ocpa.ocpa_data')}}">OCPA数据准备</a></li>
                   <li><a href="{{url_for('ocpa.ocpa_report')}}">OCPA汇总报表</a></li>
+                  <li role="separator" class="divider"></li>
+              </ul>
+          </li>
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">小时汇总报表相关功能<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{url_for('hour_report.hour_report_act')}}">汇总_活动小时报表数据校验</a></li>
+                  <li><a href="{{url_for('hour_report.hour_report_adzone')}}">汇总_广告位小时报表数据校验</a></li>
+                  <li><a href="{{url_for('hour_report.hour_report_order')}}">汇总_广告小时报表数据校验</a></li>
+
+
                   <li role="separator" class="divider"></li>
               </ul>
           </li>
@@ -146,6 +161,7 @@
             <li><a href="{{url_for('Yiqifa.shortJump')}}">短链跳转缓存至redis集群</a></li>
             <li><a href="{{url_for('egoubaobei.payorder')}}">易购宝贝订单支付</a></li>
             <li><a href="{{url_for('egoubaobei.getproduct')}}">易购宝贝京东商品</a></li>
+            <li><a href="http://172.16.105.36:19190/availableRedpacket.do">易购宝贝会员红包余额</a></li>
             <!--<li><a href="{{url_for('Finace.yiqiFinace')}}">网站主财务结算信息</a></li>-->
             <li role="separator" class="divider"></li>
           </ul>

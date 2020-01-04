@@ -38,16 +38,15 @@ class Advertiser_collect(object):
         ad_click_tag
         FROM
         voyagerlog.ad_click_log{}
-        where adzone_id =1610 LIMIT 1 """.format(self.date())
+        where adzone_id =4620 ORDER BY RAND() LIMIT 1 """.format(self.date())
         result1 = self.db.execute_sql(show_sql1)[0][0]
         return  result1
 
-
-    def show_result(self):
-
+    def query_result(self,ad_click_tag):
         show_sql2=r"""
         SELECT
         ad_click_tag,
+        type,
         uid,
         adzone_id,
         media_id,
@@ -56,11 +55,32 @@ class Advertiser_collect(object):
         create_time
         FROM
         voyagerlog.ad_effect_log_{}
-        WHERE ad_click_tag ='{}'""".format(self.get_month(),self.click_tag())
+        WHERE ad_click_tag ='{}'""".format(self.get_month(),ad_click_tag)
 
         result2= self.db.execute_sql(show_sql2)
 
         return  result2
+
+    #
+    # def show_result(self):
+    #
+    #     show_sql2=r"""
+    #     SELECT
+    #     ad_click_tag,
+    #     uid,
+    #     adzone_id,
+    #     media_id,
+    #     advertiser_id,
+    #     ad_order_id,
+    #     create_time
+    #     FROM
+    #     voyagerlog.ad_effect_log_{}
+    #     WHERE ad_click_tag ='{}'""".format(self.get_month(),self.click_tag())
+    #
+    #     result2= self.db.execute_sql(show_sql2)
+    #
+    #     return  result2
+
 
 
 if  __name__=='__main__':
@@ -68,8 +88,7 @@ if  __name__=='__main__':
     advertiser_result=Advertiser_collect("https://rx.ad.haolints.com/101253/index.html",env_value=False)
 
     print advertiser_result.click_tag()
-
-    print advertiser_result.show_result()
+    # print advertiser_result.query_result('E0H2UD9T1JMWOPZPTT')
 
 
 

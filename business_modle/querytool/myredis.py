@@ -10,8 +10,9 @@ def mygetredis(myenv,key):
         r = RedisCluster(startup_nodes=redis_nodes,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
     else:
         redis_nodes=[{"host":'123.59.17.118',"port":'13601'},{"host":'123.59.17.85',"port":'13601'},{"host":'123.59.17.11',"port":'13601'}]
-        redis_nodesh=[{"host":'101.227.103.243',"port":'13601'},{"host":'101.227.103.244',"port":'101.227.103.245'}]
-        redis_nodeht=[{"host":'221.122.127.148',"port":'13601'}]
+        # redis_nodesh=[{"host":'101.227.103.243',"port":'13601'},{"host":'101.227.103.244',"port":'13601'}]
+        redis_nodesh=[{"host":'123.59.17.11',"port":'13601'},{"host":'123.59.17.118',"port":'13601'},{"host":'123.59.17.120',"port":'13601'}]
+        redis_nodeht=[{"host":'123.59.17.11',"port":'13601'},{"host":'123.59.17.118',"port":'13601'},{"host":'123.59.17.120',"port":'13601'}]
         r = RedisCluster(startup_nodes=redis_nodes,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
         rsh = RedisCluster(startup_nodes=redis_nodesh,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
         rht = RedisCluster(startup_nodes=redis_nodeht,max_connections=30,decode_responses=True,skip_full_coverage_check=True)
@@ -55,13 +56,13 @@ def mygetredis(myenv,key):
                 # print j
                 if (i in(mybudgetsh)) and (i in (mybudgetht)):
                     # 如果有差异放到单独一个列表中
-                    tmpdict=(i,float(j)/100000,float(mybudgetsh[i])/100000,float(mybudgetht[i])/100000,(float(j)-float(mybudgetsh[i]))/100000,(float(j)-float(mybudgetht[i]))/100000)
+                    tmpdict=(i,float(r.get('voyager:budget_all:'+str(i)))/100,float(j)/100000,float(mybudgetsh[i])/100000,float(mybudgetht[i])/100000,(float(j)-float(mybudgetsh[i]))/100000,(float(j)-float(mybudgetht[i]))/100000)
                     if float(j)-float(mybudgetsh[i])>0:
                         tmp_budgetdis.append(tmpdict)
                     else:
                         tmp_budget.append(tmpdict)
                 else:
-                    tmpdict=(i,float(j)/100000,0,0,float(j)/100000,float(j)/100000)
+                    tmpdict=(i,float(r.get('voyager:budget_all:'+str(i)))/100,float(j)/100000,0,0,float(j)/100000,float(j)/100000)
                     tmp_budget.append(tmpdict)
             # 有差异的在前面显示
             tmp_budget=tmp_budgetdis+tmp_budget
@@ -87,6 +88,49 @@ def mygetredis(myenv,key):
         for k,v in mycost.items():
             tmplist.append({k:v})
         return tmplist
+
+    #查看加粉订单新媒体消耗
+
+    elif key=='voyager:new:media:budget':
+
+
+        myconsume=r.hgetall(key)
+        tmp_total=[]
+
+        for k,v in myconsume.items():
+            v=float(v)/100000
+            tmp_total.append({k:v})
+
+        return tmp_total
+
+    ##查看加粉订单新媒体小时消耗
+    elif 'voyager:new:media:budget:hour' in key:
+
+        # key='voyager:new:media:budget:hour_15 23390'
+        key1=key.split(' ')
+        # print key1[0]
+
+
+        hourconsume=r.hget(key1[0],key1[1])
+
+        if hourconsume:
+
+           finalhourconsume=float(hourconsume)/100000
+
+        else:
+            finalhourconsume=0
+
+        return finalhourconsume
+
+
+
+
+
+
+
+
+
+
     # 小时预算
     else:
         mybudget=r.hgetall(key)
@@ -115,8 +159,9 @@ if __name__ == '__main__':
     redis_nodes=[{"host":'101.254.242.12',"port":'17001'},]
     # 生产
     # redis_nodes=[{"host":'123.59.17.118',"port":'13601'},{"host":'123.59.17.85',"port":'13601'},{"host":'123.59.17.11',"port":'13601'}]
-    # tmp=mygetredis('111','voyager:ocpa_adzones')
     tmp_list=mygetredis('dev','voyager:budget')
+    # tmp_list=mygetredis('dev','voyager:new:media:budget:hour_16 29702')
+    print tmp_list
     # print tmp_list
 
     # tmplist=['a','b','c','d','e','f','g','h','j','k']

@@ -16,20 +16,34 @@ class DbOperations(object):
     def __init__(self, env_value=True):
         if env_value == True:
             #测试环境
-            self.db = MySQLdb.connect(host="221.122.127.183",
+            print "测试环境"
+            self.db = MySQLdb.connect(host="172.16.105.12",
                                        port=5701,
                                        db="voyager",
                                        user="voyager",
                                        passwd="voyager",
                                        charset = 'utf8')
-        else:
-            #生产环境
+        elif env_value== False:
+
+            #生产环境voyager
+            print "生产环境voyager"
             self.db = MySQLdb.connect(host="123.59.17.42",
                                       port=3306,
                                       db="voyager",
-                                      user="voyager",
-                                      passwd="SIkxiJI5r48JIvPh",
+                                      user="voyager_reader",
+                                      passwd="qtwAZz2ozHFOsPD6",
                                       charset='utf8')
+        else:
+            #生产环境voyagerstat
+            print "生产环境voyagerstat"
+            self.db = MySQLdb.connect(host='123.59.17.122',
+                                           port=3306,
+                                           db="voyagerstat",
+                                           user="voyager",
+                                           passwd="SIkxiJI5r48JIvPh",
+                                           charset='utf8')
+
+
         self.cursor = self.db.cursor()
 
     def execute_sql(self, sql):
@@ -42,6 +56,16 @@ class DbOperations(object):
             return results
         except Exception as e:
             print e
+    # def executestat_sql(self,sql):
+    #     print "执行的sql是:"+sql
+    #     try:
+    #         self.cursor_stat.execute(sql)
+    #         self.db_stat.commit()
+    #         results = self.cursor_stat.fetchall()
+    #         return results
+    #     except Exception as e:
+    #         print e
+
 
     def len_value(self, sql):
         # print '执行的sql是： '+ sql
@@ -67,7 +91,7 @@ class DbOperations(object):
         self.db.rollback()
 
 if __name__=='__main__':
-    db = DbOperations()
+    db = DbOperations(env_value=False)
     sql= "select id from voyager.template_type where name='类型1'"
     re= db.execute_sql(sql)
     print int(re[0][0])

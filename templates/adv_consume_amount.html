@@ -1,0 +1,53 @@
+﻿{% extends "base.html"%}
+{% block main %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>查询广告主预扣及消耗</title>
+    <script>
+        $(document).ready(function() {
+        $('#launchlist').DataTable()} );
+    </script>
+</head>
+<body>
+<h1>查询广告主预扣及消耗</h1>
+<p>选择日期:<span class="glyphicon glyphicon-hand-down"></span></p>
+<form action="{{url_for('adv_consume_amount')}}" method="post">
+
+    <label>日期：</label><input type="date" name="begin_date" value="{{begintime}}" placeholder="只能输入今天以前的日期">
+    <input type="submit" name="submit" value="查询">
+</form>
+{% if pos==1 %}
+<div class="container">
+<table id="launchlist" border="1">
+    <thead style="background-color: #66cc66">
+        <th hidden>x</th>
+        <th>日期</th>
+        <th>广告主</th>
+        <th>订单号</th>
+        <th>预扣(元)</th>
+        <th>消耗(元)</th>
+        <th>差值(元)</th>
+    </thead>
+    <tbody>
+    {% for i in range(re_len) %}
+    <tr>
+        <td hidden>{{ loop.index }}</td>
+        <td>{{ re[i]['consume_date'] }}</td>
+        <td>{{ re[i]['advertiser_id'] }}</td>
+        <td>{{ re[i]['order_id'] }}</td>
+        <td>{{ re[i]['amount'] }}</td>
+        <td>{{ re[i]['consume_amount'] }}</td>
+        <td>{{ re[i]['chazhi'] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>{{ re }}</p>
+{% endif %}
+</div>
+</body>
+</html>
+{% endblock %}

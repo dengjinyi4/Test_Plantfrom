@@ -12,7 +12,7 @@ class con_jd(object):
         self.price=price
 
     URL='https://bizapi.jd.com/api'
-    para={'token':'GhYazhKDTenEMcJ40eVb8685I'}
+    para={'token':'EZ0xUo6l5123AP0lzJ5qO3gqz'}
     para['verify']='False'
     header={'Content-Type':'application/x-www-form-urlencoded'}
     r=r.session()
@@ -29,8 +29,8 @@ class con_jd(object):
             freight=600
         if self.price>=9900:
             freight=0
-        xyg_max_redpacket=int(self.price*0.2*0.5)
-        xyg_sell_price=int(self.price+freight+self.price*0.2)
+        xyg_max_redpacket=int(self.price*0.1*0.8)
+        xyg_sell_price=int(self.price+freight+self.price*0.1)
         return xyg_max_redpacket,xyg_sell_price
 
 
@@ -125,13 +125,7 @@ class product_jd(object):
     #4.5 查询商品上下架状态
     def skuState(self):
         url=self.ur+'/product/skuState'
-        self.para['sku']=self.skuid
-        re=self.r.post(url,data=self.para,headers=self.header)
-        return re
-    #4.5 查询商品上下架状态
-    def skuState1(self,skuid):
-        url=self.ur+'/product/skuState'
-        self.para['sku']=skuid
+        self.para['sku']='258217'
         re=self.r.post(url,data=self.para,headers=self.header)
         return re
     #4.6 验证商品可售性
@@ -151,11 +145,8 @@ class product_jd(object):
     #4.7 查询商品区域购买限制
     def checkAreaLimit(self):
         url=self.ur+'/product/checkAreaLimit'
-        self.para['skuIds']=self.skuid
-        self.para['province']='1 '
-        self.para['city']='72 '
-        self.para['county']='2840 '
-        # self.para['town']=' '
+        self.para['skuIds']='258217'
+        self.para['queryExts']='noReasonToReturn '
         re=self.r.post(url,data=self.para,headers=self.header)
         return re
     # 4.12 查询同类商品
@@ -164,23 +155,6 @@ class product_jd(object):
         self.para['skuId']=self.skuid
         re=self.r.post(url,data=self.para,headers=self.header)
         return re
-    # 4.12 查询同类商品1
-    def getSimilarSku1(self,skuid):
-        url=self.ur+'/product/getSimilarSku'
-        self.para['skuId']=skuid
-        re=self.r.post(url,data=self.para,headers=self.header)
-        return re
-    def checksimilarch(self):
-        tmpdit={}
-        tmplist=['1012439','1012451','1012519','1058908','1315798','1315806','1328750','1328761','1603742','1875992','1875996','1887518','1887526','2141148','2141152','2141153','2141154','2217736','2217746','2217750','2218385','2218387','530233','971067','971592']
-        # tmplist=['996423']
-        for i in tmplist:
-            re=json.loads(self.getSimilarSku1(str(i)).text)['result']
-            tmpdit[str(i)]=re
-        fo = open("jd.txt", "w")
-        fo.write(str(tmpdit))
-        fo.close()
-        print tmpdit
     #5.1 查询商品售卖价
     def getSellPrice(self,mysku):
         url=self.ur+'/price/getSellPrice'
@@ -189,7 +163,7 @@ class product_jd(object):
         re=self.r.post(url,data=self.para,headers=self.header)
         # print re.text
         return re
-    #5.1 查询商品售价
+    #5.1 查询商品售卖价
     def getSellPrice1(self):
         url=self.ur+'/price/getSellPrice'
         self.para['sku']=self.skuid
@@ -204,58 +178,6 @@ class product_jd(object):
         self.para['area']='1_0_0'
         re=self.r.post(url,data=self.para,headers=self.header)
         print re.text
-        return re
-    #11、	信息推送api接口
-    def getNewStockById(self):
-        url=self.ur+'/message/get'
-        self.para['type']='4 '
-        re=self.r.post(url,data=self.para,headers=self.header)
-        print re.text
-        return re
-    # 8.1 查询余额 jd余额
-    def getUnionBalance(self):
-        url=self.ur+'/price/getUnionBalance'
-        self.para['pin']='亿玛VOP '
-        self.para['type']='1 '
-        re=self.r.post(url,data=self.para,headers=self.header)
-        # print re.text
-        return re
-    # 8.2 查询余额变动明细
-    def getBalanceDetail(self):
-        url=self.ur+'/price/getBalanceDetail'
-        re=self.r.post(url,data=self.para,headers=self.header)
-        # print re.text
-        return re
-    # 7.8 查询订单详情
-    def selectJdOrder(self):
-        url=self.ur+'/order/selectJdOrder'
-        self.para['jdOrderId']=96774943776
-        re=self.r.post(url,data=self.para,headers=self.header)
-        # print re.text
-        return re
-    #7.14 查询拒收订单列表
-    def checkRefuseOrder(self):
-        url=self.ur+'/checkOrder/checkRefuseOrder'
-        self.para['date']='2019-06-04'
-        re=self.r.post(url,data=self.para,headers=self.header)
-        # print re.text
-        return re
-    #9.7 查询服务单明细 参数有问题
-    def getServiceDetailInfo(self):
-        url=self.ur+'/afterSale/getServiceDetailInfo'
-        self.para['param']={'afsServiceId':6101490692,'appendInfoSteps':[1,2,3,4,5]}
-        re=self.r.post(url,data=self.para,headers=self.header)
-        print self.para
-        print re.url
-        # print re.text
-        return re
-    # 7.9 查询配送信息
-    def orderTrack(self):
-        url=self.ur+'/order/orderTrack'
-        self.para['jdOrderId']=96775325697
-        self.para['waybillCode']=1
-        re=self.r.post(url,data=self.para,headers=self.header)
-        # print re.text
         return re
     # 获取各个价格区间的skuid
     def getProduc(self):
@@ -341,8 +263,7 @@ class product_jd(object):
             jd_platform_buy_price=0
             xyg_max_redpacket=0
             xyg_sell_price=0
-            tmp=json.loads(self.getSellPrice(str(i[0])).text)['result'][0]['price']*10
-            jd_platform_buy_price=int(tmp*10)
+            jd_platform_buy_price=int(json.loads(self.getSellPrice(str(i[0])).text)['result'][0]['price']*100)
             jdprice=con_jd(jd_platform_buy_price)
             xyg_max_redpacket,xyg_sell_price=jdprice.getprice()
             if (jd_platform_buy_price!=int(i[1]) or xyg_max_redpacket!=int(i[2]) or xyg_sell_price!=int(i[3])):
@@ -351,35 +272,18 @@ class product_jd(object):
 
 
 if __name__ == '__main__':
-    # price=con_jd(21900)
+    # price=con_jd(1500)
     # print price.getprice()
-    jd=product_jd('96774943776')
-    # 检查同类
-    # jd.checksimilarch()
-    # print jd.checkRefuseOrder().text
-    # 9.7 查询服务单明细
-    # print jd.getServiceDetailInfo().text
-
+    jd=product_jd('180405')
     # jd=product_jd('154248')
     # x=jd.get_jd_goods()
     # 对比价格
-    # print  jd.jd_price_db()
+    print  jd.jd_price_db()
     # print jd.getProduc()
-    # 商品售价价格
     # print jd.getSellPrice1().text
-    # 商品详情
     # print jd.getDetail().text
     # print jd.getSimilarSku().text
-    # 消息推送
     # print jd.getNewStockById().text
-    # 余额明细
-    print jd.getBalanceDetail().text
-    # jd余额
-    # print jd.getUnionBalance().text
-    # 订单详情
-    # print jd.selectJdOrder().text
-    # 配送1
-    # print jd.orderTrack().text
     # print jd.get_productpagenum().text
     # print jd.getpageproduct()
     # print jd.getSkuByPage1().text
@@ -388,11 +292,7 @@ if __name__ == '__main__':
     # print jd.getskucheck()
     # print jd.getSellPrice().text
     # print jd.skuImage().text
-    # 上下架
     # print jd.skuState().text
-    # 可售
-    # print jd.check1().text
-    # 区域可售性
-    # print jd.checkAreaLimit().text
+    # print jd.check().text
     # print re.json()
     # print json.loads(re.content)['result']

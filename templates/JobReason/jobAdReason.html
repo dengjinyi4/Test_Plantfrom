@@ -17,6 +17,11 @@
             margin: 0px 0 0 50px;
         }
 
+        #cmp {
+            display: inline-block;
+            margin: 0px 0 0 50px;
+        }
+
         #searchBox {
             width: 600px;
             padding: 30px;
@@ -92,12 +97,34 @@
         function query_es(q_id){
             var es =new XMLHttpRequest();
             es.onreadystatechange=function(){
-                if (es.readyState == 4 && aaci.status == 200){
+                if (es.readyState == 4 && es.status == 200){
                     setTimeout('window.location.reload()',1000);
                 }
             }
             es.open("POST","query_es?id=" + q_id,true);
             es.send();
+        }
+
+{#    3.获取checked的ids值#}
+        function getCheckedValue(){
+            var checkboxDoms = document.querySelectorAll('.chk');
+            var checkedValue = [];
+            for (k in checkboxDoms) {
+                if (checkboxDoms[k].checked)
+                    checkedValue.push(checkboxDoms[k].value)
+            }
+            return checkedValue
+        }
+
+        {#4. 勾选多个订单后，展示综合图表#}
+        function query_multi_chart(){
+           var ids = getCheckedValue()
+            if (ids.length >0) {
+                window.open("{{ url_for('tools.jobReason',page_name='query_multi_chart')}}" + "?ids=" + ids)
+            }
+            else {
+                alert('请勾选id值')
+            }
         }
     </script>
 </head>
@@ -111,7 +138,8 @@
     {% endfor %}
     {% block page_content %}{% endblock %}
     </div>
-        <a id="search" style="color:#ffffff" class="btn btn-default">新 建</a>
+        <span><a id="search" style="color:#ffffff" class="btn btn-default">新 建</a></span>
+        <span><a id="cmp" onclick="query_multi_chart()"  target="_blank">同一订单查看综合结果</a></span>
         <hr>
         <div class="popup">
             <div class="content">
@@ -175,10 +203,12 @@
             <table id="example" class="table table-bordered table-striped" style="width:100%; border: 1px">
                 <thead style="background-color: #66cc66">
                     <th hidden></th>
+                    <th> </th>
                     <th>Id</th>
                     <th>查询名称</th>
                     <th>订单Ids</th>
                     <th>SQL</th>
+                    <th>创建时间</th>
                     <th>SQL状态</th>
                     <th>ES查询状态</th>
                     <th>广告位点击ID</th>
@@ -188,10 +218,16 @@
                 {% for i in re_len %}
                      <tr>
                         <td hidden>loop.index</td>
+                        {% if re[i]['run_status'] == '读取es完成' %}
+                            <td><input class="chk" type="checkbox" value="{{ re[i]['id'] }}"></td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
                         <td>{{ re[i]['id'] }}</td>
                         <td>{{ re[i]['jobname'] }}</td>
                         <td>{{ re[i]['ad_order'] }}</td>
                         <td>{{ re[i]['jobsql'] }}</td>
+                        <td>{{ re[i]['create_time'] }}</td>
                         <td>{{ re[i]['job_status'] }}</td>
                         <td>{{ re[i]['run_status'] }}</td>
                          {% if  re[i]['have_adzone_click_ids'] == '无' and re[i]['run_status'] == '停止' %}

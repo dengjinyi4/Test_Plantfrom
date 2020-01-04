@@ -12,6 +12,8 @@ from business_modle.checkRoute.checkRouteForm import *
 from business_modle.checkRoute.checkRoute import checkNodeRoute
 from business_modle.querytool.create_template import *
 from business_modle.querytool.myException import *
+from business_modle.simulateAdDatas.simulateAdDatasForm import simulateAdDatasForm
+from business_modle.simulateAdDatas.simulateAdDatas import *
 
 #创建活动蓝图
 act = Blueprint('act', __name__,template_folder='templates')
@@ -135,3 +137,19 @@ def create_act():
         except Exception as e:
             traceback.print_exc()
             return render_template("create_act.html", f_re = e.message)
+
+# 通过广告位造测试数据
+@act.route('simulateAdDatas/',methods=['GET','POST'])
+def simulateAdDatas():
+    form = simulateAdDatasForm()
+
+    if request.method == 'GET':
+        return render_template('simulateAdDatas.html',form=form)
+    else:
+        adzoneId = request.form.get('adzoneId').strip()
+        loop_count = int(request.form.get('loop_count').strip())
+        LAD = LoopAdDatas(adzoneId,loop_count)
+        LAD.start()
+        duration = (50*loop_count/60)+1
+        return '<h>已执行，单次执行约50秒，共需{}分钟，稍后可在数据库查看执行结果</h>'.format(duration)
+

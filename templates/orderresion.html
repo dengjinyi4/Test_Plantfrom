@@ -44,6 +44,9 @@
     </table>
 </form>
         <h1>只查询10个广告位点击id，es不挂的情况下大约40秒返回数据</h1>
+         {% for i in advertiser_deduction%}
+        <li>订单投放时间为：{{i[0]|safe}}  金额：{{i[1]|safe}} 投放状态：{{i[2]|safe}}</li>
+        {% endfor %}
     {% for i in mydata1%}
         <li>{{i|safe}}: <font color="red" >{{mydata1[i]|safe}}</font>次</li>
 

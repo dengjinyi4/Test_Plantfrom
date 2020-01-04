@@ -5,9 +5,10 @@ CSRF_ENABLED = True
 SECRET_KEY = 'fdasfdasfds&YUJFGGHNMJKLOL:'
 
 #定义数据库信息
+# 'voyager_test': ("221.122.127.183", 5701, "voyager", "voyager", "voyager", "utf8"),
 db_config = {
-    'voyager_test': ("221.122.127.183",5701,"voyager","voyager","voyager","utf8"),
-    'voyager_online': ("123.59.17.42",3306,"voyager","voyager","SIkxiJI5r48JIvPh",'utf8'),
+    'voyager_test': ("172.16.105.12",5701,"voyager","voyager","voyager","utf8"),
+    'voyager_online': ("123.59.17.42",3306,"voyager","voyager_reader","qtwAZz2ozHFOsPD6",'utf8'),
     'doc_online': ("123.59.17.245",3306,"doc","doc_reader","fedh0gkM0Wx9",'utf8'),
 }
 
@@ -25,9 +26,11 @@ sub_systems ={
 
 
 #version_tracker的sql
+#2019/09/25 增加获取需求提出者的sql
 sqls = {
     'group' : "select id, name from test.group where status=1;",
     'applicant' : "select id, ch_name from test.user where status=1 and role in (1,3) ",#and group_id=",
+    'required' : "select id, ch_name from test.user where status=1 and role in (4,5) ",#and group_id=",
     'approver' : "select id, ch_name from test.user where status=1 and role=3 ",
     'tester': "select ch_name, ch_name from test.user where status=1 and role=2 ",
     'jenkins_job' : "select id, name from test.jenkins_job where group_id=1 and status=1 ",

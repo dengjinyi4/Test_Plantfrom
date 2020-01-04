@@ -15,7 +15,7 @@ tools = Blueprint('tools',
                   template_folder='template'
                   )
 
-@tools.route('/JobAdReason/<any(new,query_click_id,query_es,query_chart):page_name>',methods=['POST','GET'])
+@tools.route('/JobAdReason/<any(new,query_click_id,query_es,query_chart,query_multi_chart):page_name>',methods=['POST','GET'])
 def jobReason(page_name):
     form = JobAdReasonForm()
     jar = JobAdReason()
@@ -45,6 +45,17 @@ def jobReason(page_name):
         case_list_righ = str(aa).replace('u\'', '\'')
         dd = case_list_righ.decode("unicode-escape")
         return render_template('JobReason/JobReasonChart.html', rex=dd,rey=re[1])
+    elif request.method == 'GET' and page_name == 'query_multi_chart':
+        ids = request.args.get('ids')
+        if ids:
+            re = jar.query_multi_chart(ids)
+            aa = re[0]
+            # 把中文字符串，转换为数组
+            case_list_righ = str(aa).replace('u\'', '\'')
+            dd = case_list_righ.decode("unicode-escape")
+            return render_template('JobReason/JobReasonChart.html', rex=dd,rey=re[1])
+        else:
+            return '<p>ids参数，传点值吧，比如1,2,3</p>'
     else:
         re = jar.get_job_ad_reason_list()
         return render_template('JobReason/jobAdReason.html', form=form,re=re, re_len=range(len(re)))

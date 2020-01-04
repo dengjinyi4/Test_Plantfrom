@@ -4,7 +4,7 @@ from openpyxl import Workbook
 
 def myc():
     # db = mysql.connect(host='221.122.127.183',user='voyager',passwd='voyager',db='voyager',port=5701,charset='utf8')
-    db = mysql.connect(host='221.122.127.183',user='voyager',passwd='voyager',db='test',port=5701,charset='utf8')
+    db = mysql.connect(host='172.16.105.12',user='voyager',passwd='voyager',db='test',port=5701,charset='utf8')
     db.autocommit(True)
     myc=db.cursor()
     return myc,db
@@ -36,7 +36,7 @@ def exportXls(result):
     #处理传入的sql查询结果，把表头insert到result[0][0]
     if len(result)>0:
         result = list(result)
-        result.insert(0,(u'id',u' 业务组',u'项目',u'开发' ,u'测试',u'版本',u'描述', u'上线时间'))
+        result.insert(0,(u'id',u' 业务组',u'项目',u'需求' ,u'开发' ,u'测试',u'版本',u'描述', u'上线时间'))
         row = len(result)
         wb = Workbook()
         ws = wb.active
@@ -50,10 +50,11 @@ def getlanuchlist(year,month,group_id, tester_name):
     day_end = '%d-%02d-%02d' % (year, month, monthRange)
     # tmpsql='''SELECT `id`, case when `group`= 1 then '互动推' else '其他' end, case when `status`= 1 then '上线成功' else '未知' end , `project`, `src_version`, `Changes`, `createtime`, `updatetime`
     # from voyagerlog.launchlist where createtime>'%s' and createtime<'%s'''%(day_begin+' 00:00:00',day_end+' 23:59:59\'')+'order by createtime desc '
-    tmpsql='''SELECT v.id,g.name 业务组,j.name 项目,u.ch_name 开发 ,
+    tmpsql='''SELECT v.id,g.name 业务组,j.name 项目, r.ch_name 需求,u.ch_name 开发 ,
         v.tester 测试,v.version,v.v_desc,v.create_time from test.version_tracker v
         INNER JOIN  test.group  g on v.group_id=g.id
         INNER JOIN test.jenkins_job j on v.job_id=j.id
+        left JOIN test.user r on v.required_id=r.id
         INNER JOIN test.user u on v.applicant_id=u.id
         where g.status=1 and '''#g.id=%s and create_time>'%s' and create_time<'%s'''%(group_id,day_begin+' 00:00:00',day_end+' 23:59:59\'')+'order by create_time desc '
     if tester_name == 'ALL':

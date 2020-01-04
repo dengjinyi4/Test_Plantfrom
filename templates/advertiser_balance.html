@@ -1,0 +1,126 @@
+{% extends "base.html"%}
+
+{% block main %}
+<p hidden="hidden">
+订单预扣及流水
+</p>
+        <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+                <script>
+        $(document).ready(function() {
+    $('#example1').DataTable();
+} );</script>
+                        <script>
+        $(document).ready(function() {
+    $('#manager').DataTable();
+} );</script>
+<script>
+     $('.dataTables-example').dataTable({
+         "language": {
+             "aria": {
+                 "sortAscending": ": activate to sort column ascending",
+                 "sortDescending": ": activate to sort column descending"
+             },
+             "emptyTable": "No data available in table",
+             "tmp_total": "Showing _START_ to _END_ of _TOTAL_ entries",
+             "infoEmpty": "No entries found",
+             "infoFiltered": "(filtered1 from _MAX_ total entries)",
+             "lengthMenu": "Show _MENU_ entries",
+             "search": "Search:",
+             "zeroRecords": "No matching records found",
+             "sUrl": "/static/fonts/zh_CN.json"
+         }
+     });
+
+</script>
+       <p style="color:red"><b>广告主广告订单预扣款</b></p>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>广告主id</th>
+                <th>订单id</th>
+                <th>预付金额</th>
+                <th>消耗金额</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th>比例</th>
+                <th>是否结算</th>
+            </tr>
+        </thead>
+         <tbody>
+          {% for trcout in order_balance_pre_deduction %}
+           <tr>
+            {% for j in trcout%}
+              <td>{{j|safe}}</td>
+            {% endfor %}
+           </tr>
+           {% endfor %}
+         </tbody>
+    </table>
+       <p style="color:red"><b>广告主账户流水</b></p>
+    <table id="example1" class="display" style="width:100%">
+        <thead>
+            <tr>
+
+                <th>广告主id</th>
+                <th>订单id</th>
+                <th>描述</th>
+                <th>是否回款</th>
+                <th>金额</th>
+                <th>余额</th>
+                <th>现金加奖励</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
+            </tr>
+        </thead>
+         <tbody>
+          {% for trcout in order_balance_log %}
+           <tr>
+                <td>{{trcout[0]|safe}}</td>
+                <td>{{trcout[1]|safe}}</td>
+                <td>{{trcout[2]|safe}}</td>
+                <td>{{trcout[3]|safe}}</td>
+                <td>{{trcout[4]|safe}}</td>
+                <td>{{trcout[5]|safe}}</td>
+                <td>{{trcout[6]|safe}}</td>
+                <td>{{trcout[7]|safe}}</td>
+                <td>{{trcout[8]|safe}}</td>
+           </tr>
+           {% endfor %}
+         </tbody>
+    </table>
+        <p style="color:red"><b>前台操作日志表</b></p>
+
+    <table id="manager" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>广告主id</th>
+                <th>广告主名称</th>
+                <th>订单id</th>
+                <th>操作</th>
+                <th>变更项目</th>
+                <th>变更前</th>
+                <th>变更后</th>
+                <th>ip</th>
+                <th>操作时间</th>
+            </tr>
+        </thead>
+         <tbody>
+          {% for trcout in manager_log %}
+           <tr>
+                <td>{{trcout[0]|safe}}</td>
+                <td>{{trcout[1]|safe}}</td>
+                <td>{{trcout[2]|safe}}</td>
+                <td>{{trcout[3]|safe}}</td>
+                <td>{{trcout[4]|safe}}</td>
+                <td>{{trcout[5]|safe}}</td>
+                <td>{{trcout[6]|safe}}</td>
+                <td>{{trcout[7]|safe}}</td>
+                <td>{{trcout[8]|safe}}</td>
+           </tr>
+           {% endfor %}
+         </tbody>
+    </table>
+{% endblock %}

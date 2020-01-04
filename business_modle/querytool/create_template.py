@@ -118,7 +118,8 @@ class TemplateActCreation(object):
             "templateName": templateName,
             "templateStyleUrl" : templateStyleUrl,
             "templateStyleImage" : "https://img3.adhudong.com/template/201802/25/2c6f4700db7982447348db4d0960e3ad.png",
-            "remark":template_conf_items
+            "remark":template_conf_items,
+            "supportPop":1
         }
         re = self.s.post(post_url, data=json_body)
 
@@ -263,8 +264,8 @@ class TemplateActCreation(object):
     def adzone_act(self):
         dsql=r"delete from voyager.adzone_act where adzone_id in ({});".format(self.adzoneId)
         self.db.execute_sql(dsql)
-        isql=r'''INSERT  INTO voyager.adzone_act (adzone_id,act_id,act_begin_time, act_end_time,priority ) VALUES
-            ( '{}','{}','2018-06-20 00:00:00', '2019-09-21 00:00:00', '1' );'''.format(self.adzoneId, self.get_actId())
+        isql=r'''INSERT  INTO voyager.adzone_act (adzone_id,act_id,act_time,priority ) VALUES
+            ( '{}','{}','0',  '1' );'''.format(self.adzoneId, self.get_actId())
         self.db.execute_sql(isql)
         keysql = '''select app_key from voyager.base_adzone_info where id in ({})'''.format(self.adzoneId)
         key_re = self.db.execute_sql(keysql)

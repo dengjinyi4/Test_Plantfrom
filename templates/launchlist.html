@@ -37,6 +37,7 @@
                 <th>id</th>
                 <th>业务组</th>
                 <th>项目</th>
+                <th>需求</th>
                 <th>开发</th>
                 <th>测试</th>
                 <th>版本</th>
@@ -50,7 +51,11 @@
             <tr>
                 <td style="display: none">{{ loop.index }}</td>
                 {% for i in trcout %}
-                    <td>{{i|safe}}</td>
+                    {% if i == None %}
+                        <td> -- </td>
+                    {% else %}
+                        <td>{{i|safe}}</td>
+                    {% endif %}
                 {% endfor %}
                 <td><a href="{{url_for('getlanuch',id=trcout[0]|safe)}}">编辑</a></td>
             </tr>

@@ -35,6 +35,7 @@ function setSecond(obj){
     sec.options[13] = new Option("voyager.ad.passport_static","976");
     sec.options[14] = new Option("voyager.ad.www","977");
     sec.options[15] = new Option("voyager.display_node","978");
+    sec.options[16] = new Option("voyager.adventure_comntrol","1073");
   }if(val == '2'){
     var sec = document.getElementById('job_id');
     $("#job_id").find("option").remove();
@@ -72,6 +73,7 @@ function setSecond(obj){
     sec.options[31] = new Option("cdp-cdpapi","1057");
     sec.options[32] = new Option("cdp-cdp-static","1058");
     sec.options[33] = new Option("yiqifa-blditan","1060");
+    sec.options[34] = new Option("yiqifa-gouwuke","1081");
 
 
   }
@@ -114,8 +116,25 @@ function setSecond(obj){
     sec.options[33] = new Option("egou-api.act","1055");
     sec.options[34] = new Option("egou-fx","1056");
     sec.options[35] = new Option("egou-ad","1059");
-    sec.options[36] = new Option("normandy-services-17420","1061");
-    sec.options[37] = new Option("normandy-hongbao-17430","1062");
+    sec.options[36] = new Option("normandy-services","1061");
+    sec.options[37] = new Option("normandy-hongbao","1062");
+    sec.options[38] = new Option("易购宝贝-IOS","1063");
+    sec.options[39] = new Option("易购宝贝-安卓","1064");
+    sec.options[40] = new Option("易购宝贝-小程序","1065");
+    sec.options[41] = new Option("demand.chinayoupin.com","1066");
+    sec.options[42] = new Option("admin.chinayoupin.com","1067");
+    sec.options[43] = new Option("normandy-dealerapi","1068");
+    sec.options[44] = new Option("normandy-dealermanager","1069");
+    sec.options[45] = new Option("normandy-middleground","1070");
+    sec.options[46] = new Option("egou-api-hongbao","1071");
+    sec.options[47] = new Option("normandy-scheduler","1072");
+    sec.options[48] = new Option("egou-recommend","1074");
+    sec.options[49] = new Option("egou-gouwubang","1075");
+    sec.options[50] = new Option("egou-cormorant","1076");
+    sec.options[51] = new Option("egou-www ","1077");
+    sec.options[52] = new Option("egou-baobei","1078");
+    sec.options[53] = new Option("egou-club","1079");
+    sec.options[54] = new Option("egou-hongbao","1080");
     }
 }
 </script>
@@ -133,6 +152,7 @@ function setSecond(obj){
                   </td>
             </tr>
             {{ render_field(form.job_id) }}
+            {{ render_field(form.required_id) }}
             {{ render_field(form.applicant_id) }}
             {{ render_field(form.approver) }}
             {{ render_field(form.ol_type) }}

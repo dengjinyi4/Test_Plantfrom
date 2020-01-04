@@ -1,0 +1,10 @@
+258,fail,user.union.wxmin.get
+35,success,ad.list.get
+237,success,user.union.order.list
+68,success,ad.list.get
+61,success,user.pop.community.address.list
+196,success,user.union.pocket.summary
+496,success,user.m.authentication.get
+27,success,ad.list.get
+411,success,https%3A%2F%2Fapi.gouwubang.com%2Fwx%2Fdopay.htm
+65,success,user.union.share.add

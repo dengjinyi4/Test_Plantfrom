@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>汇总_广告位小时报表数据校验</title>
+</head>
+<body>
+<h1>汇总_广告位小时报表数据校验</h1>
+<form action="{{url_for('hour_report.hour_report_adzone')}}" method="post">
+    校验日期: <input type="date" name="begin_date" value="{{begin_date}}"/>
+    <br>
+    <br>
+    开始小时:<input type="number" name="begin_hour" value="{{begin_hour}}"/>
+    <br>
+    <br>
+    结束小时:<input type="number" name="end_hour" value="{{end_hour}}">.
+    <br>
+    <br>
+    请输入广告位ID:<input type="text" name="adzone_id" value="{{adzone_id}}">
+    <br>
+    <br>
+    <input type="submit" name="submit" value="开始校验"/>
+
+</form>
+
+<br>
+<br>
+<div id="hour_report_adzone" style="float:left;margin-right:100px;text-align:center">
+    <table id="hour_report_adzone2" class="display" name="hour_report_act2" border="1">
+        <thead style="background:green">
+        <tr>
+            <th>广告位有效点击量</th>
+            <th>广告位无效点击量</th>
+            <th>广告(媒体)现金收入</th>
+            <th>广告(媒体)奖励收入</th>
+            <th>广告有效曝光量</th>
+            <th>广告有效点击量</th>
+            <th>谢谢参与次数</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>{{ re1 }}</td>
+            <td>{{ re2 }}</td>
+            <td>{{ re3 }}</td>
+            <td>{{ re4 }}</td>
+            <td>{{ re5 }}</td>
+            <td>{{ re6 }}</td>
+            <td>{{ re7 }}</td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+
+</div>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+{% endblock %}

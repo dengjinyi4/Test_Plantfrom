@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable = no"/>
+      <meta content="yes" name="apple-mobile-web-app-capable">
+      <meta content="telephone=no" name="format-detection" />
+      <meta name="apple-touch-fullscreen" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black" >
+      <meta name="format-detection" content="telephone=no">
+      <style>
+        body, html {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+        }
+      </style>
+    </head>
+    <body>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+        <h1>用于lpm测试</h1>
+    </body>
+    <script>
+
+    window.EmarList = window.EmarList || [];
+
+    // 支持多个广告位
+    EmarList.push({
+      appkey: 'adhu7223a84c6c654f10', // 4904 广告位appkey,
+      onComplete: function(emar) {
+      },
+    });
+
+    EmarList.push({
+      appkey: 'adhu30b80e8d57ac41dc', // 4902  广告位appkey
+      onComplete: function(emar) {
+      },
+    });
+
+    EmarList.push({
+      appkey: 'adhu7bf05888e85b4aa5', //4093 广告位appkey,弹窗
+      onComplete: function(emar) {
+
+        emar.modal(true);
+
+{#        setTimeout(function() {#}
+{#          emar.modal(false);#}
+{#        }, 4000);#}
+
+      },
+    });
+
+
+    // H5 SDK接入全局只需运行一次
+    (function() {
+        var doc = document,
+            h = doc.getElementsByTagName('head')[0],
+            s = doc.createElement('script');
+        s.async = true;
+        s.src = 'http://h5.gouwubang.com/lpm/emar-lpm.min.js?t=' + (new Date()).valueOf();
+        h && h.insertBefore(s, h.firstChild);
+    })();
+
+    </script>
+</html>

@@ -7,7 +7,10 @@ from config import sub_systems
 from config import sub_systems,sqls
 from business_modle.VersionTracker.VersionTracker import VersionTracker
 import datetime,time
-
+class phoneVaildCode(Form):
+    myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
+    mydb=RadioField('mydb',choices=[('normandy',u'易购宝贝'),('voyager',u'互动推')],default='voyager')
+    submit=SubmitField(u'查询')
 class MyForm(Form):
     adzoneClickid = StringField('adzoneClickid', validators=[Length(min=4, max=25)])
     myenv=RadioField('myenv',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
@@ -91,12 +94,14 @@ class VersionTrackerForm(Form):
     vt = VersionTracker()
     group_choices = list(vt.get_group_info(sqls['group']))
     job_name_choices = list(vt.get_jenkins_job(sqls['jenkins_job']))
+    required_name_choices = list(vt.get_jenkins_job(sqls['required']))
     applicant_choices = list(vt.get_user_info(sqls['applicant']))
     tester_choices = list(vt.get_user_info(sqls['tester']))
     approver_choices = list(vt.get_user_info(sqls['approver']))
 
     group_id = SelectField(u'group', validators=[DataRequired()], choices=group_choices, default=1)
     job_id = SelectField(u'job', choices=job_name_choices) #通过group级联选择？
+    required_id = SelectField(u'需求', validators=[DataRequired()], render_kw={'placeholder': u'需求者姓名'}, choices=required_name_choices)  # 是否需要配置
     applicant_id = SelectField(u'开发', validators=[DataRequired()], render_kw={'placeholder': u'开发者姓名'}, choices=applicant_choices)  # 是否需要配置
     approver = SelectField(u'审批人', render_kw={'placeholder': u'审批人姓名'}, choices=approver_choices)  # 是否需要配置
     # ol_type = StringField(u'ol_type', render_kw={'placeholder': u'上线类型'})  #默认为当天时间
@@ -106,6 +111,7 @@ class VersionTrackerForm(Form):
     version = StringField(u'version', validators=[DataRequired(message=u'请输入版本号')], render_kw={'placeholder': u'项目版本号信息','pattern':'[0-9A-Za-z.]*'})  # 是否需要配置,Regexp()
     v_tag = StringField(u'tag', render_kw={'placeholder': u'项目版本tag信息'})  # 是否需要配置
     v_desc = TextAreaField(u'v_desc',render_kw={'placeholder':u'上线内容描述'})
+    # v_reason = SelectField(u'上线分类')
     tester = SelectMultipleField(u'tester', render_kw={'placeholder': u'测试人姓名', 'style': "height:145px"},choices=tester_choices)
     remark = TextAreaField(u'remark', render_kw={'placeholder': u'备注信息'})
     send_email = RadioField(u'是否发送邮件', choices=[('1', u'是'), ('0', u'否')],default=0)

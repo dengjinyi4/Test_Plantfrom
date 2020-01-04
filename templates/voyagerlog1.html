@@ -45,7 +45,8 @@
 <li>筛选条件： <font color="red" >{{order['bid']|safe}}</font> </li>
 <li>筛选出订单列表： <font color="red" >{{order['tad']|safe}}</font> </li>
 <li>竞价因子计算公式： <font color="red" >{{order['exp']|safe}}</font> </li>
-<li>最终筛选出来的订单1111： <font color="red" >{{order['wad']|safe}}</font> </li>
+<li>最终筛选出来的订单1111:<font color="red" >{{order['wad']|safe}}</font> </li>
+<li>最终筛选出来的订单config： <font color="red" >{{order['config']|safe}}</font> </li>
     {% for reson in order['fad'] %}
      <li>广告过滤原因是：<font color="red" >{{reson|safe}}</font> 订单个数为：<font color="red" >{{order['fad'][reson]|count}}</font> 订单列表为：<font color="red" >{{order['fad'][reson]|safe}}</font> </li>
     {% endfor %}

@@ -15,20 +15,24 @@ class DbOperations(object):
 
     def __init__(self, env_value=True):
         if env_value == True:
+            print 'ceshi huanjing'
+            print (env_value)
             #测试环境
-            self.db = MySQLdb.connect(host="221.122.127.183",
+            self.db = MySQLdb.connect(host="172.16.105.12",
                                        port=5701,
                                        db="voyager",
                                        user="voyager",
                                        passwd="voyager",
                                        charset = 'utf8')
         else:
+            print 'shengchan'
+            print (env_value)
             #生产环境,            123.59.17.121,
             self.db = MySQLdb.connect(host="123.59.17.42",
                                       port=3306,
                                       db="voyager",
-                                      user="voyager",
-                                      passwd="SIkxiJI5r48JIvPh",
+                                      user="voyager_reader",
+                                      passwd="qtwAZz2ozHFOsPD6",
                                       charset='utf8')
         self.cursor = self.db.cursor()
 

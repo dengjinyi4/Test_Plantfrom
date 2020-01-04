@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+<!--<script>$(document).ready(function() {$('#hour_report_act2').DataTable();} );</script>-->
+
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>汇总_活动小时报表数据校验</title>
+</head>
+<body>
+<h1>汇总_活动小时报表数据校验</h1>
+<form action="{{url_for('hour_report.hour_report_act')}}" method="post">
+校验日期: <input type="date" name="begin_date" value="{{begin_date}}"/>
+<br>
+<br>
+开始小时:<input type="number" name="begin_hour" value="{{begin_hour}}"/>
+<br>
+<br>
+结束小时:<input type="number" name="end_hour" value="{{end_hour}}">.
+<br>
+<br>
+请输入活动ID:<input type="text" name="act_id" value="{{act_id}}">
+<br>
+<br>
+<input type="submit" name="submit" value="开始校验"/>
+
+</form>
+
+<br>
+<br>
+<div id="hour_report_act" style="float:left;margin-right:100px;text-align:center">
+    <table id="hour_report_act2" class="display" name="hour_report_act2" border="1">
+        <thead style="background:green">
+        <tr>
+          <th>act_show_num校验结果</th>
+          <th>act_adclick_num校验结果</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>{{ re1 }}</td>
+            <td>{{ re2 }}</td>
+        </tr>
+        </tbody>
+
+    </table>
+
+
+</div>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+{% endblock %}

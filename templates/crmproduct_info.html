@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+<script>$(document).ready(function() {$('#crmproducr_info2').DataTable();} );</script>
+
+
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>优品购商品信息查询</title>
+</head>
+<body>
+<h1>优品购商品信息查询</h1>
+
+<form action="{{url_for('crmproduct_info')}}" method="post">
+
+请输入优品购商品ID:<input type="text" name="product_id" value="{{product_id}}">
+
+<input type="submit" name="submit" value="查询">
+
+</form>
+
+<br>
+<br>
+<table id="crmproduct_info2" class="display" name="crmproduct_info2" border="1">
+    <thead style="background:green">
+       <th>商品ID</th>
+       <th>商品名称</th>
+       <th>内容</th>
+       <th>状态</th>
+       <th>类型</th>
+
+    </thead>
+
+    <tbody>
+    {% for row in paras %}
+    <tr>
+        {% for col in row %}
+        <td>{{col|safe}}</td>
+
+        {% endfor %}
+
+    </tr>
+    {% endfor %}
+
+    </tbody>
+
+
+</table>
+</body>
+</html>
+
+
+{% endblock %}

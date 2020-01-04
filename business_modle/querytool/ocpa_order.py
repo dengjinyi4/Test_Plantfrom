@@ -61,7 +61,7 @@ class Ocpa_order(object):
         CONCAT(TRUNCATE(((a.ocpa_consume / a.ocpa_effect_num / 100 - b.payment / 100 ) / (b.payment / 100) ) * 100, 2), '%')
         消耗偏差百分比
         FROM voyager.report_order a, voyager.ad_order b,voyager.advertiser c
-        WHERE a.adorder_id = b.id AND b.advertiser_id = c.id AND a.DATE = '{}' AND a.adorder_id IN (SELECT id FROM ad_order WHERE payment_mode = 4)'''.format(self.begin_time)
+        WHERE  a.adorder_id = b.id AND b.advertiser_id = c.id AND a.DATE = '{}' AND a.adorder_id IN (SELECT id FROM ad_order WHERE payment_mode = 4)'''.format(self.begin_time)
 
 
         result=self.db.execute_sql(show_sql)

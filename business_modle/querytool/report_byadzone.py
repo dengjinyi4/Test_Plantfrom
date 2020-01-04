@@ -34,7 +34,8 @@ class Report_byadzone(object):
         ROUND(
             (adzone_consume / 100) / adclick_num,
             2
-        ) 均价
+        ) 均价,
+        round( (media_income_cash + platform_income)/100,2) 现金消耗
         FROM
         voyager.`report_zone_hour`
         WHERE adzone_id = {}
@@ -62,7 +63,8 @@ class Report_byadzone(object):
         CONCAT(TRUNCATE(( SUM(adclick_num)/SUM(adzone_effect_num) ) * 100, 2), '%') 广告导出率,
 
         SUM(ROUND(adzone_consume / 100, 2)) 小时消耗,
-        ROUND((SUM(adzone_consume) / 100) / SUM(adclick_num),2) 均价
+        ROUND((SUM(adzone_consume) / 100) / SUM(adclick_num),2) 均价,
+        round( (media_income_cash + platform_income)/100,2) 现金消耗
 
         FROM
         voyager.report_zone_hour
