@@ -24,18 +24,27 @@
                 <td><font color="red">{{ form1.enddate.errors[0] }}</font></td>
             </tr>
             <tr>
-                <td>{{ form1.adzone_id.label }}: {{ form1.adzone_id }}</font></td>
-                <td>{{ form1.ad_order_id.label }}: {{ form1.ad_order_id }}</font></td>
+                <td>{{ form1.adzone_id.label }}: {{ form1.adzone_id }} {{ form1.ad_order_id.label }}: {{ form1.ad_order_id }}</td>
+
             </tr>
             <tr>
                     <td><font color="red">{{ form1.adzone_id.errors[0]}}</font></td>
                     <td><font color="red">{{ form1.ad_order_id.errors[0] }}</font></td>
 
             </tr>
+        <tr><td><font size="3" color="red">使用场景：如果广告位点击id字段有超过两个广告位点击，查询条件按照填写的广告位点击id汇总订单不出现原因；否则按照开始时间结束时间广告位id查库获得广告位点击id汇总订单不出现原因</font></td></tr>
             <tr>
-                <td>{{ form1.adzoneClickid.label }}: {{ form1.adzoneClickid }}</font></td>
-                <td>{{ form1.submit }}</td>
+                <td>{{ form1.adzoneClickid.label }}: {{ form1.adzoneClickid }}{{ form1.submit }}</td>
+
             </tr>
+        <tr>
+            <td>{{ form1.pos.label }}: {{ form1.pos}}</font></td>
+
+        </tr>
+        <tr><td ><font size="3" color="red">使用场景：选择复选框 按照开始开始时间，结束时间，广告位id，地域查询lottery表谢谢参与的广告位点击id</font></td></tr>
+        <tr>
+            <td>{{ form1.iszhitiao.label }}: {{ form1.iszhitiao}}{{ form1.region.label }}: {{ form1.region}}</td>
+        </tr>
             <tr>
                 <td><font color="red">{{ form1.adzoneClickid.errors[0] }}</font></td>
 

@@ -1,0 +1,52 @@
+{% extends "base.html"%}
+{% block main %}
+
+<script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+<p hidden="hidden">{{tmpsql|safe}}</p>
+毛利表-联动客户毛利
+<form action="{{url_for('myreport.repotadvliandong')}}" method="post">
+        {{ form.hidden_tag()}}
+       <table class="display" style="width:100%" border="1">
+
+           <tr>
+               <td>{{ form.begindate.label }}{{form.begindate}}{{ form.enddate.label }}{{form.enddate}}</td>
+           </tr>
+           <tr>
+                <td ><font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font></td>
+           </tr>
+           <tr> <td> {{ form.submit() }}</td></tr>
+       </table>
+</form>
+      <table  id="example" class="display" style="width:100%"  border="1">
+
+            <thead>
+                <tr>
+                   {% for i in filed%}
+                    <td>{{i|safe}}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for k in data%}
+            <tr>
+                {% for i in k%}
+                        <td>{{i|safe}}</td>
+                {% endfor %}
+                       <!--<td><a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></td>-->
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    <p align="center"></p>
+
+
+
+<!--{% for i in mybudget %}-->
+<!--<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>-->
+  <!--{% endfor %}-->
+{% endblock %}

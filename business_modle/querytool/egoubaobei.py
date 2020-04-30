@@ -13,6 +13,6 @@ def orderpay(orderno):
     return re
 
 if __name__ == '__main__':
-    re=orderpay('45263152551559169')
+    re=orderpay('106470989663047704')
     print re.text
     print type(str(re.text))

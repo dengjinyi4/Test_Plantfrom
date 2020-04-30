@@ -33,6 +33,7 @@ def get_es(project):
         "bool": {
           "must": [
             { "match": { "message": "egoubbreport.gouwubang.com" } },
+            # { "match": { "geoip.city_name": "Beijing" } },
             # { "match": { "message": "responseStatus" } },
             # {"range": {"@timestamp": {"gt": "now-1h","lt": "now"}}}
           ]
@@ -49,7 +50,68 @@ def get_es(project):
         print e.message
     return res
 
-
+def get_esapishop(project):
+    if project=='apishop':
+        es=Elasticsearch(["221.122.127.68:9200",],timeout=100300);
+        body={
+      "query": {
+        "bool": {
+          "must": [
+            { "match": { "message": "com.egou.api.shop.ShareService - shop.activity.wxcode.get>>>timecost>>>" } },
+            { "match": { "message": "status" } },
+            # {"range": {"@timestamp": {"gt": "now-1h","lt": "now"}}}
+          ]
+        }
+      },
+       "size": 10000,
+       "sort": {
+            "@timestamp": "desc"
+        }
+    }
+    try:
+        res = es.search(index="logstash-egoujavalog-*", body=body)
+    except Exception as e:
+        print e.message
+    return res
+def getmessageapishop(project):
+    tmpmessage=[]
+    if project=='apishop':
+        res=get_esapishop(project)
+        for hit in res["hits"]["hits"]:
+            tmp={}
+            message=hit['_source']['message']
+            tmp['time']=str(message[0]).split(' [')[0]
+            message=json.loads(str(hit['_source']['message'][0]).split('shop.activity.wxcode.get>>>timecost>>>')[1])
+            if 'methodUpCost' in message:
+                tmp['methodUpCost']=message['methodUpCost']
+            else:
+                tmp['methodUpCost']=''
+            if 'methodWxCost' in message:
+                tmp['methodWxCost']=message['methodWxCost']
+            else:
+                tmp['methodWxCost']=''
+            if 'methodTokenCost' in message:
+                tmp['methodTokenCost']=message['methodTokenCost']
+            else:
+                tmp['methodTokenCost']=''
+            if 'uuid' in message:
+                tmp['uuid']=message['uuid']
+            else:
+                tmp['uuid']=''
+            if 'methodStartEndCost' in message:
+                tmp['methodStartEndCost']=message['methodStartEndCost']
+            else:
+                tmp['methodStartEndCost']=''
+            if 'sid' in message:
+                tmp['sid']=message['sid']
+            else:
+                tmp['sid']=''
+            if 'status' in message:
+                tmp['status']=message['status']
+            else:
+                tmp['status']=''
+            tmpmessage.append(tmp)
+    return tmpmessage
 # 根据点击id查询出所有的过滤原因的订单
 def orderbylognew(project):
     # es=Elasticsearch([{"host":"221.122.127.41"}],port=9200);
@@ -67,8 +129,14 @@ def orderbylognew(project):
                 message=hit['_source']['message']
                 # print message
                 requesttime=message.split('[')[1].split(' +')[0]
-                responseStatus=message.split('responseStatus=')[1].split('&')[0]
-                method=message.split('method=')[1].split('&')[0]
+                if 'responseStatus=' in str(message):
+                    responseStatus=message.split('responseStatus=')[1].split('&')[0]
+                else:
+                    responseStatus=''
+                if 'method=' in str(message):
+                    method=message.split('method=')[1].split('&')[0]
+                else:
+                    method=''
                 if 'openId' in message:
                     openId=message.split('openId=')[1].split(' ')[0]
                 else:
@@ -91,7 +159,7 @@ def orderbylognew(project):
                 message=hit['_source']['message']
                 # print message
                 # message=message.deco
-                if 'accessTerminal=' in message:
+                if 'accessTerminal=' in str(message):
                     accessTerminal=message.split('accessTerminal=')[1].split('&')[0]
                 else:
                     accessTerminal=''
@@ -107,16 +175,19 @@ def orderbylognew(project):
                         userId=message.split('userId=')[1].split(' HTTP')[0]
                     else:
                         userId=''
+                    tmpdict['responseStatus']=responseStatus
+                    tmpdict['method']=method
+                    tmpdict['time']=time
+                    tmpdict['userId']=userId
+                    tmpdict['accessTerminal']=accessTerminal
+                    tmpdict['requesttime']=requesttime
 
-                tmpdict['requesttime']=requesttime
-                tmpdict['responseStatus']=responseStatus
-                tmpdict['method']=method
-                tmpdict['time']=time
-                tmpdict['userId']=userId
-                tmpdict['accessTerminal']=accessTerminal
-                tmpmessage.append(tmpdict)
+                    tmpmessage.append(tmpdict)
             # print tmpmessage
     except Exception as e:
+        print 111111
+        print hit
+        print 111111
         print e.message
     return tmpmessage
 def writelog(project):
@@ -124,18 +195,30 @@ def writelog(project):
     print tmpdit
     # f=open('1.txt','w')
     if project=='ddyz':
-        f1=open('../../logs/ddyz{0}.txt'.format(datetime.datetime.now().strftime('%Y-%m-%d%H%M%S')),'w+')
+        f1=open('D:/nginxlogs/ddyz{0}.txt'.format(datetime.datetime.now().strftime('%Y-%m-%d%H%M%S')),'w+')
         for i in tmpdit:
             f1.write(i['requesttime']+','+i['method']+','+i['responseStatus']+','+i['time']+','+i['openId']+'\n')
         f1.close()
         # print tmpdit
     elif project=='baobei':
-        f=open('../../logs/baobei{0}.txt'.format(datetime.datetime.now().strftime('%Y-%m-%d%H%M%S')),'w+')
+        f=open('D:/nginxlogs/baobei{0}.txt'.format(datetime.datetime.now().strftime('%Y-%m-%d%H%M%S')),'w+')
         f.write('baobeirequesttime'+','+'method'+','+'responseStatus'+','+'time'+','+'userId'+','+'accessTerminal'+'\n')
         # f.write(('requesttime')
         for i in tmpdit:
             f.write(i['requesttime']+','+i['method']+','+i['responseStatus']+','+i['time']+','+i['userId']+','+i['accessTerminal']+'\n')
         f.close()
+
+def writelogapishop(project):
+    tmpdit=getmessageapishop(project)
+    print tmpdit
+    # f=open('1.txt','w')
+    if project=='apishop':
+        f1=open('D:/nginxlogs/apishop{0}.txt'.format(datetime.datetime.now().strftime('%Y-%m-%d%H%M%S')),'w+')
+        f1.write('time'+','+'methodUpCost'+','+'methodWxCost'+','+'methodTokenCost'+','+'uuid'+','+'methodStartEndCost'+','+'sid'+','+'status'+'\n')
+        for i in tmpdit:
+            f1.write(str(i['time'])+','+str(i['methodUpCost'])+','+str(i['methodWxCost'])+','+str(i['methodTokenCost'])+','+str(i['uuid'])+','+str(i['methodStartEndCost'])+','+str(i['sid'])+','+str(i['status'])+'\n')
+        f1.close()
+        # print tmpdit
 def dojob():
     schedule.every(30).seconds.do(writelog,'ddyz')
     # schedule.every(30).seconds.do(writelog,'baobei')
@@ -144,16 +227,27 @@ def dojob():
         schedule.run_pending()
         # time.sleep(11)
 def dojob1():
-    schedule.every(3600).seconds.do(writelog,'ddyz')
-    schedule.every(3600).seconds.do(writelog,'baobei')
+    # schedule.every(3600).seconds.do(writelog,'ddyz')
+    schedule.every(1).hours.do(writelog,'ddyz')
+    # schedule.every(3600).seconds.do(writelog,'baobei')
+    schedule.every(1).hours.do(writelog,'baobei')
     print 'do schedule'
     while True:
         schedule.run_pending()
-        time.sleep(300)
+        # time.sleep(300)
 
 
 if __name__ == '__main__':
-    # writelog('ddyz')
+    writelog('ddyz')
     # writelog('baobei')
+    # getmessageapishop('apishop')
+    # apishops数据
+    # writelogapishop('apishop')
     # dojob()
-    dojob1()
+    # dojob1()
+    #
+    # schedule.every(1).hours.do(writelog,'ddyz')
+    # schedule.every(1).hours.do(writelog,'baobei')
+    # print 'do schedule'
+    # while True:
+    #     schedule.run_pending()

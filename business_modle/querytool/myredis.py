@@ -80,6 +80,20 @@ def mygetredis(myenv,key):
             elif "indu" in k:
                 tmplist.append({k:v})
         return tmplist
+    #订单选取广告位详情
+    elif key=='voyager:ocpa_adzones_detail':
+        mybudget=r.hgetall('voyager:ocpa_adzones_detail')
+        tmplist=[]
+        for k,v in mybudget.items():
+            if "today_adz" in k:
+                tmplist.append({k:v})
+            elif "adz_" in k:
+                tmplist.append({k:v})
+
+        return tmplist
+
+
+
     # 查看ocpa订单实际成本
 
     elif key=='voyager:ocpa_actual_cost':

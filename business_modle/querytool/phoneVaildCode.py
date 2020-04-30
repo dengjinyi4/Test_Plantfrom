@@ -18,21 +18,30 @@ class phoneVaild(object):
 
 def getsql(db):
     if db=='voyager':
-        tmpsql='select PHONE,MSG,create_time from voyager.phone_send_record order by id desc limit 50'
+        tmpsql='select PHONE,MSG,create_time from voyager.phone_send_record order by id desc limit 50;'
         return tmpsql
     if db=='normandy':
-        tmpsql='select PHONE,MSG,create_time from normandy.phone_send_record order by id desc limit 50'
+        tmpsql='select PHONE,MSG,create_time from normandy.phone_send_record order by id desc limit 50;'
+        return tmpsql
+    if db=='egoufanli':
+        tmpsql='SELECT PHONE,MSG,CREATE_TIME from fanxian.phone_send_record ORDER BY id DESC LIMIT 100;'
         return tmpsql
 
 def get_phonevaild(env,mydb):
     tmpsql=getsql(mydb)
     if env=='test':
-        result=db.selectsql('testvoyager',tmpsql)
+        if mydb=='voyager' or mydb=='normandy':
+            result=db.selectsql('testvoyager',tmpsql)
+        if mydb=='egoufanli':
+            result=db.selectsql('egoufanlitest',tmpsql)
     if env=='dev':
+        result=''
         if mydb=='voyager':
             result=db.selectsql('devvoyager',tmpsql)
-        else:
+        if mydb=='normandy':
             result=db.selectsql('nomandydev',tmpsql)
+        if mydb=='egoufanlitest':
+           result=''
     return result
 if __name__ == '__main__':
     res=get_phonevaild('test','voyager')

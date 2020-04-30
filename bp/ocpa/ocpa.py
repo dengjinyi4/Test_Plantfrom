@@ -60,6 +60,15 @@ def ocpa_orderadzone():
         tmpordeadzon=mr.mygetredis('1','voyager:ocpa_adzones')
         return render_template('ocpaorderadzone.html',tmpordeadzon=tmpordeadzon)
 
+@ocpa.route('/ocpa_orderadzonedetail',methods=('POST','GET'))
+def ocpa_orderadzonedetail():
+    if request.method=='GET':
+        # 生产环境
+        tmpordeadzonedetail=mr.mygetredis('1','voyager:ocpa_adzones_detail')
+        return render_template('ocpaorderadzonedetail.html',tmpordeadzonedetail=tmpordeadzonedetail)
+
+
+
 @ocpa.route('/ocpa_ordercost',methods=('POST','GET'))
 def ocpa_ordercost():
     if request.method=='GET':

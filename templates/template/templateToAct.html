@@ -41,14 +41,18 @@
         <a id="expBtn" download="templateResult.xlsx" href="/static/result/templateResult.xlsx" >导 出</a>
         {{ form.data.env.label }}
         <table border="1">
-            <tr style="background-color: #66cc66">
-                <th>活动id</th>
-                <th>活动名称</th>
-                <th>模板id</th>
-                <th>模板名称</th>
-                <th>模板url地址</th>
-                <th>模板配置</th>
-                <th>查看坑位</th>
+            <tr>
+                <th style="background-color: #66cc66">活动id</th>
+                <th style="background-color: #66cc66">活动名称</th>
+                <th style="background-color: #66cc66">活动使用的天降红包弹窗模板</th>
+                <th style="background-color: #66cc66">活动是否直接调用天降红包</th>
+                <th style="background-color: #B0E0E6">模板id</th>
+                <th style="background-color: #B0E0E6">模板名称</th>
+                <th style="background-color: #B0E0E6">模板坑位</th>
+                <th style="background-color: #B0E0E6">模板是否支持可配置活动弹窗</th>
+                <th style="background-color: #B0E0E6">模板url地址</th>
+                <th style="background-color: #B0E0E6">模板配置信息</th>
+                <th style="background-color: #B0E0E6">根据模板查线上/测试活动id</th>
             </tr>
             {% if flag == 'true' %}
                 {% for row in re %}
@@ -56,7 +60,8 @@
                     {% for col in row %}
                     <td>{{ col|safe }}</td>
                     {% endfor %}
-                <td><a target="_blank" href="{{ url_for("act.templateToAct",page_name='position',id=row[2]|safe,env=env)}}">查看</a></td>
+{#                <td><a target="_blank" href="{{ url_for("act.templateToAct",page_name='position',id=row[2]|safe,env=env)}}">查看</a></td>#}
+                <td><a target="_blank" href="{{ url_for("act.templateToAct",page_name='template',template=row[8]|safe,env=env)}}">查看</a></td>
                 </tr>
                 {% endfor %}
             {% else %}

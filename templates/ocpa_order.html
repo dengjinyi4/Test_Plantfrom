@@ -12,6 +12,7 @@
 </head>
 <body>
 <h1>OCPA订单<a href="{{url_for('ocpa.ocpa_orderadzone')}}">查看缓存</a></h1>
+<h1>OCPA订单<a href="{{url_for('ocpa.ocpa_orderadzonedetail')}}">查看订单选中广告位详情</a></h1>
 <h1>OCPA订单<a href="{{url_for('ocpa.ocpa_ordercost')}}">查看实际成本</a></h1>
 <form action="{{url_for('ocpa.ocpa_order')}}" method="post">
     查询日期:<input type="date" name="begin_date" value="{{begintime}}"/><br>

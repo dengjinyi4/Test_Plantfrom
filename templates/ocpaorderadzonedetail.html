@@ -1,0 +1,13 @@
+{% extends "base.html"%}
+
+{% block main %}
+<p hidden="hidden">
+缓存中ocpa订单选中广告位详情
+</p>
+
+<li>缓存中ocpa订单选中广告位详情</li>
+<!--<li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>-->
+{% for i in tmpordeadzonedetail %}
+<li >订单是：{{i.keys()|safe}} 广告位选中详情：{{i.values()|safe}} </li>
+  {% endfor %}
+{% endblock %}

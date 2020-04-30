@@ -9,6 +9,10 @@ from config import *
 class VersionTracker(object):
     def __init__(self):
         self.db = DbOperations()
+        self.tester_email_tmp = list(self.db.execute_sql(sqls['tester_email']))
+        self.tester_email = []
+        for i in self.tester_email_tmp:
+            self.tester_email.append(str(i[0]))
         pass
 
     def get_user_info(self, sql):
@@ -131,6 +135,15 @@ class VersionTracker(object):
                 return re
         else:
             return []
+
+
+    def insert_check_in_version(self,values_list,keys):
+        sql = r"INSERT INTO test.check_in_tracker {} VALUES ".format(keys).replace("'", "`")
+        # sql = r"INSERT INTO test.test_version_tracker {} VALUES ".format(keys).replace("'", "`")
+        sql = sql + "(" + values_list[1:-1] + ")"
+        rowcount = self.db.exe_insert_sql(sql)
+        return rowcount
+
 
     def __del__(self):
         pass

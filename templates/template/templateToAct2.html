@@ -1,0 +1,52 @@
+{% extends "base.html"%}
+{% block main %}
+{% from "_field.html" import render_field %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>查询生产/测试结果</title>
+</head>
+<div class="container">
+<body>
+
+    {% if ts == 'true' %}
+{#            {{ env }}#}
+        {% if env == '1' %}
+            <p style="color: #cc0000"><b>生产环境的查询结果：</b></p>
+        {% elif env == '0' %}
+            <p style="color: crimson">测试环境的查询结果：</p>
+        {% else %}
+            <p>环境信息有误</p>
+        {% endif %}
+        <a id="expBtn" download="templateResult.xlsx" href="/static/result/templateResult.xlsx" >导 出</a>
+        <table border="1">
+            <tr>
+                <th style="background-color: #66cc66">活动id</th>
+                <th style="background-color: #66cc66">活动名称</th>
+                <th style="background-color: #66cc66">活动使用的天降红包弹窗模板</th>
+                <th style="background-color: #66cc66">活动是否直接调用天降红包</th>
+                <th style="background-color: #B0E0E6">模板id</th>
+                <th style="background-color: #B0E0E6">模板名称</th>
+                <th style="background-color: #B0E0E6">模板坑位</th>
+                <th style="background-color: #B0E0E6">模板是否支持可配置活动弹窗</th>
+                <th style="background-color: #B0E0E6">模板url地址</th>
+                <th style="background-color: #B0E0E6">模板配置信息</th>
+            </tr>
+            {% if flag == 'true' %}
+                {% for row in re %}
+                    <tr>
+                        {% for col in row %}
+                        <td>{{ col|safe }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <p>{{ re }}</p>
+            {% endif %}
+        </table>
+    {% endif %}
+</body>
+</div>
+</html>
+{% endblock %}

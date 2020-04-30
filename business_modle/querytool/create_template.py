@@ -103,7 +103,7 @@ class TemplateActCreation(object):
         #     #     return e
 
 
-    def create_template(self,templateName, templateStyleUrl, positionId=1, template_conf_items=None):
+    def create_template(self,templateName, templateStyleUrl, template_conf_items=None):
         '''
         :param templateName，模板名称
         :param templateStyleUrl， 模板样式地址，css
@@ -113,7 +113,7 @@ class TemplateActCreation(object):
         templateTypeId=self.get_templateTypeId()
         post_url ="http://api.admin.adhudong.com/template/modefy.htm"
         json_body = {
-            "positionId": positionId,
+            "positionId": '1,2,4,6',
             "templateTypeId": templateTypeId,
             "templateName": templateName,
             "templateStyleUrl" : templateStyleUrl,
@@ -274,15 +274,17 @@ class TemplateActCreation(object):
 if __name__=='__main__':
     #为模板类型名称
     #__init__(self, templateTypeName, act_name, award_num):
-    ct = TemplateActCreation('九宫格ce2',"九宫格ce2",8,15,1810)
+    ct = TemplateActCreation('九宫格ce2',8,15,1810)
     #创建模板类型，create_template_type(self, classifi, locationAdress, preview="https://img0.adhudong.com/template/201802/24/999337a35a1a9169450685cc66560a05.png",prizesNum=6)
-    ct.create_template_type('https://display.adhudong.com/new/nineBlockBox.html')
+    # ct.create_template_type('https://display.adhudong.com/new/nineBlockBox.html')
+
+    ct.create_template('testTemp','https://display.adhudong.com/new/nineBlockBox.html')
     # ct.get_list()
     #创建模板 ct.create_template(templateName, templateStyleUrl)
-    ct.create_template('九宫格ce2',"https://display.adhudong.com/new/nineBlockBox.html",template_conf_items=r'''背景(750*1206)|bg|image||1|\n
-    全屏底色|bodyBgColor|string||0|\n
-    剩余次数文字颜色|leftTimesColor|string||0|/n
-剩余次数数字颜色|leftTimesNumColor|string||0|)''')
+    # ct.create_template('九宫格ce2',"https://display.adhudong.com/new/nineBlockBox.html",template_conf_items=r'''背景(750*1206)|bg|image||1|\n
+#     全屏底色|bodyBgColor|string||0|\n
+#     剩余次数文字颜色|leftTimesColor|string||0|/n
+# 剩余次数数字颜色|leftTimesNumColor|string||0|)''')
     # #创建活动，    create_act(self, act_name,free_num=20, award_num=6)
     # ct.create_act()
     # #创建活动关联的奖品，

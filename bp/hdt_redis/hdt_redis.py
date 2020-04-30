@@ -111,18 +111,26 @@ def orderr():
 def orderresion():
     myform1=ft.orderresion1()
     if myform1.validate_on_submit():
+        mydata=myform1.data
+        print mydata
         begindate=myform1.data['begindate']
         enddate=myform1.data['enddate']
         adzone_id=myform1.data['adzone_id']
         ad_order_id=myform1.data['ad_order_id']
         adzoneClickid=str(myform1.data['adzoneClickid'])
+        if myform1.data['iszhitiao']:
+            iszhitiao='1'
+        else:
+            iszhitiao='0'
+        region=str(myform1.data['region'])
+        pos=myform1.pos.data
         myenv='dev'
         if len(adzoneClickid)>36:
             adzoneClickid=adzoneClickid.split(",")
-            mydata=ba.allorderdit(str(begindate),str(enddate),adzone_id,ad_order_id,myenv,adzoneClickid)
+            mydata=ba.allorderdit(str(begindate),str(enddate),adzone_id,ad_order_id,myenv,adzoneClickid,pos,region=region,iszhitiao=iszhitiao)
         else:
             adzoneClickid=''
-            mydata=ba.allorderdit(str(begindate),str(enddate),adzone_id,ad_order_id,myenv,adzoneClickid)
+            mydata=ba.allorderdit(str(begindate),str(enddate),adzone_id,ad_order_id,myenv,adzoneClickid,pos,region=region,iszhitiao=iszhitiao)
         print 111111111111
         print mydata
         # mydata=ba.allorderdit(str(begindate),str(enddate),adzoneClickid,ad_order_id,myenv)

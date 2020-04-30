@@ -20,21 +20,24 @@ class checkNodeRoute(object):
         """
         #查询模板表，查询所有新框架的模板信息
         sql = """SELECT DISTINCT (location_adress) FROM voyager.template_type WHERE
-            location_adress LIKE "%.html"AND location_adress not like "%spread%" """
+            location_adress LIKE "%.com/new/%" """
         sql_re = self.db.execute_sql(sql)
         urls = []
         for item in sql_re:
-            #根据模板，查此模板的上线状态的活动id，只查活动id最大的那个活动
-            act_sql = """SELECT a.id FROM base_act_info a
-            INNER JOIN base_template_info t ON a.template_id = t.id LEFT JOIN template_type v ON t.template_type_id = v.id
-            WHERE v.location_adress like '%{}%' and a.status=1 ORDER BY a.id desc limit 1;""".format(item[0].encode("utf-8"))
-            act_id=self.db.execute_sql(act_sql)
-            route_actId={}
-            #如果查询的模板有活动id，则添加到字典中
-            if act_id:
-                route_actId['route']=item[0].split(self.split_keyword)[1]
-                route_actId['actId']=int(act_id[0][0])
-                urls.append(route_actId)
+            if self.split_keyword in item[0]:
+                #根据模板，查此模板的上线状态的活动id，只查活动id最大的那个活动
+                act_sql = """SELECT a.id FROM base_act_info a
+                INNER JOIN base_template_info t ON a.template_id = t.id
+                LEFT JOIN template_type v ON t.template_type_id = v.id
+                WHERE v.location_adress like '%{}%' and a.status=1 ORDER BY a.id
+                desc limit 1;""".format(item[0].encode("utf-8"))
+                act_id=self.db.execute_sql(act_sql)
+                route_actId={}
+                #如果查询的模板有活动id，则添加到字典中
+                if act_id:
+                    route_actId['route']=item[0].split(self.split_keyword)[1]
+                    route_actId['actId']=int(act_id[0][0])
+                    urls.append(route_actId)
         return urls
 
     # @staticmethod
@@ -59,7 +62,8 @@ class checkNodeRoute(object):
 
     def join_url(self):
         """
-        :return:当有404,500的页面时，返回list；当广告位点击无效时，返回str；当广告位点击有效，但无异常页面时，返回str
+        :return:当有404,500的页面时，返回list；当广告位点击无效时，返回str；
+        当广告位点击有效，但无异常页面时，返回str
         """
         base_url_info = self.get_base_url()
         if isinstance(base_url_info, tuple):
@@ -96,7 +100,7 @@ if __name__ == '__main__':
     # https://display.adhudong.com/site_login_ijf.htm?app_key=adhueab091a2c01942 303,200
     # https://display.adhudong.com/site_login_ijf.htm?app_key=adhud3fa7ec718584104
     # cr = checkNodeRoute('1', "https://display.adhudong.com/site_login_ijf.htm?app_key=adhueab091a2c0194285")
-    # cr = checkNodeRoute('1', "https://display.adhudong.com/site_login_ijf.htm?app_key=adhueab091a2c01942")
-    cr = checkNodeRoute('0', "https://display.eqigou.com/site_login_ijf.htm?app_key=adhu307b689d63514835")
+    cr = checkNodeRoute('1', "https://display.eqigou.com/site_login_ijf.htm?app_key=adhu53ce43b720ef44af")
+    # cr = checkNodeRoute('0', "https://display.intdmp.com/site_login_ijf.htm?app_key=adhu068b15785fb24e8e")
     # print cr.get_template_url()
-    cr.join_url()
+    print cr.join_url()

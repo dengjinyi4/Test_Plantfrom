@@ -63,7 +63,9 @@ class Ocpa_report(object):
                   ROUND(SUM(e.ocpa_consume) / 100, 2) ocpa_consume
                 FROM
                   voyager.report_order e
+                  LEFT JOIN voyager.ad_order p  ON e.adorder_id=p.id
                 WHERE e.date >= '{}'
+                  AND p.ocpa_ext_order<>1
                   AND e.advertiser_id <> 4014
                   AND e.date <= '{}'
                 GROUP BY e.advertiser_id,

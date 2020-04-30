@@ -34,7 +34,7 @@ def adzoneAct():
         return render_template('adzoneAct.html', form=form, pos=1, link=link, adzone=adzone)
 
 #活动模板互查工具
-@act.route('/templateToAct/<any(query,position):page_name>/',methods=['get','post'])
+@act.route('/templateToAct/<any(query,position,template):page_name>/',methods=['get','post'])
 def templateToAct(page_name):
     form=templateActForm()
     if request.method=='GET' and page_name=='query':
@@ -60,6 +60,16 @@ def templateToAct(page_name):
         tta2 = templateAct(env_tmp)
         position_re = tta2.get_position(position_id)
         return render_template('template/position.html', re=position_re)
+    elif page_name == 'template' and request.method == 'GET':
+        template_key = request.args.get('template')
+        env_tmp = request.args.get('env')
+        tta3 = templateAct(env_tmp)
+        template_key_re = tta3.get_act_id(template_key)
+        if isinstance(template_key_re,list) and len(template_key_re)>0:
+            tta3.exportTemplateXls(template_key_re)
+            return render_template('template/templateToAct2.html', re=template_key_re, ts='true',flag='true',env=env_tmp)
+        else:
+            return render_template('template/templateToAct2.html', re=template_key_re, ts='true', flag='flase',env=env_tmp)
 
 #活动检查路由
 @act.route('/checkRoute/',methods=['get','post'])

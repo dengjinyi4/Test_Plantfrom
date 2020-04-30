@@ -14,7 +14,7 @@ def loginuser(username,password,REMOTE_ADDR,HTTP_HOST):
     # # ip=socket.gethostbyname(hostname)
     # ip= request.META['REMOTE_ADDR']
     # tmpsql="SELECT count(1) from test.testuser where username=\'%s\' and pass=\'%s\'"%(str(username),str(password))
-    tmpsql="SELECT id,username from test.testuser where username='{0}' and pass='{1}'".format(str(username),str(password))
+    tmpsql="SELECT id,username from test.testuser where username='{0}' and pass='{1}' and status=1".format(str(username),str(password))
     r=db.selectsql('testtest',tmpsql)
     # 更新下登录时间
     updatesql="UPDATE test.testuser set login_time=current_timestamp,hostname='{}',ip='{}' where username='{}' ".format(HTTP_HOST,REMOTE_ADDR,str(username))

@@ -73,21 +73,3 @@ class Ocpa_try(object):
 ######查询订单试投总消耗占所有数据上报广告主订单的百分比
 
      # def try_percent(self):
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Oc=Ocpa_try('2019-03-13',27010,False)
-
-print Oc.ocpa_try()
-print Oc.try_consum()

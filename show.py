@@ -33,6 +33,7 @@ from business_modle.Crm.CrmOrderEffectCheck import Crm
 from business_modle.querytool.phoneVaildCode import *
 from bp.hdt_act.hdt_act import act
 from bp.hdt_redis.hdt_redis import  hdtredis
+from bp.infor.infor import hdtgetother
 from bp.miniprogram.miniprogram import miniprogram
 from bp.ocpa.ocpa import ocpa
 from bp.hour_report.hour_report import  hour_report
@@ -52,7 +53,8 @@ from business_modle.testtools.create_ad import *
 from bp.tools.tools import *
 from bp.login.login import mylogin
 from bp.miniprogram.activity_form import *
-
+from bp.hdtadzone.adzone import hdtadzone
+from bp.newreport.myreport import hdtreport
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'txt') #设置一个专门的类似全局变量的东西
@@ -65,6 +67,7 @@ app.register_blueprint(egoubaobei,url_prefix='/yiqifa')
 #将活动蓝图注册到app
 app.register_blueprint(act,url_prefix='/act')
 app.register_blueprint(hdtredis,url_prefix='/hdtredis')
+app.register_blueprint(hdtgetother,url_prefix='/getinfor')
 app.register_blueprint(ocpa,url_prefix='/ocpa')
 app.register_blueprint(hour_report,url_prefix='/hour_report')
 app.register_blueprint(miniprogram,url_prefix='/miniprogram')
@@ -72,6 +75,8 @@ app.register_blueprint(testCase,url_prefix='/tc')
 app.register_blueprint(tools,url_prefix='/tools/jobAdReason')
 app.register_blueprint(mylogin,url_prefix='/login')
 app.register_blueprint(tools,url_prefix='/tools')
+app.register_blueprint(hdtadzone,url_prefix='/hdtadzone')
+app.register_blueprint(hdtreport,url_prefix='/hdtreport')
 
 
 # app.jinja_env.add_extension("chartkick.ext.charts")
@@ -289,6 +294,9 @@ def voyagerlog1():
         zclk=form.data['adzoneClickid']
         env = form.data['myenv']
         tmpdit=ba.orderbylognew(zclk,str(env))
+        pos=form.pos.data
+        if len(pos)>=1:
+            tmpdit=ba.gettmpditbybid(tmpdit,'pos',pos)
         return render_template('voyagerlog1.html',form=form,data=tmpdit)
     return render_template('voyagerlog1.html',form=form)
 
@@ -450,7 +458,8 @@ def version_maintain(page_name):
                     sender = vt.get_user_ch_name(sqls['ch_name'].format(f_tester))[1]
                     print sender
                     job_name = vt.get_jenkins_job(sqls['jenkins_name'].format(form.data['job_id']))[0][0]
-                    send_email(mail_template['normal'], form.data, applicant, approver,sender,job_name)
+                    print vt.tester_email
+                    send_email(mail_template['normal'], form.data, applicant, approver,sender,job_name,recipients=vt.tester_email)
                     flash("send mail Success")
                 else:
                     flash("send mail Success")
@@ -804,19 +813,23 @@ def adv_consume_amount():
 #登录权限判断
 @app.before_request
 def islogin():
-    businessuser=['lishichun','qiuting','zhounan','zhouying']
+    businessuser=['qiuting','zhounan','zhouying']
     # 客户运营
     businessuser1=['houlixiu','yunying','jiangshan','sheqingqing','shicuicui','zhouying','yuanchaoxia']
     # 活动模板
     businessuser2=['guoxuchang']
     #短信验证码
-    businessuser3=['hugengwei']
+    businessuser3=['hugengwei','liuyujing']
 
     #优品购信息查询
     businessuser4=['zhaoyang']
 
     #广告主数据收集
     businessuser5=['yuanchaoxia']
+    #lishichun
+    businessuser6=['lishichun']
+    # 对外媒体
+    othermedia=['othermei']
 
     if (request.path == '/lpm_test/'):
         return None
@@ -842,6 +855,13 @@ def islogin():
             return None
         else:
             return redirect('/report_byadzone/')
+    # 对外媒体账号
+    if (session.get('username') in othermedia) :
+        # if (request.path == '/report_byadzone/' or req；。uest.path=='/hdt_cssc/'):
+        if (request.path == '/getinfor/get/'):
+            return None
+        else:
+            return redirect('/getinfor/get/')
     if (session.get('username') in businessuser1) :
         if (request.path == '/hdtredis/orderr/'):
             return None
@@ -874,6 +894,14 @@ def islogin():
             return None
         else:
             return redirect('/render_link/')
+    if (session.get('username') in businessuser6):
+
+        if (request.path in( '/ocpa/ocpa_order','/report_byadzone/')):
+
+
+            return None
+        else:
+            return redirect('/ocpa/ocpa_order/')
 
 @app.route('/lpm_test/')
 def lpm_page():

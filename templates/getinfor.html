@@ -1,0 +1,58 @@
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <!--<script src="{{url_for('static',filename='jquery.min.js')}}"></script>-->
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Data Tables -->
+    <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <title></title>
+</head>
+<body>
+
+        <script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+
+<script>
+     $('.dataTables-example').dataTable({
+         "language": {
+             "aria": {
+                 "sortAscending": ": activate to sort column ascending",
+                 "sortDescending": ": activate to sort column descending"
+             },
+             "emptyTable": "No data available in table",
+             "tmp_total": "Showing _START_ to _END_ of _TOTAL_ entries",
+             "infoEmpty": "No entries found",
+             "infoFiltered": "(filtered1 from _MAX_ total entries)",
+             "lengthMenu": "Show _MENU_ entries",
+             "search": "Search:",
+             "zeroRecords": "No matching records found",
+             "sUrl": "/static/fonts/zh_CN.json"
+         }
+     });
+
+</script>
+
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>ad_click_tag</th>
+                <th>act_id</th>
+            </tr>
+        </thead>
+         <tbody>
+          {% for trcout in data %}
+           <tr>
+            {% for j in trcout%}
+              <td>{{j|safe}}</td>
+            {% endfor %}
+           </tr>
+           {% endfor %}
+         </tbody>
+    </table>
+
+</body>

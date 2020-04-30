@@ -1,0 +1,106 @@
+{% extends "base.html"%}
+{% block main %}
+
+<script>
+        $(document).ready(function() {
+    $('#example').DataTable();
+} );</script>
+
+
+<form action="{{url_for('adzone11.getadzone')}}" method="post">
+        {{ form.hidden_tag()}}
+       <table class="display" style="width:100%" border="1">
+                <tr>
+                  <td>{% for i in form.myenv %}
+                  {{i}}:{{i.label}}
+                   {% endfor %}
+                      {% for i in form.type %}
+                      {{i}}:{{i.label}}
+                   {% endfor %}
+                 </td>
+                 </tr>
+           <tr>
+               <td>{{ form.begindate.label }}{{form.begindate}} {{ form.enddate.label }}{{form.enddate}}</td>
+
+           </tr>
+           <tr> <td>{{ form.adzone_id.label }}{{form.adzone_id}}<font color="red">{{ form.adzone_id.errors[0]}}</font> {{ form.submit() }}</td></tr>
+       </table>
+</form>
+      <table  id="example" class="display" style="width:100%"  border="1">
+
+            <thead>
+                <tr>
+                    <td>类型</td>
+                    <td>屏蔽时间类型</td>
+                    <td>屏蔽时间开始时间</td>
+                    <td>屏蔽时间结束时间</td>
+                    <td>屏蔽地域类型</td>
+                    <td>地域</td>
+                    <td>屏蔽创意等级</td>
+                    <td>屏蔽广告主行业类型</td>
+                    <td>行业类型id</td>
+                    <td>屏蔽生效开始时间</td>
+                    <td>屏蔽生效结束时间</td>
+                    <td>屏蔽生效类型</td>
+                    <td>屏蔽广告主行业标签类型</td>
+                    <td>行业标签id</td>
+                    <td>屏蔽广告主标签类型</td>
+                    <td>广告主标签id</td>
+                    <td>屏蔽广告主</td>
+                    <td>广告主id</td>
+                    <td>屏蔽广告主创意品牌标签</td>
+                    <td>创意品牌标签id</td>
+                    <td>广告主_等级</td>
+                    <td>屏蔽终端设备</td>
+                    <td>终端id</td>
+                    <td>操作者</td>
+                    <td>时间</td>
+
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for i in data%}
+            <tr>
+                        <td>{{i["type"]|safe}}</td>
+                        <td>{{i["timeType"]|safe}}</td>
+                        <td>{{i["timeBegin"]|safe}}</td>
+                        <td>{{i["timeEnd"]|safe}}</td>
+                        <td>{{i["regionType"]|safe}}</td>
+                        <td>{{i["shieldRegion"]|safe}}</td>
+                        <td>{{i["creativeValue"]|safe}}</td>
+                        <td>{{i["advertiserIndustryType"]|safe}}</td>
+                        <td>{{i["advertiserIndustry"]|safe}}</td>
+                        <td>{{i["effectiveTimeBegin"]|safe}}</td>
+                        <td>{{i["effectiveTimeEnd"]|safe}}</td>
+                        <td>{{i["effectiveTimeType"]|safe}}</td>
+                        <td>{{i["advertiserIndustryTagType"]|safe}}</td>
+                        <td>{{i["advertiserIndustryTag"]|safe}}</td>
+                        <td>{{i["advertiserTagType"]|safe}}</td>
+                        <td>{{i["advertiserTag"]|safe}}</td>
+                        <td>{{i["advertiserIdsType"]|safe}}</td>
+                        <td>{{i["advertiserIds"]|safe}}</td>
+                        <td>{{i["creativeBrandTagType"]|safe}}</td>
+                        <td>{{i["creativeBrandTagIds"]|safe}}</td>
+                        <td>{{i["advertiserIdsShow"]|safe}}</td>
+                        <td>{{i["termType"]|safe}}</td>
+                        <td>{{i["termIds"]|safe}}</td>
+                        <td>{{i["operator"]|safe}}</td>
+                        <td>{{i["create_time1"]|safe}}</td>
+
+                        <!--<td><a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></td>-->
+
+  -->
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    <p align="center"></p>
+
+
+
+<!--{% for i in mybudget %}-->
+<!--<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>-->
+  <!--{% endfor %}-->
+{% endblock %}

@@ -70,6 +70,7 @@
             <li><a href="{{url_for('hdt_redis.myredis_newmedia')}}">redis缓存数据-加粉订单试投新媒体(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.adzone_limit_diff')}}">redis缓存数据-同一广告位多个订单，三地同步比对(互动推)</a></li>
             <li><a href="{{url_for('voyagerlog1')}}">查询生产环境日志(互动推)</a></li>
+            <li><a href="{{url_for('adzone11.getadzone')}}">查询广告位操作日志(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.orderresion')}}">查询生产环境日志-订单选中详情(互动推)</a></li>
             <li><a href="{{url_for('confparas')}}">数据库配置(互动推)</a></li>
             <li><a href="{{url_for('ad_simulation')}}">模拟投放接口(互动推)</a></li>
@@ -183,6 +184,21 @@
           <li class="dropdown">
           <a href="{{url_for('tools.jobReason',page_name='new') }}" >订单过滤原因跟踪<span class="caret"></span></a>
         </li>
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">报表相关<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{url_for('myreport.reportall')}}">毛利表-分媒体毛利</a></li>
+                  <li><a href="{{url_for('myreport.repotadvliandong')}}">毛利表-联动客户毛利</a></li>
+                  <li><a href="{{url_for('myreport.repotptmaoli')}}">毛利表-平台毛利细化</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="{{url_for('myreport.reportmtpinggu')}}">媒体效果-评估-日表</a></li>
+                  <li><a href="{{url_for('myreport.reportmtpingguhour')}}">媒体效果-评估-小时表</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="{{url_for('myreport.reporregionbyday')}}">地域指标效果数据</a></li>
+                  <li><a href="{{url_for('myreport.reporregionbyadv')}}">广告主地域效果</a></li>
+                  <li role="separator" class="divider"></li>
+              </ul>
+          </li>
       </ul>
 
         </li>
