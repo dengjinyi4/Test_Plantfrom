@@ -14,6 +14,8 @@ from business_modle.querytool.create_template import *
 from business_modle.querytool.myException import *
 from business_modle.simulateAdDatas.simulateAdDatasForm import simulateAdDatasForm
 from business_modle.simulateAdDatas.simulateAdDatas import *
+from business_modle.lottery.checkLottery import *
+from business_modle.lottery.checkLotteryForm import *
 
 #创建活动蓝图
 act = Blueprint('act', __name__,template_folder='templates')
@@ -162,4 +164,16 @@ def simulateAdDatas():
         LAD.start()
         duration = (50*loop_count/60)+1
         return '<h>已执行，单次执行约50秒，共需{}分钟，稍后可在数据库查看执行结果</h>'.format(duration)
+
+@act.route('/checkLottery/',methods=['GET','POST'])
+def checkLottery():
+    form = lotteryCheckForm()
+    if request.method == 'GET':
+        return render_template('template/checkLottery.html',form=form)
+    else:
+        app_key = request.form.get('app_key').strip()
+        env = request.form.get('env').strip()
+        lottery = checkLotteryApi(app_key, env)
+        re = lottery.analyze()
+        return render_template('template/checkLottery.html', form=form, re=re['data'])
 

@@ -113,13 +113,15 @@ class TemplateActCreation(object):
         templateTypeId=self.get_templateTypeId()
         post_url ="http://api.admin.adhudong.com/template/modefy.htm"
         json_body = {
-            "positionId": '1,2,4,6',
+            "positionId": '1',
             "templateTypeId": templateTypeId,
             "templateName": templateName,
             "templateStyleUrl" : templateStyleUrl,
             "templateStyleImage" : "https://img3.adhudong.com/template/201802/25/2c6f4700db7982447348db4d0960e3ad.png",
             "remark":template_conf_items,
-            "supportPop":1
+            "supportPop":1,
+            "supportVideo":1,
+            "positionJson":'[{"position_name":"活动抽奖弹窗","pic_vedio":"1,2","id":1,"selected":true,"key":1},{"position_name":"天降广告弹窗","pic_vedio":"1","id":2,"selected":true,"key":2},{"position_name":"强推","pic_vedio":"1","id":4,"selected":true,"key":4},{"position_name":"内部推广抽奖活动零钱位置","pic_vedio":"1","id":6,"selected":true,"key":6},{"position_name":"视频1_我的奖品","pic_vedio":"2,3","id":27,"selected":true,"key":27}]'
         }
         re = self.s.post(post_url, data=json_body)
 

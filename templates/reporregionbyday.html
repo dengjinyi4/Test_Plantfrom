@@ -1,29 +1,64 @@
 {% extends "base.html"%}
 {% block main %}
 
+
 <script>
         $(document).ready(function() {
-    $('#example').DataTable();
+    $('#example').DataTable({
+    "order": [[9,'desc']], //排序
+    "iDisplayLength" : 100, //默认显示的记录数
+
+    "aoColumnDefs":[
+        {"sClass":"alignleft cutLongText","aTargets":[1]}
+        ,{"sClass":"alignleft cutLongText","aTargets":[2]}
+        ,{"sClass":"alignleft cutLongText","aTargets":[4]}
+        ,{"sClass":"alignleft cutLongText","aTargets":[5]}
+    ],
+
+    "fixedHeader": true,  //固定表头
+                "scrollX": "500px",
+                "scrollY": "550px",  //高度
+                "scrollCollapse": true,
+    "fixedColumns": { "leftColumns": 6 } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    });
 } );</script>
+<style type="text/css">
+    *{font-size: 12px;}
+    thead tr td{white-space: nowrap;}
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+         background-color:#fff000
+    }
+    table.dataTable tbody tr td { text-align: right; white-space: nowrap;}
+    table.dataTable tbody tr td.alignleft{ text-align: left;white-space: nowrap;}
+
+    .cutLongText{white-space: nowrap;}
+</style>
+
+
 <p hidden="hidden">{{tmpsql|safe}}</p>
-地域指标效果数据
+地域指标效果数据 - 某一广告主在所有地域上的数据
 <form action="{{url_for('myreport.reporregionbyday')}}" method="post">
         {{ form.hidden_tag()}}
        <table class="display" style="width:100%" border="1">
 
            <tr>
-               <td>{{ form.begindate.label }}{{form.begindate}} {{ form.enddate.label }}{{form.enddate}} {{ form.adzoneid.label }}{{form.adzoneid}} {{ form.advertiser.label }}{{form.advertiser}} </td>
+               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}} {{ form.enddate.label }}{{form.enddate(autocomplete="off")}} {{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}} {{ form.advertiser.label }}{{form.advertiser(autocomplete="off")}}
+               &nbsp;&nbsp;{{ form.submit() }}
+               <font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}{{form.adzoneid.errors[0]}}{{form.advertiser.errors[0]}}</font></td>
            </tr>
-           <tr>
-               <td><font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}{{form.adzoneid.errors[0]}}{{form.advertiser.errors[0]}}</font></td>
-           </tr>
-
-           <tr> <td> {{ form.submit() }}</td></tr>
        </table>
 </form>
       <table  id="example" class="display" style="width:100%"  border="1">
 
             <thead>
+                <tr>
+                    <td align="center" colspan=6>&nbsp;全部为去联动数据</td>
+                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                    <td align="center" colspan={{colspanx|safe}}>效果成本</td>
+                    <td align="center" colspan={{colspanx|safe}}>消耗</td>
+                    <td align="center" colspan={{colspanx|safe}}>CPC</td>
+                    <td align="center" colspan={{colspanx|safe}}>入口点击</td>
+                </tr>
                 <tr>
                    {% for i in filed%}
                     <td>{{i|safe}}</td>
@@ -35,7 +70,17 @@
             {% for k in data%}
             <tr>
                 {% for i in k%}
-                        <td>{{i|safe}}</td>
+                    <td><font {% if i|string|replace('%','')|int<0  %}
+                                color="red"
+                            {% elif loop.index >= 13 and loop.index < 13+colspanx and k[3]|int>0 and i>0 %}
+                                    {% if i>k[3]|int %}
+                                        color="red"
+                                    {% else %}
+                                        color="green"
+                                    {% endif %}
+                            {% endif %}>
+                            {{i|safe}}
+                        </font></td>
                 {% endfor %}
                        <!--<td><a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></td>-->
             </tr>

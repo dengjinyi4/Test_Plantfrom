@@ -231,7 +231,7 @@ class Ocpa_data(object):
             '2222559',
              '{}',
             '180.00',
-            '1200'
+            '300'
           ) '''.format(self.selected_time(),self.selected_time1(),self.url)
         sql15='''
           insert into voyagerlog.ad_effect_log_{} ( `ad_click_tag`, `type`, `uid`, `adzone_id`, `media_id`, `advertiser_id`, `ad_order_id`, `ad_creative_id`, `act_id`, `position_id`, `dev_id`, `price`, `create_time`, `update_time`, `adzone_click_id`, `method_type`, `mobile`, `age`, `name`, `meet_demand`, `int1`, `int2`, `int3`, `str1`, `str2`, `str3`, `chn`, `tag`, url, `charge_amount`, `media_income_cash`, `media_income_award`, `ua`, `region`, `ip`, `ad_plan_id`) values('E3W1CD6R1IUW88N08Y','1','999','102','1','2222559','1713','10','529','1',NULL,NULL,'{} 00:38:38','{} 11:42:37','111','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'{}','0','0','0','0',NULL,NULL,'3')'''.format(self.mon(),self.selected_time1(),self.selected_time1(),self.url)
@@ -298,7 +298,7 @@ class Ocpa_data(object):
             '2222559',
             '{}',
             '180.00',
-            '1200'
+            '300'
           ) '''.format(self.selected1_time(),self.selected1_time1(),self.url)
         sql15='''
           insert into voyagerlog.ad_effect_log_{} ( `ad_click_tag`, `type`, `uid`, `adzone_id`, `media_id`, `advertiser_id`, `ad_order_id`, `ad_creative_id`, `act_id`, `position_id`, `dev_id`, `price`, `create_time`, `update_time`, `adzone_click_id`, `method_type`, `mobile`, `age`, `name`, `meet_demand`, `int1`, `int2`, `int3`, `str1`, `str2`, `str3`, `chn`, `tag`, `url`, `charge_amount`, `media_income_cash`, `media_income_award`, `ua`, `region`, `ip`, `ad_plan_id`) values('E3W1CD6R1IUW88N08Y','1','999','102','1','2222559','1713','10','529','1',NULL,NULL,'{} 00:38:38','{} 11:42:37','111','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'{}','0','0','0','0',NULL,NULL,'3')'''.format(self.mon(),self.selected1_time1(),self.selected1_time1(),self.url)
@@ -366,10 +366,10 @@ class Ocpa_data(object):
             '2222559',
             '{}',
             '180.00',
-            '1200'
+            '300'
           ) '''.format(self.selected2_time(),self.selected2_time1(),self.url)
         sql15='''
-          insert into voyagerlog.ad_effect_log_{} ( `ad_click_tag`, `type`, `uid`, `adzone_id`, `media_id`, `advertiser_id`, `ad_order_id`, `ad_creative_id`, `act_id`, `position_id`, `dev_id`, `price`, `create_time`, `update_time`, `adzone_click_id`, `method_type`, `mobile`, `age`, `name`, `meet_demand`, `int1`, `int2`, `int3`, `str1`, `str2`, `str3`, `chn`, `tag`, `url`, `charge_amount`, `media_income_cash`, `media_income_award`, `ua`, `region`, `ip`, `ad_plan_id`) values('E3W1CD6R1IUW88N08Y','1','999','102','1','2222559','1713','10','529','1',NULL,NULL,'{} 00:38:38','{} 11:42:37','111','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'{}','0','0','0','0',NULL,NULL,'3')'''.format(self.mon(),self.selected2_time1(),self.selected2_time1(),self.url)
+          insert into voyagerlog.ad_effect_log_{} ( `ad_click_tag`, `type`, `uid`, `adzone_id`, `media_id`, `advertiser_id`, `ad_order_id`, `ad_creative_id`, `act_id`, `position_id`, `dev_id`, `price`, `create_time`, `update_time`, `adzone_click_id`, `method_type`, `mobile`, `age`, `name`, `meet_demand`, `int1`, `int2`, `int3`, `str1`, `str2`, `str3`, `chn`, `tag`, `url`, `charge_amount`, `media_income_cash`, `media_income_award`, `ua`, `region`, `ip`, `ad_plan_id`) values('E3W1CD6R1IUW88N08Y','6','999','102','1','2222559','1713','10','529','1',NULL,NULL,'{} 00:38:38','{} 11:42:37','111','2',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'{}','0','0','0','0',NULL,NULL,'3')'''.format(self.mon(),self.selected2_time1(),self.selected2_time1(),self.url)
 
         self.db.execute_sql(sql11)
         self.db.execute_sql(sql12)
@@ -500,7 +500,7 @@ class Ocpa_data(object):
 if __name__ == '__main__':
 
     url='https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171'
-    url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_2'
+    url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_6_2'
     Ocpadata= Ocpa_data('20190328',url,url2,env_value=True)
 
     print Ocpadata.selected_time1()

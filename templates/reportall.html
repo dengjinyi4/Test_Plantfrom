@@ -1,49 +1,76 @@
 {% extends "base.html"%}
 {% block main %}
 
+
+
+
 <script>
         $(document).ready(function() {
-    $('#example').DataTable();
+    $('#example').DataTable({
+    "order": [[5,'desc']], //排序
+    "iDisplayLength" : 100, //默认显示的记录数
+
+    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[1]}],
+    //aoColumnDefs:[{"sClass":"alignleft","aTargets":[1]},{"sClass":"alignleft","aTargets":[1]}],
+
+    "fixedHeader": true,  //固定表头
+                "scrollX": "500px",
+                "scrollY": "550px",  //高度
+                "scrollCollapse": true,
+    "fixedColumns": { "leftColumns": 2 } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    });
 } );</script>
+<style type="text/css">
+    *{font-size: 12px;}
+    thead tr td{white-space: nowrap;}
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+         background-color:#fff000
+    }
+    table.dataTable tbody tr td { text-align: right; }
+    table.dataTable tbody tr td.alignleft{ text-align: left;}
+
+    .cutLongText{white-space: nowrap;}
+</style>
+
+
 <p hidden="hidden">{{tmpsql|safe}}</p>
-毛利表-分媒体毛利
+毛利表-分媒体毛利&nbsp;&nbsp;&nbsp;<a href="{{url_for('myreport.repotadvliandong')}}">毛利表-联动客户毛利</a>
 <form action="{{url_for('myreport.reportall')}}" method="post">
         {{ form.hidden_tag()}}
        <table class="display" style="width:100%" border="1">
            <tr>
-               <td>{{ form.begindate.label }}{{form.begindate}}{{ form.enddate.label }}{{form.enddate}}</td>
+               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}{{ form.enddate.label }}{{form.enddate(autocomplete="off")}}
+                   &nbsp;&nbsp;{{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="export" download="reportall.xlsx" href="../../../static/result/reportall.xlsx">导出</a>
+                   <font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font></td>
            </tr>
-           <tr>
-                <td ><font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font></td>
-           </tr>
-           <tr> <td> {{ form.submit() }}</td></tr>
        </table>
 </form>
-      <table  id="example" class="display" style="width:100%"  border="1">
+<table  id="example" class="display" style="width:100%"  border="1">
 
-            <thead>
-                <tr>
-                   {% for i in filed%}
-                    <td>{{i|safe}}</td>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-
-            {% for k in data%}
-            <tr>
-                {% for i in k%}
-                        <td>{{i|safe}}</td>
-                {% endfor %}
-                       <!--<td><a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></td>-->
-            </tr>
+    <thead>
+        {{headtr|safe}}
+        <tr>
+           {% for i in filed%}
+            <td>{{i|safe}}</td>
             {% endfor %}
-            </tbody>
+        </tr>
+    </thead>
+    <tbody>
 
-        </table>
+    {% for k in data%}
+    <tr>
+        {% for i in k%}
+            <td><font {% if i|string|replace('%','')|int<0 %} color="red"{% endif %}>
+                    {{i|safe}}
+                </font></td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
     <p align="center"></p>
-
-
 
 <!--{% for i in mybudget %}-->
 <!--<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>-->

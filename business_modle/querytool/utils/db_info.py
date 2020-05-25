@@ -26,11 +26,11 @@ class DbOperations(object):
 
             #生产环境voyager
             print "生产环境voyager"
-            self.db = MySQLdb.connect(host="123.59.17.42",
+            self.db = MySQLdb.connect(host="221.122.127.168",
                                       port=3306,
                                       db="voyager",
-                                      user="voyager_reader",
-                                      passwd="qtwAZz2ozHFOsPD6",
+                                      user="dengjinyi",
+                                      passwd="dengjinyi123456",
                                       charset='utf8')
         else:
             #生产环境voyagerstat

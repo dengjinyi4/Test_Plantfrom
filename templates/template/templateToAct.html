@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>模板活动互助查询</title>
 </head>
-<div class="container">
+<div class="container" style="width: 95%">
 <body>
     <form action="{{url_for('act.templateToAct',page_name='query')}}" method="post">
 {#        <input type="radio" id="test" name='env' value="1" checked="checked"/><label for="test">测试环境</label>#}
@@ -42,17 +42,18 @@
         {{ form.data.env.label }}
         <table border="1">
             <tr>
-                <th style="background-color: #66cc66">活动id</th>
-                <th style="background-color: #66cc66">活动名称</th>
-                <th style="background-color: #66cc66">活动使用的天降红包弹窗模板</th>
-                <th style="background-color: #66cc66">活动是否直接调用天降红包</th>
-                <th style="background-color: #B0E0E6">模板id</th>
-                <th style="background-color: #B0E0E6">模板名称</th>
-                <th style="background-color: #B0E0E6">模板坑位</th>
-                <th style="background-color: #B0E0E6">模板是否支持可配置活动弹窗</th>
-                <th style="background-color: #B0E0E6">模板url地址</th>
-                <th style="background-color: #B0E0E6">模板配置信息</th>
-                <th style="background-color: #B0E0E6">根据模板查线上/测试活动id</th>
+                <th style="background-color: #66cc66;width:3% ">活动id</th>
+                <th style="background-color: #66cc66;width:5%">名称</th>
+                <th style="background-color: #66cc66;width:4%">天降红包弹窗模板</th>
+                <th style="background-color: #66cc66;width:5%">是否直接调天降红包</th>
+                <th style="background-color: #B0E0E6;width:3%">模板id</th>
+                <th style="background-color: #B0E0E6;width:4%">名称</th>
+                <th style="background-color: #B0E0E6;width:4%">坑位:广告类型<span class="glyphicon glyphicon-question-sign" title="1图文,2视频,激励视频"></span></th>
+                <th style="background-color: #B0E0E6;width:6%">是否支持可配置活动弹窗</th>
+                <th  style="background-color: #B0E0E6;width:4%">是否支持视频</th>
+                <th style="background-color: #B0E0E6;width:30%">url地址</th>
+                <th style="background-color: #B0E0E6;">配置信息</th>
+                <th style="background-color: #B0E0E6;width:3%">根据模板互查</th>
             </tr>
             {% if flag == 'true' %}
                 {% for row in re %}
@@ -61,7 +62,7 @@
                     <td>{{ col|safe }}</td>
                     {% endfor %}
 {#                <td><a target="_blank" href="{{ url_for("act.templateToAct",page_name='position',id=row[2]|safe,env=env)}}">查看</a></td>#}
-                <td><a target="_blank" href="{{ url_for("act.templateToAct",page_name='template',template=row[8]|safe,env=env)}}">查看</a></td>
+                <td><a target="_blank" href="{{ url_for("act.templateToAct",page_name='template',template=row[9]|safe,env=env)}}">查看</a></td>
                 </tr>
                 {% endfor %}
             {% else %}

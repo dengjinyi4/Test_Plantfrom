@@ -2,7 +2,7 @@
 __author__ = 'jinyi'
 from flask import Flask,request,render_template,Blueprint,flash,url_for
 from business_modle.querytool import plantfromwtf as ft
-from business_modle.querytool import egoubaobei as baobei
+from business_modle.sendmailtozhounan import egoubaobei as baobei
 from business_modle.querytool import egoubaobei_jd as baobei_jd
 egoubaobei = Blueprint('egoubaobei', __name__,template_folder='templates')
 

@@ -7,6 +7,15 @@
         $(document).ready(function() {
     $('#example').DataTable();
 } );</script>
+
+<script>
+window.onload = function(){
+            $("tr:gt(0)").mouseover(function(){
+		      $(this).css('background-color','rgba(199,21,133,0.5)');});
+            $("tr:gt(0)").mouseout(function(){
+		     $(this).css('background-color','white');});}
+</script>
+
 <li>缓存中的订单为：</li>
 <li>订单总个数：{{allcount|safe}} 预算为负数的订单个数: {{negativecount|safe}}</li>
 

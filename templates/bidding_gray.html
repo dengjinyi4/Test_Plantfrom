@@ -1,0 +1,142 @@
+{% extends "base.html"%}
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head lang="en">-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title></title>-->
+<!--</head>-->
+<!--<body>-->
+{% block main %}
+
+<h1>Bidding灰度和测试环境验证</h1>
+<form action="{{url_for('bidding_gray')}}" method="post">
+    <table  border="1">
+        <tbody>
+            <tr>
+                <td>请选择环境：</td>
+                <td>
+                <select name="dbtype">
+                    <option value="test">测试环境</option>
+                    <option value="online">灰度环境</option>
+                </select></td>
+                <td><input type="submit" value="执行"></td>
+            </tr>
+            <br>
+
+        <tr><td><strong>adzone_click_log</strong></td></tr>
+            <tr>
+                <td>活动id</td>
+                <td>广告位id</td>
+                <td>ip</td>
+                <td>创建时间</td>
+                <td>媒体id</td>
+                <td>站长id</td>
+                <td><font color="red" >状态</font></td>
+                <td>广告位点击ID</td>
+            </tr>
+            {% for trcout in alladzon %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+
+            {% endfor %}
+
+        <tr><td><strong>lottery_click_log</strong></td></tr>
+            <tr>
+                <td>广告位ID</td>
+                <td>活动id</td>
+                <td>坑位ID</td>
+                <td>订单ID</td>
+                <td>ip</td>
+                <td>创建时间</td>
+                <td>位次</td>
+                <td><font color="red" >状态</font></td>
+                <td><font color="red" >奖品类型</font></td>
+                <td>广告位点击ID</td>
+                <!-- <td>广告主id</td> -->
+            </tr>
+            {% for trcout in alllottery %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            <tr><td><strong>ad_show_log</strong></td></tr>
+            <tr>
+                <td>广告展现唯一标识</td>
+                <td>媒体id</td>
+                <td>广告位id</td>
+                <td>活动id</td>
+                <td>坑位id</td>
+                <td>广告订单id</td>
+                <td>广告创意id</td>
+                <td>IP</td>
+                <td>创意url</td>
+                <td>出价方式</td>
+                <td><font color="red" >扣费金额</font></td>
+                <td>创建时间</td>
+                <td><font color="red" >状态</font></td>
+                <td>广告位点击ID</td>
+            </tr>
+            {% for trcout in allshow %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+
+         <tr><td><strong>ad_click_log</strong></td></tr>
+            <tr>
+                <td>广告位ID</td>
+                <td>活动id</td>
+                <td>坑位id</td>
+                <td>广告订单id</td>
+                <td>广告创意id</td>
+                <td>IP地址</td>
+                <td>出价方式</td>
+                <td><font color="red" >扣费(分)</font></td>
+                <td>创建时间</td>
+                <td>位次</td>
+                <td><font color="red" >状态</font></td>
+                <td>广告位点击ID</td>
+                <td>平台溢价收益 （单位：分）</td>
+                <td>媒体现金收益 （单位：分）</td>
+                <td>媒体奖励收益 （单位：分）</td>
+            </tr>
+            {% for trcout in allclick %}
+            <tr>
+                {% for i in trcout %}
+                    <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+         <tr><td><strong>act_click_log</strong></td></tr>
+            <tr>
+            <td>活动id</td>
+            <td>广告位id</td>
+            <td>ip</td>
+            <td>创建时间</td>
+            <td>媒体ID</td>
+            <td>状态</td>
+            <td>广告位点击ID</td>
+        </tr>
+            {% for trcout in award_show %}
+            <tr>
+            {% for i in trcout %}
+                <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+{% endblock %}
+
+<!--</body>-->
+<!--</html>-->

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >
     <!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}"crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >
     <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
-    >
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <!--<script src="{{url_for('static',filename='bootstrap.min.js')}}"  crossorigin="anonymous"></script>-->
@@ -19,6 +18,8 @@
     <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Data Tables -->
     <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <link href="//cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css" rel="stylesheet">
+    <script src="//cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
     <title></title>
 </head>
 <body>
@@ -59,6 +60,7 @@
             <li><a href="{{url_for('del_minipragram')}}">删除小程序相关数据</a></li>
             <li><a href="{{url_for('auto_activity')}}">自动化活动管理</a></li>
             <li><a href="{{url_for('create_ad')}}">创建互动推订单</a></li>
+            <li><a href="{{url_for('bidding_gray')}}">Bidding接口灰度和测试环境验证</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -95,6 +97,7 @@
               <li><a href="{{url_for('act.checkRoute')}}">活动路由检查</a></li>
               <li><a href="{{url_for('act.create_act')}}">创建活动(互动推)</a></li>
               <li><a href="{{url_for('act.simulateAdDatas')}}">创建活动测试数据</a></li>
+              <li><a href="{{url_for('act.checkLottery')}}">检查抽奖接口</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -184,7 +187,7 @@
           <li class="dropdown">
           <a href="{{url_for('tools.jobReason',page_name='new') }}" >订单过滤原因跟踪<span class="caret"></span></a>
         </li>
-          <li class="dropdown">
+          <li class="dropdown" id="ttreport">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">报表相关<span class="caret"></span></a>
               <ul class="dropdown-menu">
                   <li><a href="{{url_for('myreport.reportall')}}">毛利表-分媒体毛利</a></li>

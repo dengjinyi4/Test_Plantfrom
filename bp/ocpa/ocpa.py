@@ -114,7 +114,7 @@ def ocpa_data(env=True):
     else:
         begin_time=request.form.get('beigin_date')
         url='https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171'
-        url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_2'
+        url2='adz102_https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171_6_2'
 
         ocpadata=Ocpa_data(begin_time,url,url2,env_value=True)
 

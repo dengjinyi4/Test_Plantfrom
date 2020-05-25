@@ -49,6 +49,7 @@ from business_modle.querytool.report_byadzone import *
 from business_modle.querytool.crmproduct_info import *
 from bp.TestToolsTracker.ToolsTrackerForm import ToolsTrackerForm
 from business_modle.querytool.ddyzinfo import *
+from business_modle.testtools.bidding_gray import *
 from business_modle.testtools.create_ad import *
 from bp.tools.tools import *
 from bp.login.login import mylogin
@@ -809,11 +810,42 @@ def adv_consume_amount():
         else:
             return render_template('adv_consume_amount.html', re=re,pos=0)
 
+####灰度抽奖数据验证
+@app.route('/bidding_gray/',methods=['POST','GET'])
+
+def bidding_gray():
+        if request.method=='GET':
+            return render_template('bidding_gray.html')
+        else:
+            dbtype=request.form.get('dbtype')
+
+            bidding_gray=Bidding_gray(dbtype)
+
+            time.sleep(5)
+            alladzon=bidding_gray.check_adzone_click()
+            alllottery=bidding_gray.check_lottery()
+            allshow=bidding_gray.check_adshow()
+            allclick=bidding_gray.check_adclick()
+            award_show=bidding_gray.check_act_click()
+
+            return render_template('bidding_gray.html',alladzon=alladzon,alllottery=alllottery,allshow=allshow,allclick=allclick,award_show=award_show)
+
+
+
+
+
+
+
+
+
+
+
+
 
 #登录权限判断
 @app.before_request
 def islogin():
-    businessuser=['qiuting','zhounan','zhouying']
+    businessuser=['zhounan','zhouying']
     # 客户运营
     businessuser1=['houlixiu','yunying','jiangshan','sheqingqing','shicuicui','zhouying','yuanchaoxia']
     # 活动模板
@@ -827,7 +859,7 @@ def islogin():
     #广告主数据收集
     businessuser5=['yuanchaoxia']
     #lishichun
-    businessuser6=['lishichun']
+    businessuser6=['']
     # 对外媒体
     othermedia=['othermei']
 

@@ -9,7 +9,8 @@ def myc(env):
     if env=='testtest':
         db = mysql.connect(host='172.16.105.12',user='voyager',passwd='voyager',db='test',port=5701,charset='utf8')
     if env=='devvoyager':
-        db = mysql.connect(host='123.59.17.42',user='voyager_reader',passwd='qtwAZz2ozHFOsPD6',db='voyagerlog',port=3306,charset='utf8')
+        # db = mysql.connect(host='123.59.17.42',user='voyager_reader',passwd='qtwAZz2ozHFOsPD6',db='voyagerlog',port=3306,charset='utf8')
+        db = mysql.connect(host='221.122.127.168',user='dengjinyi',passwd='dengjinyi123456',db='voyagerlog',port=3306,charset='utf8')
     if env=='nomandytest':
         db = mysql.connect(host='172.16.105.12',user='voyager',passwd='voyager',db='normandy',port=5701,charset='utf8')
     if env=='nomandydev':
