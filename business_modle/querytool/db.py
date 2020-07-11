@@ -19,7 +19,10 @@ def myc(env):
         db = mysql.connect(host='172.16.9.9',user='egou',passwd='egou',db='fanxian',port=3306,charset='utf8')
     if env=='devtidb':
         db = mysql.connect(host='123.59.17.217',user='dengjinyi',passwd='dengjinyi123456',db='tt',port=4000,charset='utf8')
-
+    if env=='devquanyi':
+        db = mysql.connect(host='221.122.127.112',user='yiqifa_bs_2',passwd='XzlXY1EaiOaj',db='yiqifa_bs',port=3306,charset='utf8')
+    if env=='testquanyi':
+        db = mysql.connect(host='172.16.17.182',user='yiqifa_bs_88',passwd='yiqifa_bs_88',db='yiqifa_bs_88',port=3306,charset='utf8')
     db.autocommit(True)
     myc=db.cursor()
     return myc,db

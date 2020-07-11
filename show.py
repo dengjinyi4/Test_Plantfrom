@@ -15,6 +15,7 @@ from business_modle.querytool.confparas import *
 from business_modle.querytool.get_act import *
 from business_modle.querytool.updateAdId import *
 from business_modle.querytool.QueryAppkey import *
+from business_modle.querytool.basetools import *
 from business_modle.report import tuodi_oneviw as tuodi_oneviw
 from business_modle.testtools import houtai as ht
 from business_modle.querytool import plantfromwtf as ft
@@ -46,6 +47,7 @@ from bp.yiqifa.egoubaobei import *
 from business_modle.querytool.orderQueryCreative import *
 from bp.TestToolsTracker.ToolsTracker import ToolsTracker
 from business_modle.querytool.report_byadzone import *
+from business_modle.querytool.reportbymin import *
 from business_modle.querytool.crmproduct_info import *
 from bp.TestToolsTracker.ToolsTrackerForm import ToolsTrackerForm
 from business_modle.querytool.ddyzinfo import *
@@ -56,7 +58,7 @@ from bp.login.login import mylogin
 from bp.miniprogram.activity_form import *
 from bp.hdtadzone.adzone import hdtadzone
 from bp.newreport.myreport import hdtreport
-
+from bp.yiqifa.yiqifaquanyi import yiqifaquanyi
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'txt') #设置一个专门的类似全局变量的东西
 app = Flask(__name__)
@@ -78,6 +80,7 @@ app.register_blueprint(mylogin,url_prefix='/login')
 app.register_blueprint(tools,url_prefix='/tools')
 app.register_blueprint(hdtadzone,url_prefix='/hdtadzone')
 app.register_blueprint(hdtreport,url_prefix='/hdtreport')
+app.register_blueprint(yiqifaquanyi,url_prefix='/yiqifaquanyi')
 
 
 # app.jinja_env.add_extension("chartkick.ext.charts")
@@ -300,6 +303,15 @@ def voyagerlog1():
             tmpdit=ba.gettmpditbybid(tmpdit,'pos',pos)
         return render_template('voyagerlog1.html',form=form,data=tmpdit)
     return render_template('voyagerlog1.html',form=form)
+
+@app.route('/bid_reason/',methods=['GET'])
+def bid_reason():
+    re_dict = ba.order_reson()
+    #按key值重新排序
+    f =zip(re_dict.keys(),re_dict.values())
+    return render_template('bid_reason.html',data=sorted(f))
+
+
 
 @app.route('/reportlist/',methods=('POST','GET'))
 def reportlist():
@@ -701,6 +713,50 @@ def report_byadzone():
     else:
         return render_template('report_byadzone.html')
 
+
+@app.route('/basetools/',methods=['get','post'])
+
+def basetools():
+    if request.method=='POST':
+        tag=request.form.get('tag')
+        newtmpstr=tag.split(';')
+        result=[]
+        for i in range(0,len(newtmpstr)):
+
+          tmp=BaseTools(newtmpstr[i])
+
+          re=tmp.do()
+          result.append(re)
+        return render_template('basetools.html',result=result,tag=tag)
+    else:
+        return render_template('basetools.html')
+
+
+
+
+@app.route('/reportbymin/',methods=['get','post'])
+def reportbymin():
+    if request.method == 'POST':
+        begin_date=request.form.get('begin_date')
+        begin_hour=request.form.get('begin_hour')
+        end_hour=request.form.get('end_hour')
+        begin_min=request.form.get('begin_min')
+        end_min=request.form.get('end_min')
+        report_min = Reportbymin(begin_date,begin_hour,end_hour,begin_min,end_min,False)
+
+        adzoneclick=report_min.adzoneclick()
+        adshow=report_min.adshow()
+        adclick=report_min.adclick()
+
+        return render_template('reportbymin.html',adzoneclick=adzoneclick,adshow=adshow,adclick=adclick,begin_date=begin_date,begin_hour=begin_hour,end_hour=end_hour,begin_min=begin_min,end_min=end_min)
+
+    else:
+        return render_template('reportbymin.html')
+
+
+
+
+
 @app.route('/create_ad/',methods=['get','post'])
 
 def create_ad():
@@ -842,7 +898,7 @@ def bidding_gray():
 
 
 
-#登录权限判断
+# 登录权限判断
 @app.before_request
 def islogin():
     businessuser=['zhounan','zhouying']
@@ -851,17 +907,19 @@ def islogin():
     # 活动模板
     businessuser2=['guoxuchang']
     #短信验证码
-    businessuser3=['hugengwei','liuyujing']
-
+    businessuser3=['hugengwei','liuyujing','wangsha','caiwenqing','yangjinsong']
     #优品购信息查询
     businessuser4=['zhaoyang']
-
     #广告主数据收集
     businessuser5=['yuanchaoxia']
     #lishichun
     businessuser6=['']
     # 对外媒体
     othermedia=['othermei']
+    # 运营报表
+    businessuser7=['meitiyunying']
+    # 修改易购宝贝用户状态
+    businessuser8 = ['hugengwei','liuyujing','wangsha','caiwenqing','yangjinsong']
 
     if (request.path == '/lpm_test/'):
         return None
@@ -895,7 +953,7 @@ def islogin():
         else:
             return redirect('/getinfor/get/')
     if (session.get('username') in businessuser1) :
-        if (request.path == '/hdtredis/orderr/'):
+        if (request.path == '/hdtredis/orderr/' or request.path == '/hdtreport/reportmtpinggu/' or request.path=='/hdtreport/reportmtpingguhour/'):
             return None
         else:
             return redirect('/hdtredis/orderr/')
@@ -905,10 +963,10 @@ def islogin():
         else:
             return redirect('/act/templateToAct/query/')
     if (session.get('username') in businessuser3) :
-        if (request.path == '/phoneVaildCode/'):
+        if (request.path == '/phoneVaildCode/' or request.path == '/yiqifa/alterUser/'):
             return None
-        else:
-            return redirect('/phoneVaildCode/')
+        else :
+            return redirect('/yiqifa/alterUser/')
 
     if (session.get('username') in businessuser4):
 
@@ -934,6 +992,13 @@ def islogin():
             return None
         else:
             return redirect('/ocpa/ocpa_order/')
+        # 报表
+    if (session.get('username') in businessuser7) :
+        if (request.path == '/hdtreport/reportmtpinggu/' or request.path=='/hdtreport/reportmtpingguhour/'):
+        # if (request.path == '/report_byadzone/'):
+            return None
+        else:
+            return redirect('/hdtreport/reportmtpinggu/')
 
 @app.route('/lpm_test/')
 def lpm_page():

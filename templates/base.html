@@ -1,25 +1,30 @@
 ﻿<!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="http://cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!--<script src="{{url_for('static',filename='jquery.min.js')}}"></script>-->
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/data.js"></script>
+    <script type="text/javascript" src="http://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
+    <!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >-->
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>-->
     <!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}"crossorigin="anonymous"><!--<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}" >
     <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <!--<script src="{{url_for('static',filename='bootstrap.min.js')}}"  crossorigin="anonymous"></script>-->
     <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
-    <script src="http://code.highcharts.com/modules/data.js"></script>
-    <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Data Tables -->
-    <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <link href="//cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css" rel="stylesheet">
-    <script src="//cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
     <title></title>
 </head>
 <body>
@@ -74,6 +79,7 @@
             <li><a href="{{url_for('voyagerlog1')}}">查询生产环境日志(互动推)</a></li>
             <li><a href="{{url_for('adzone11.getadzone')}}">查询广告位操作日志(互动推)</a></li>
             <li><a href="{{url_for('hdt_redis.orderresion')}}">查询生产环境日志-订单选中详情(互动推)</a></li>
+            <li><a href="{{url_for('hdt_redis.orderr')}}">查询生产环境日志-订单选中详情(运营使用)</a></li>
             <li><a href="{{url_for('confparas')}}">数据库配置(互动推)</a></li>
             <li><a href="{{url_for('ad_simulation')}}">模拟投放接口(互动推)</a></li>
             <li><a href="{{url_for('UpdateAdId')}}">更新Advertiser_ID</a></li>
@@ -85,8 +91,11 @@
             <li><a href="{{url_for('report_byadzone')}}">根据广告位查询报表</a></li>
             <li><a href="{{url_for('adv_consume_amount')}}">查询广告主预扣及消耗</a></li>
             <li><a href="{{url_for('crmproduct_info')}}">查询优品购商品信息</a></li>
+            <li><a href="{{url_for('reportbymin')}}">按分钟查询报表信息</a></li>
+            <li><a href="{{url_for('basetools')}}">根据tag查询数据</a></li>
 
-            <li role="separator" class="divider"></li>
+
+              <li role="separator" class="divider"></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -98,6 +107,7 @@
               <li><a href="{{url_for('act.create_act')}}">创建活动(互动推)</a></li>
               <li><a href="{{url_for('act.simulateAdDatas')}}">创建活动测试数据</a></li>
               <li><a href="{{url_for('act.checkLottery')}}">检查抽奖接口</a></li>
+              <li><a href="{{url_for('bid_reason')}}">bid过滤原因</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -162,11 +172,14 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">亿起发业务<span class="caret"></span></a>
           <ul class="dropdown-menu">
+            <li><a href="{{url_for('yiqifaquanyi.quanyiproduct')}}">亿起发权益-商品查询</a></li>
+            <li><a href="{{url_for('yiqifaquanyi.quanyiorder')}}">亿起发权益-订单查询</a></li>
             <li><a href="{{url_for('Yiqifa.shortJump')}}">短链跳转缓存至redis集群</a></li>
             <li><a href="{{url_for('egoubaobei.payorder')}}">易购宝贝订单支付</a></li>
             <li><a href="{{url_for('egoubaobei.getproduct')}}">易购宝贝京东商品</a></li>
             <li><a href="http://172.16.105.36:19190/availableRedpacket.do">易购宝贝会员红包余额</a></li>
             <!--<li><a href="{{url_for('Finace.yiqiFinace')}}">网站主财务结算信息</a></li>-->
+            <li><a href="{{url_for('egoubaobei.alterUser')}}">易购宝贝修改用户状态</a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -193,9 +206,11 @@
                   <li><a href="{{url_for('myreport.reportall')}}">毛利表-分媒体毛利</a></li>
                   <li><a href="{{url_for('myreport.repotadvliandong')}}">毛利表-联动客户毛利</a></li>
                   <li><a href="{{url_for('myreport.repotptmaoli')}}">毛利表-平台毛利细化</a></li>
+                  <li><a href="{{url_for('myreport.reportptmaoliadtag')}}">毛利表-广告主维度</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="{{url_for('myreport.reportmtpinggu')}}">媒体效果-评估-日表</a></li>
                   <li><a href="{{url_for('myreport.reportmtpingguhour')}}">媒体效果-评估-小时表</a></li>
+                  <li><a href="{{url_for('myreport.reportByadvtag')}}">媒体效果-评估-广告主类型</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="{{url_for('myreport.reporregionbyday')}}">地域指标效果数据</a></li>
                   <li><a href="{{url_for('myreport.reporregionbyadv')}}">广告主地域效果</a></li>

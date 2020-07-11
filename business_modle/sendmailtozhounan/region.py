@@ -113,9 +113,16 @@ def getregionshanghai1():
 
 if __name__ == '__main__':
     # getbeijing_region()
-    getregionshanghai1()
+    # getregionshanghai1()
     # getregiontianjin1()
     # getregionbeijing1()
     # tmp='116.171.246.25'
     # tplist=tmp.split('.')
     # print tplist[0]+'.'+tplist[1]+'.'+tplist[2]
+    address=['北京市朝阳区双桥东路7号院']
+    # address=['beijing']
+    mykey=['北京','上海','北京市']
+    # mykey=['beijing']
+    re=[i for  i in mykey if i in str(address).decode('string_escape')]
+    print str(re).decode('string_escape')
+

@@ -41,13 +41,14 @@ def getindb(env,begintime='',endtime='',adzoneid=''):
         res=db.selectsql('devvoyager',tmpsql)
     return res
 def getadzoneinfo (env,mytype='',begintime='',endtime='',adzoneid=''):
-    res=getindb(env,begintime,endtime,adzoneid)
     tmp=[]
-    if len(res)>0:
-        for inf in res:
-            tmpdict={}
-            # 高级屏蔽
-            if mytype=='1':
+    # 高级屏蔽
+    if mytype=='1':
+        res=getindb(env,begintime,endtime,adzoneid)
+        if len(res)>0:
+            for inf in res:
+                tmpdict={}
+                # if mytype=='1':
                 if 'shieldTactics'in inf[0] :
                     tmpshieldTactics=eval(inf[0])['shieldTactics'][0]
                     if  'type' in (tmpshieldTactics):
@@ -59,7 +60,7 @@ def getadzoneinfo (env,mytype='',begintime='',endtime='',adzoneid=''):
                         shieldTactics['create_time1']=str(inf[2])
                         shieldTactics=filldict(shieldTactics)
                         tmp.append(shieldTactics)
-    tmp=setcolor(tmp)
+        tmp=setcolor(tmp)
     return tmp
 # 如果有key值不存，添加key，value赋值为空
 # 替换value值为中文

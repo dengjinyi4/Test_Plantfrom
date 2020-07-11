@@ -44,6 +44,8 @@
            <tr>
                <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}} {{ form.enddate.label }}{{form.enddate(autocomplete="off")}} {{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}} {{ form.advertiser.label }}{{form.advertiser(autocomplete="off")}}
                &nbsp;&nbsp;{{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;<a id="export" download="reporregionbyday.xlsx" href="../../../static/result/reporregionbyday.xlsx">导出</a>
+
                <font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}{{form.adzoneid.errors[0]}}{{form.advertiser.errors[0]}}</font></td>
            </tr>
        </table>

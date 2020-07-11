@@ -1,0 +1,28 @@
+{% extends "base.html"%}
+{% block main %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>根据tag查询数据</title>
+</head>
+<body>
+<h1>根据tag查询数据</h1>
+<form action="{{url_for('basetools')}}" method="post">
+    tag: <input placeholder="多个值请用;分隔" type="text" style="width:30%" value="{{tag}}" name="tag"><nobr></nobr>
+    <input type="submit" value="查询">
+    <br>
+    <br>
+</form>
+{% if result|length>0 %}
+    <p>查询结果:<p></p>
+    {% for i in result %}
+        <p>{{ i }}</p>
+    {% endfor %}
+{% else %}
+    <p>查询结果:没有查询结果，请确认</p>
+{% endif %}
+</body>
+</html>
+{% endblock %}
+

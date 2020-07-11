@@ -38,6 +38,8 @@
            <tr>
                <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}} {{ form.enddate.label }}{{form.enddate(autocomplete="off")}} {{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}} {{ form.region.label }}{{form.region(autocomplete="off")}}
                &nbsp;&nbsp;{{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;<a id="export" download="reporregionbyadv.xlsx" href="../../../static/result/reportregionbyadv.xlsx">导出</a>
+
                <font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}{{form.adzoneid.errors[0]}}{{form.region.errors[0]}}</font></td>
            </tr>
        </table>
@@ -46,7 +48,7 @@
 
             <thead>
                 <tr>
-                    <td align="center" colspan=7>&nbsp;全部为去联动数据</td>
+                    <td align="center" colspan=11>&nbsp;全部为去联动数据</td>
                     <td align="center" colspan={{colspanx|safe}}>效果成本</td>
                     <td align="center" colspan={{colspanx|safe}}>消耗</td>
                     <td align="center" colspan={{colspanx|safe}}>点击</td>
@@ -66,7 +68,7 @@
                 {% for i in k%}
                     <td><font {% if i|string|replace('%','')|int<0  %}
                                 color="red"
-                            {% elif loop.index >= 8 and loop.index < 8+colspanx and k[3]|int>0 and i>0 %}
+                            {% elif loop.index >= 12 and loop.index < 12+colspanx and k[3]|int>0 and i>0 %}
                                     {% if i>k[3]|int %}
                                         color="red"
                                     {% else %}

@@ -39,6 +39,11 @@ class egoubaobei_orderpay(Form):
     order_status=RadioField(u'订单支付状态',choices=[('True',u'支付成功'),('False',u'支付失败'),('ing',u'待支付')],default='True')
     orderid = StringField(u'订单id', validators=[DataRequired(),Length(min=5, max=20,message=u'订单id长度5-20')],render_kw={'placeholder':u'订单id'})
     submit=SubmitField(u'更新')
+class yiqifaquanyi(Form):
+    # order_status=RadioField(u'订单支付状态',choices=[('True',u'支付成功'),('False',u'支付失败'),('ing',u'待支付')],default='True')
+    # orderid = StringField(u'订单id', validators=[DataRequired(),Length(min=5, max=20,message=u'订单id长度5-20')],render_kw={'placeholder':u'订单id'})
+    myenv=RadioField('env',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
+    submit=SubmitField(u'查找111')
 class egoubaobei_product(Form):
     skuid = StringField(u'skuid', validators=[DataRequired(),Length(min=5, max=20,message=u'订单id长度5-20')],render_kw={'placeholder':u'订单id'})
     submit=SubmitField(u'查找')
@@ -56,29 +61,44 @@ class myreportall(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
     submit=SubmitField(u'提交')
+
+class myreportptmaoliadtag(Form):
+    begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
+    enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
+    adzoneid = StringField(u'广告位id', render_kw={'placeholder': u'广告位id（1,2)','style':'width350'},default='')
+    advertiser = StringField(u'广告主ID', render_kw={'placeholder': u'广告主ID（1,2)','style':'width350'},default='')
+    tagorad = RadioField('显示维度',choices=[('tag',u'类型'),('ad',u'广告主')],default='tag')
+    showadzone = BooleanField('显示广告位维度', default=False)
+    submit=SubmitField(u'提交')
 class myreporpingguday(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
-    adzoneid = StringField(u'广告位id逗号分隔',validators=[DataRequired()], render_kw={'placeholder': u'广告位id;逗号分隔','style':'width350'},default='mytest')
-    advertiser = StringField(u'广告主ID',validators=[DataRequired()], render_kw={'placeholder': u'广告主ID','style':'width350'},default='mytest')
+    adzoneid = StringField(u'广告位id', render_kw={'placeholder': u'广告位id（1,2)','style':'width350'},default='')
+    advertiser = StringField(u'广告主ID', render_kw={'placeholder': u'广告主ID（1,2)','style':'width350'},default='')
     submit=SubmitField(u'提交')
 class myreporpingguhour(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
     # enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
-    adzoneid = StringField(u'广告位id逗号分隔',validators=[DataRequired()], render_kw={'placeholder': u'广告位id;逗号分隔','style':'width350'},default='mytest')
+    adzoneid = StringField(u'广告位id',render_kw={'placeholder': u'广告位id（1,2)','style':'width350'},default='')
+    advertiser = StringField(u'广告主ID', render_kw={'placeholder': u'广告主ID（1,2)','style':'width350'},default='')
+    submit=SubmitField(u'提交')
+class myreportByadvtag(Form):
+    begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
+    enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
+    adzoneid = StringField(u'广告位id', render_kw={'placeholder': u'广告位id（1,2)','style':'width350'},default='')
     submit=SubmitField(u'提交')
 
 class myreporregionbyday(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
-    adzoneid = StringField(u'广告位id逗号分隔',validators=[DataRequired()], render_kw={'placeholder': u'广告位id;逗号分隔','style':'width350'},default='mytest')
-    advertiser = StringField(u'广告主',validators=[DataRequired()], render_kw={'placeholder': u'广告主id必填','style':'width350'})
+    adzoneid = StringField(u'广告位id', render_kw={'placeholder': u'广告位id（1,2)','style':'width350'},default='')
+    advertiser = StringField(u'广告主(必填)',validators=[DataRequired()], render_kw={'placeholder': u'广告主id必填（1,2)','style':'width350'})
     submit=SubmitField(u'提交')
 class myreporregionbyadv(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
-    adzoneid = StringField(u'广告位id逗号分隔',validators=[DataRequired()], render_kw={'placeholder': u'广告位id;逗号分隔','style':'width350'},default='mytest')
-    region = StringField(u'地域',validators=[DataRequired()], render_kw={'placeholder': u'地域选填','style':'width350'},default='mytest')
+    adzoneid = StringField(u'广告位id（1,2)', render_kw={'placeholder': u'广告位id（1,2)','style':'width350'},default='')
+    region = StringField(u'地域', render_kw={'placeholder': u'地域  选填','style':'width350'},default='')
     submit=SubmitField(u'提交')
 class orderresion1(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(((20[0-3][0-9]-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|(20[0-3][0-9]-(0[2469]|11)-(0[1-9]|[12][0-9]|30))) (20|21|22|23|[0-1][0-9]):[0-5][0-9]:[0-5][0-9])$",0, message="开始时间请输入正确的日期: 2019-03-20 11:27:00")],default= str(datetime.datetime.now())[0:19])

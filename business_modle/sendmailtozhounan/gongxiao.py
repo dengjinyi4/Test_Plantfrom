@@ -112,11 +112,11 @@ def sales():
 def repayment():
     url1=reqhoutaiurl+'mfs/v1/repayment'
     head={"Content-Type":"application/json","token":"{0}".format(gettokenhoutai())}
-    params={"appKey":"145","repaymentAmount":1650,"remark":"auto"}
+    params={"appKey":"171","repaymentAmount":230,"remark":"auto"}
     params=json.dumps(params, indent=4,sort_keys=True)
     res=r.put(url1,headers=head,data=params)
     # print res.url
-    # print res.text
+    print res.text
 # 渠道扣款
 def punish():
     url1=reqhoutaiurl+'mfs/v1/punish'
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     # getmyhuojia_productlsit()
     # getyingxiao_productlsit()
     # re=sales()
-    for i in range(200):
+    for i in range(500):
         re=repayment()
     print re
     # print 1

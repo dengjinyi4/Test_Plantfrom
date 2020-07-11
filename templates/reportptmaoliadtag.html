@@ -1,0 +1,88 @@
+{% extends "base.html"%}
+{% block main %}
+
+
+<script>
+        $(document).ready(function() {
+    $('#example').DataTable({
+    "order": [[7,'desc']], //排序
+    "iDisplayLength" : 100, //默认显示的记录数
+
+    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[1]},{"sClass":"alignleft cutLongText","aTargets":[2]},{"sClass":"alignleft cutLongText","aTargets":[4]}],
+
+    "fixedHeader": true,  //固定表头
+                "scrollX": "500px",
+                "scrollY": "550px",  //高度
+                "scrollCollapse": true,
+    "fixedColumns": { "leftColumns": 4 } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    });
+} );</script>
+<style type="text/css">
+    *{font-size: 12px;}
+    thead tr td{white-space: nowrap;}
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+         background-color:#fff000
+    }
+    table.dataTable tbody tr td ,table.dataTable thead tr.tsum { text-align: right; }
+    table.dataTable tbody tr td.alignleft{ text-align: left;}
+
+    .cutLongText{white-space: nowrap;}
+
+    .display ul{display: inline;padding-left: 1px;}
+    .display ul li{display: inline;}
+</style>
+
+
+
+<p hidden="hidden">{{tmpsql|safe}}</p>
+毛利表-广告主维度
+<form action="{{url_for('myreport.reportptmaoliadtag')}}" method="post">
+        {{ form.hidden_tag()}}
+       <table class="display" style="width:100%" border="1">
+
+           <tr>
+               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}{{ form.enddate.label }}{{form.enddate(autocomplete="off")}}
+                   {{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}}{{ form.advertiser.label }}{{form.advertiser(autocomplete="off")}}
+                   &nbsp;&nbsp;&nbsp;{{ form.tagorad.label }}{{form.tagorad(autocomplete="off")}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.showadzone(autocomplete="off")}}{{ form.showadzone.label }}
+                   &nbsp;&nbsp;{{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;<a id="export" download="reportptmaoliadtag.xlsx" href="../../../static/result/reportptmaoliadtag.xlsx">导出</a>
+
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font></td>
+               </tr>
+       </table>
+</form>
+      <table  id="example" class="display" style="width:100%"  border="1">
+
+            <thead>
+            {% for k1 in datasum%}
+                 <tr class="tsum">
+                    {% for i1 in k1%}
+                             <td><font {% if i1|string|replace('%','')|int<0 %} color="red"{% endif %}>{{i1|safe}}</font></td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                <tr>
+                   {% for i in filed%}
+                    <td>{{i|safe}}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for k in data%}
+            <tr>
+                {% for i in k%}
+                    <td><font {% if i|string|replace('%','')|int<0 %} color="red"{% endif %}>{{i|safe}}</font></td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    <p align="center"></p>
+
+
+
+
+{% endblock %}

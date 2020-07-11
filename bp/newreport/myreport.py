@@ -36,8 +36,8 @@ def repotadvliandong():
         begintime=str(myform.data['begindate'])[0:10]
         endtime=str(myform.data['enddate'])[0:10]
         rp=mr.myreport(begintime=begintime,endtime=endtime)
-        data,filed,tmpsql=rp.getadvliandong()
-        return render_template('reportliandong.html',form=myform,data=data,filed=filed,tmpsql=tmpsql)
+        data,filed,tmpsql,headtr=rp.getadvliandong()
+        return render_template('reportliandong.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,headtr=headtr)
     data=[]
     return render_template('reportliandong.html',data=data,form=myform)
 
@@ -51,10 +51,30 @@ def repotptmaoli():
         begintime=str(myform.data['begindate'])[0:10]
         endtime=str(myform.data['enddate'])[0:10]
         rp=mr.myreport(begintime=begintime,endtime=endtime)
-        data,filed,tmpsql=rp.getptmaoli()
-        return render_template('repotptmaoli.html',form=myform,data=data,filed=filed,tmpsql=tmpsql)
+        data,filed,tmpsql,datasum=rp.getptmaoli()
+        return render_template('repotptmaoli.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,datasum=datasum)
     data=[]
     return render_template('repotptmaoli.html',data=data,form=myform)
+
+#菜单名：毛利表-广告主维度
+# 查询维度:日期，广告位，广告主
+@hdtreport.route('/reportptmaoliadtag/',methods=('POST','GET'))
+def reportptmaoliadtag():
+    myform=ft.myreportptmaoliadtag()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
+        adzoneid=str(myform.data['adzoneid'])
+        advertiser=str(myform.data['advertiser'])
+        tagorad=str(myform.data['tagorad'])
+        if myform.data['showadzone']:
+            showadzone='1'
+        else:
+            showadzone='0'
+        rp=mr.myreport(begintime=begintime,endtime=endtime,adzoneids=adzoneid,advertiser_id=advertiser,tagorad=tagorad,showadzone=showadzone)
+        data,filed,tmpsql,colspanx,datasum=rp.getreportptmaoliadtag()
+        return render_template('reportptmaoliadtag.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,colspanx=colspanx,datasum=datasum)
+    return render_template('reportptmaoliadtag.html',form=myform)
 
 
 
@@ -62,14 +82,19 @@ def repotptmaoli():
 @hdtreport.route('/reportmtpinggu/',methods=('POST','GET'))
 def reportmtpinggu():
     myform=ft.myreporpingguday()
+    addfieldnum=0
     if myform.validate_on_submit():
         begintime=str(myform.data['begindate'])[0:10]
         endtime=str(myform.data['enddate'])[0:10]
         adzoneid=str(myform.data['adzoneid'])
         advertiser=str(myform.data['advertiser'])
+        if advertiser :
+            addfieldnum=2
+        else:
+            addfieldnum=0
         rp=mr.myreport(begintime=begintime,endtime=endtime,adzoneids=adzoneid,advertiser_id=advertiser)
-        data,filed,tmpsql,colspanx=rp.getmtpinggu()
-        return render_template('reportmtpingguday.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,colspanx=colspanx)
+        data,filed,tmpsql,colspanx,datasum=rp.getmtpinggu()
+        return render_template('reportmtpingguday.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,colspanx=colspanx,datasum=datasum,addfieldnum=addfieldnum)
     data=[]
     return render_template('reportmtpingguday.html',data=data,form=myform)
 
@@ -78,14 +103,34 @@ def reportmtpinggu():
 @hdtreport.route('/reportmtpingguhour/',methods=('POST','GET'))
 def reportmtpingguhour():
     myform=ft.myreporpingguhour()
+    addfieldnum=0
     if myform.validate_on_submit():
         begintime=str(myform.data['begindate'])[0:10]
         # endtime=str(myform.data['enddate'])[0:10]
         adzoneid=str(myform.data['adzoneid'])
-        rp=mr.myreport(begintime=begintime,adzoneids=adzoneid)
-        data,filed,tmpsql=rp.getmtpinguhour()
-        return render_template('reportmtpingguhour.html',form=myform,data=data,filed=filed,tmpsql=tmpsql)
-    return render_template('reportmtpingguhour.html',form=myform)
+        advertiser=str(myform.data['advertiser'])
+        if advertiser :
+            addfieldnum=2
+        else:
+            addfieldnum=0
+        rp=mr.myreport(begintime=begintime,adzoneids=adzoneid,advertiser_id=advertiser)
+        data,filed,tmpsql,datasum=rp.getmtpinguhour()
+        return render_template('reportmtpingguhour.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,datasum=datasum,advertiser=advertiser,addfieldnum=addfieldnum)
+    return render_template('reportmtpingguhour.html',form=myform,addfieldnum=addfieldnum)
+
+#菜单名：媒体效果-评估-广告主类型
+@hdtreport.route('/reportByadvtag/',methods=('POST','GET'))
+def reportByadvtag():
+    myform=ft.myreportByadvtag()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
+        adzoneid=str(myform.data['adzoneid'])
+        rp=mr.myreport(begintime=begintime,endtime=endtime,adzoneids=adzoneid)
+        data,filed,tmpsql=rp.getreportByadvtag()
+        return render_template('reportByadvtag.html',form=myform,data=data,filed=filed,tmpsql=tmpsql)
+    data=[]
+    return render_template('reportByadvtag.html',data=data,form=myform)
 
 
 #菜单名：地域指标效果数据

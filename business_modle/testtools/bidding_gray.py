@@ -292,7 +292,6 @@ class Bidding_gray(object):
         url="http://{}/node/lottery.htm".format(self.ip_display)
         # url="http://{}/new/api/lottery.htm".format(self.ip_display)
         re= requests.get(url,params=param)
-        print re.json()
         print "==========lottery==============="
         return re.json()['data']['ad']['ad_url']
 #

@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+{% block main %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="{{url_for('egoubaobei.alterUser')}}" method="post">
+    手机号：<input type="text"  name="phone" required value={{phone}} >
+    <select name="status">
+        <option value="1">修改用户状态：注销</option>
+        <option value="2">修改会员状态：非会员</option>
+        <option value="3">修改会员状态：会员</option>
+        <option value="4">修改会员状态：会员过期</option>
+    </select>
+    <input type="submit" name="提交" value="提交">
+</form>
+
+<div>{{data}}</div>
+
+</body>
+</html>
+{% endblock %}

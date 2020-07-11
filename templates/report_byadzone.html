@@ -24,8 +24,8 @@
 
 <form action="{{url_for('report_byadzone')}}" method="post">
 
-     查询日期:<input type="date" name="begin_date" id="aDate"  value="{{begin_date}}">
-
+     <!--查询日期:<input type="date" name="begin_date" id="aDate"  value="{{begin_date}}">-->
+    查询日期:<input type="date" name="begin_date"  id="date_info" value="{{begin_date}}" />
 
     <br>
     <br>
@@ -74,15 +74,26 @@
 </div>
 
 </body>
-<script type="text/javascript">
-   function toDouble(value){
-        return value<10?('0'+value):value
-    }
-    var mydateInput = document.querySelectorAll('#aDate')[0]
-    var date = new Date();
-    var dateString = date.getFullYear() + "-" + toDouble((date.getMonth() + 1)) + "-" + toDouble(date.getDate());
-    mydateInput.value = dateString;
+<!--<script type="text/javascript">-->
+   <!--function toDouble(value){-->
+        <!--return value<10?('0'+value):value-->
+    <!--}-->
+    <!--var mydateInput = document.querySelectorAll('#aDate')[0]-->
+    <!--var date = new Date();-->
+    <!--var dateString = date.getFullYear() + "-" + toDouble((date.getMonth() + 1)) + "-" + toDouble(date.getDate());-->
+    <!--mydateInput.value = dateString;-->
 
-    </script>
+    <!--</script>-->
+
+<script>
+    $(document).ready(function () {
+        var time = new Date();
+        var day = ("0" + time.getDate()).slice(-2);
+        var month = ("0" + (time.getMonth() + 1)).slice(-2);
+        var today = time.getFullYear() + "-" + (month) + "-" + (day);
+        $('#date_info').val(today);
+    })
+</script>
+
 </html>
 {% endblock %}

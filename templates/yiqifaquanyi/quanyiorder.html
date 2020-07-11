@@ -1,0 +1,65 @@
+{% extends "base.html"%}
+{% block main %}
+
+
+
+
+<script>
+        $(document).ready(function() {
+    $('#example').DataTable({
+    "iDisplayLength" : 100, //默认显示的记录数
+
+    });
+} );</script>
+<style type="text/css">
+    *{font-size: 12px;}
+    thead tr td{white-space: nowrap;}
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+         background-color:#fff000
+    }
+    table.dataTable tbody tr td { text-align: right; }
+    table.dataTable tbody tr td.alignleft{ text-align: left;}
+
+    .cutLongText{white-space: nowrap;}
+</style>
+
+
+<p hidden="hidden">{{tmpsql|safe}}</p>
+亿起发权益订单列表&nbsp;&nbsp;&nbsp;
+<form action="{{url_for('yiqifaquanyi.quanyiorder')}}" method="post">
+        {{ form.hidden_tag()}}
+       <table class="display" style="width:100%" border="1">
+                      <tr>
+               <td>     {% for i in form.myenv %}
+                 {{i}}:{{i.label}}
+                   {% endfor %}{{ form.submit() }} </td>
+           </tr>
+       </table>
+</form>
+<table  id="example" class="display" style="width:100%"  border="1">
+
+    <thead>
+        <tr>
+           {% for i in filed%}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+
+    {% for k in res%}
+    <tr>
+        {% for i in k%}
+                 <td>
+                    {{i|safe}}
+                </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+    <p align="center"></p>
+
+
+{% endblock %}

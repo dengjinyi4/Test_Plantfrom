@@ -23,7 +23,7 @@
     table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
          background-color:#fff000
     }
-    table.dataTable tbody tr td { text-align: right; }
+    table.dataTable tbody tr td ,table.dataTable thead tr.tsum { text-align: right; }
     table.dataTable tbody tr td.alignleft{ text-align: left;}
 
     .cutLongText{white-space: nowrap;}
@@ -37,7 +37,9 @@
        <table class="display" style="width:100%" border="1">
 
            <tr>
-               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}{{ form.enddate.label }}{{form.enddate(autocomplete="off")}}{{ form.submit() }}<font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font>
+               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}{{ form.enddate.label }}{{form.enddate(autocomplete="off")}}{{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;<a id="export" download="reportptmaoli.xlsx" href="../../../static/result/reportptmaoli.xlsx">导出</a>
+                   <font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font>
                    <span style="font-size:10px">&nbsp;&nbsp;&nbsp;注：本表中，R级别以当天是否加粉来算</span></td>
            </tr>
        </table>
@@ -45,6 +47,13 @@
       <table  id="example" class="display" style="width:100%"  border="1">
 
             <thead>
+                {% for k1 in datasum%}
+                 <tr class="tsum">
+                    {% for i1 in k1%}
+                             <td><font {% if i1|string|replace('%','')|int<0 %} color="red"{% endif %}>{{i1|safe}}</font></td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
                 <tr>
                    {% for i in filed%}
                     <td>{{i|safe}}</td>

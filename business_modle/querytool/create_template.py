@@ -4,7 +4,7 @@
 
 import requests
 import sys
-import time
+import time, datetime
 from utils.db_info import *
 
 
@@ -25,6 +25,9 @@ class TemplateActCreation(object):
         # self.adzone = 467
         self.appkey="https://display.adhudong.com/site_login_ijf.htm?app_key="
         self.adzoneId = adzoneId
+        self.begin_time = str(datetime.date.today().strftime('%Y-%m-%d')) + ' 00:00:00'
+        self.end_time = str((datetime.date.today() + datetime.timedelta(days=120)).strftime('%Y-%m-%d')) + ' 00:00:00'
+
 
     def get_actId(self):
         '''
@@ -266,8 +269,8 @@ class TemplateActCreation(object):
     def adzone_act(self):
         dsql=r"delete from voyager.adzone_act where adzone_id in ({});".format(self.adzoneId)
         self.db.execute_sql(dsql)
-        isql=r'''INSERT  INTO voyager.adzone_act (adzone_id,act_id,act_time,priority ) VALUES
-            ( '{}','{}','0',  '1' );'''.format(self.adzoneId, self.get_actId())
+        isql=r'''INSERT  INTO voyager.adzone_act (adzone_id,act_id,act_time,priority,act_begin_time,act_end_time ) VALUES
+            ( '{}','{}','1',  '1','{}','{}' );'''.format(self.adzoneId, self.get_actId(), self.begin_time, self.end_time)
         self.db.execute_sql(isql)
         keysql = '''select app_key from voyager.base_adzone_info where id in ({})'''.format(self.adzoneId)
         key_re = self.db.execute_sql(keysql)

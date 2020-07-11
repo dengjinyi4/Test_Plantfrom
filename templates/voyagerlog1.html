@@ -53,6 +53,7 @@
 <li>竞价因子计算公式： <font color="red" >{{order['exp']|safe}}</font> </li>
 <li>最终筛选出来的订单1111:<font color="red" >{{order['wad']|safe}}</font> </li>
 <li>最终筛选出来的订单config： <font color="red" >{{order['config']|safe}}</font> </li>
+<li>创意标签相同排重列表： <font color="red" >{{order['distinctAd']|safe}}</font> </li>
     {% for reson in order['fad'] %}
      <li>广告过滤原因是：<font color="red" >{{reson|safe}}</font> 订单个数为：<font color="red" >{{order['fad'][reson]|count}}</font> 订单列表为：<font color="red" >{{order['fad'][reson]|safe}}</font> </li>
     {% endfor %}

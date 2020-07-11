@@ -1,0 +1,18 @@
+{% extends "base.html"%}
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>bid通用过滤原因</title>
+
+<body>
+
+{% block main %}
+    <table align="center">
+        <tr bgcolor="#7fffd4"><th>key</th><th>过滤原因</th></tr>
+        {% for i,k in data %}
+        <tr><td style="padding: 1% 2% 1% 1%">{{ i }}</td><td style="padding: 1% 1% 1% 2%">{{ k }}</td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+</body>
+</html>

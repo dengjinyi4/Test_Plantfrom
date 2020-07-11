@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+{% extends "base.html"%}
+
+{% block main %}
+
+<!--<script>$(document).ready(function() {$('#reportbymin2').DataTable();} );</script>-->
+<!--<script>$(document).ready(function() {$('#reportbymin3').DataTable();} );</script>-->
+<!--<script>$(document).ready(function() {$('#reportbymin4').DataTable();} );</script>-->
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>按分钟查询数据</title>
+</head>
+<body>
+<h1>按分钟查询报表数据</h1>
+<form action="{{url_for('reportbymin')}}" method="post">
+
+    查询日期:<input type="date" name="begin_date" id="begin_date" value="{{begin_date}}">
+    <br>
+    <br>
+    查询开始小时:<input type="number" name="begin_hour" id="begin_hour" value="{{begin_hour}}">
+    查询开始分钟:<input type="number" name="begin_min" id="begin_min" value="{{begin_min}}">
+    <br>
+    <br>
+    <!--查询结束日期:<input type="date" name="end_date" id="end_date" value="{{end_date}}">-->
+    查询结束小时:<input type="number" name="end_hour" id="end_hour" value="{{end_hour}}">
+    查询结束分钟:<input type="number" name="end_min" id="end_min" value="{{end_min}}">
+    <br>
+    <br>
+    <input type="submit" name="submit" value="查询">
+    <br>
+    <br>
+</form>
+
+
+<div id="reportbymin" style="text-align:center;" >
+    <table id="reportbymin2" class="display" name="reportbymin2" style="width:30%;float:left;" border="1">
+
+        <thead style="background:green">
+        <tr>
+            <th>日期</th>
+            <th>广告位点击数</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for row in adzoneclick %}
+        <tr>
+            {% for col in row %}
+            <td>{{col|safe}}</td>
+
+            {% endfor %}
+            {% endfor %}
+
+        </tr>
+        </tbody>
+    </table>
+    <table id="reportbymin3" class="display" name="reportbymin3" style="width:30%;float:left;"  border="1">
+
+        <thead style="background:green">
+        <tr>
+            <th>日期</th>
+            <th>广告展现</th>
+            <th>CPM订单消耗</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for row in adshow %}
+        <tr>
+            {% for col in row %}
+            <td>{{col|safe}}</td>
+
+            {% endfor %}
+            {% endfor %}
+
+        </tr>
+        </tbody>
+    </table>
+    <table id="reportbymin4" class="display" style="width:30%;float:left;"  name="reportbymin4" border="1">
+
+        <thead style="background:green">
+        <tr>
+            <th>日期</th>
+            <th>广告点击</th>
+            <th>CPC订单消耗</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for row in adclick %}
+        <tr>
+            {% for col in row %}
+            <td>{{col|safe}}</td>
+
+            {% endfor %}
+            {% endfor %}
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
+
+{% endblock %}

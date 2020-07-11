@@ -5,16 +5,16 @@
 <script>
         $(document).ready(function() {
     $('#example').DataTable({
-    "order": [[7,'desc']], //排序
+    "order": [[8+{{addfieldnum|safe|int}},'desc']], //排序
     "iDisplayLength" : 100, //默认显示的记录数
 
-    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[1]},{"sClass":"alignleft cutLongText","aTargets":[2]},{"sClass":"alignleft cutLongText","aTargets":[5]}],
+    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[1]},{"sClass":"alignleft cutLongText","aTargets":[2]},{"sClass":"alignleft cutLongText","aTargets":[5+{{addfieldnum|safe|int}}]}{% if  addfieldnum|safe|int > 0 %},{"sClass":"alignleft cutLongText","aTargets":[3]},{"sClass":"alignleft cutLongText","aTargets":[4]}{% endif %}],
 
     "fixedHeader": true,  //固定表头
                 "scrollX": "500px",
                 "scrollY": "550px",  //高度
                 "scrollCollapse": true,
-    "fixedColumns": { "leftColumns": 5 } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    "fixedColumns": { "leftColumns": 5+{{addfieldnum|safe|int}} } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
     });
 } );</script>
 <style type="text/css">
@@ -23,10 +23,13 @@
     table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
          background-color:#fff000
     }
-    table.dataTable tbody tr td { text-align: right; white-space: nowrap;}
+    table.dataTable tbody tr td,table.dataTable thead tr.tsum { text-align: right; white-space: nowrap;}
     table.dataTable tbody tr td.alignleft{ text-align: left;white-space: nowrap;}
 
     .cutLongText{white-space: nowrap;}
+
+    .gray{border-bottom: 1px solid #dddddd;}
+    .red{border-bottom: 1px solid  #ff3300;}
 </style>
 
 <p hidden="hidden">{{tmpsql|safe}}</p>
@@ -36,7 +39,11 @@
        <table class="display" style="width:100%" border="1">
 
            <tr>
-               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}{{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}} {{ form.submit() }} </td>
+               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}
+                   {{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}}
+                   {{ form.advertiser.label }}{{form.advertiser(autocomplete="off")}} {{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;<a id="export" download="reportmtpingguhour.xlsx" href="../../../static/result/reportmtpingguhour.xlsx">导出</a>
+                    </td>
            </tr>
 
        </table>
@@ -44,16 +51,39 @@
       <table  id="example" class="display" style="width:100%"  border="1">
 
             <thead>
+                {% for k1 in datasum%}
+                 <tr class="tsum">
+                    {% for i1 in k1%}
+                     {% if loop.index < loop.length%}
+                             <td><font {% if i1|string|replace('%','')|int<0  %}
+                                color="red"
+                            {% elif ((loop.index >= 13+addfieldnum|int and loop.index < 13+24+addfieldnum|int) or loop.index == 5+addfieldnum|int ) and k1[3+addfieldnum|int]|int>0 and i1>0 %}
+                                    {% if i1>k1[3+addfieldnum|int]|int %}
+                                        color="red"
+                                    {% else %}
+                                        color="green"
+                                    {% endif %}
+                            {% endif %} >
+                            {{i1|safe}}
+                        </font></td>
+                     {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
                 <tr>
                     <td align="center" colspan=6>&nbsp;全部为去联动数据</td>
-                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                    {% if  addfieldnum|safe|int > 0 %}<td>&nbsp;</td><td>&nbsp;</td>{% endif %}
+                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                    <td align="center" colspan=24>效果成本</td>
                     <td align="center" colspan=24>CPC</td>
                     <td align="center" colspan=24>消耗</td>
+                    <td align="center" colspan=24>转化率</td>
                 </tr>
                 <tr>
                    {% for i in filed%}
-                    <td>{{i|safe}}</td>
+                    {% if loop.index < loop.length%}
+                            <td>{{i|safe}}</td>
+                    {% endif %}
                     {% endfor %}
                 </tr>
             </thead>
@@ -63,18 +93,22 @@
             <tr>
 
                 {% for i in k%}
-
-                    <td><font {% if i|string|replace('%','')|int<0  %}
+                {% if loop.index < loop.length%}
+                    <td><span {% if k[108+addfieldnum|int]|int == 0  %} class="gray"
+                        {% elif k[108+addfieldnum|int]|int <  0 %}class="red"
+                        {% endif %} >
+                        <font {% if i|string|replace('%','')|int<0  %}
                                 color="red"
-                            {% elif loop.index >= 11 and loop.index < 11+24 and k[3]|int>0 and i>0 %}
-                                    {% if i>k[3]|int %}
+                            {% elif ((loop.index >= 13+addfieldnum|int and loop.index < 13+24+addfieldnum|int) or loop.index == 5+addfieldnum|int ) and k[3+addfieldnum|int]|int>0 and i>0 %}
+                                    {% if i>k[3+addfieldnum|int]|int %}
                                         color="red"
                                     {% else %}
                                         color="green"
                                     {% endif %}
                             {% endif %}>
                             {{i|safe}}
-                        </font></td>
+                        </font></span></td>
+                {% endif %}
                 {% endfor %}
             </tr>
             {% endfor %}

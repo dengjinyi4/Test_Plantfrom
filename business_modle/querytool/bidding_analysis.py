@@ -117,9 +117,12 @@ def order_reson():
          "D5":"视频创意的视频时长不能为空",
          "D6":"活动模板的坑位不支持激励视频的广告",
          "D7":"活动模板的坑位不支持视频的广告",
-
+         "D20":"同一广告位点击ID下同创意标签广告已展示",
+         "D21":"用户已安装本订单APP",
+         "D22":"当前设备号已有同标签创意效果数据回传",
+         "D23":"坑位要求有1比1创意logo的图片广告",
+         "D24":"APPSDK第三方广告主无广告",
          "E1":"手机价位与订单不符",
-
          "F1": "SDK媒体的广点通应用id不存在",
          "F2": "SDK广告位的广点通应用id不存在",
          "F3": "SDK媒体的穿山甲应用id不存在",
@@ -260,10 +263,14 @@ def orderbylognew(zclk,env):
                 config=str(hit["_source"]["message"]).split("},wad:")[1].split("'")[0].split(',config:')[0].split(', config:')[1]
             if "}, wad:"in str(hit["_source"]["message"]):
                 tmpwad=str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0].split(',config:')[0]
-                if "config" in str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0]:
-                    config=str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0].split(',config:')[1]
+                if "distinctAd" in str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0].split(',config:')[1]:
+                    distinctAd=str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0].split(',config:')[1].split('distinctAd:')[1]
+                    config=str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0].split(',config:')[1].split('distinctAd:')[0]
+                    print 1
                 else:
-                    config={}
+                    distinctAd=''
+                    config=str(hit["_source"]["message"]).split("}, wad:")[1].split("'")[0].split(',config:')[1]
+
             # 不出广告订单列表
             tmpdit=str(hit["_source"]["message"]).split("bid:")[1].split(", wad:")[0].split("fad:")[1].split(",wad")[0]
             print 22222222222
@@ -275,6 +282,7 @@ def orderbylognew(zclk,env):
             tmpdict["fad"]=eval(getorderreson(tmpdit))
             tmpdict["mytime"]=mytime
             tmpdict["bid"]=eval(bid)
+            tmpdict["distinctAd"]=distinctAd
             # 筛选出来的订单为空
             if tad=='':
                 tmpdict["tad"]=[]

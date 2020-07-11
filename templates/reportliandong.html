@@ -36,13 +36,18 @@
        <table class="display" style="width:100%" border="1">
 
            <tr>
-               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}{{ form.enddate.label }}{{form.enddate(autocomplete="off")}}{{ form.submit() }}<font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font></td>
+               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}{{ form.enddate.label }}{{form.enddate(autocomplete="off")}}{{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="export" download="repotadvliandong.xlsx" href="../../../static/result/repotadvliandong.xlsx">导出</a>
+
+                   <font color="red">{{ form.begindate.errors[0] }}{{form.enddate.errors[0]}}</font>
+               </td>
            </tr>
        </table>
 </form>
       <table  id="example" class="display" style="width:100%"  border="1">
 
             <thead>
+         {{headtr|safe}}
                 <tr>
                    {% for i in filed%}
                     <td>{{i|safe}}</td>

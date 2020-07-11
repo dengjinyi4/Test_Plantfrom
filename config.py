@@ -8,7 +8,7 @@ SECRET_KEY = 'fdasfdasfds&YUJFGGHNMJKLOL:'
 # 'voyager_test': ("221.122.127.183", 5701, "voyager", "voyager", "voyager", "utf8"),
 db_config = {
     'voyager_test': ("172.16.105.12",5701,"voyager","voyager","voyager","utf8"),
-    'voyager_online': ("123.59.17.42",3306,"voyager","voyager_reader","qtwAZz2ozHFOsPD6",'utf8'),
+    'voyager_online': ("221.122.127.168",3306,"voyager","dengjinyi","dengjinyi123456",'utf8'),
     'doc_online': ("123.59.17.245",3306,"doc","doc_reader","fedh0gkM0Wx9",'utf8'),
 }
 
