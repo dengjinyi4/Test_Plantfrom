@@ -37,6 +37,7 @@ from bp.hdt_redis.hdt_redis import  hdtredis
 from bp.infor.infor import hdtgetother
 from bp.miniprogram.miniprogram import miniprogram
 from bp.ocpa.ocpa import ocpa
+from bp.mypig.mypig import mypig
 from bp.hour_report.hour_report import  hour_report
 from bp.test_case.test_case import testCase
 #引用亿起发类
@@ -59,6 +60,7 @@ from bp.miniprogram.activity_form import *
 from bp.hdtadzone.adzone import hdtadzone
 from bp.newreport.myreport import hdtreport
 from bp.yiqifa.yiqifaquanyi import yiqifaquanyi
+from utils import login as l
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'txt') #设置一个专门的类似全局变量的东西
 app = Flask(__name__)
@@ -72,6 +74,7 @@ app.register_blueprint(act,url_prefix='/act')
 app.register_blueprint(hdtredis,url_prefix='/hdtredis')
 app.register_blueprint(hdtgetother,url_prefix='/getinfor')
 app.register_blueprint(ocpa,url_prefix='/ocpa')
+app.register_blueprint(mypig,url_prefix='/mypig')
 app.register_blueprint(hour_report,url_prefix='/hour_report')
 app.register_blueprint(miniprogram,url_prefix='/miniprogram')
 app.register_blueprint(testCase,url_prefix='/tc')
@@ -920,6 +923,15 @@ def islogin():
     businessuser7=['meitiyunying']
     # 修改易购宝贝用户状态
     businessuser8 = ['hugengwei','liuyujing','wangsha','caiwenqing','yangjinsong']
+    REMOTE_ADDR=str(request.remote_addr)
+    method=str(request.path)
+    if  session.get('username'):
+        login=l.login(username=session.get('username'),REMOTE_ADDR=REMOTE_ADDR,method=method)
+        login.user_log()
+    else:
+        login=l.login(username='',REMOTE_ADDR=REMOTE_ADDR,method=method)
+        login.user_log()
+
 
     if (request.path == '/lpm_test/'):
         return None
@@ -953,7 +965,7 @@ def islogin():
         else:
             return redirect('/getinfor/get/')
     if (session.get('username') in businessuser1) :
-        if (request.path == '/hdtredis/orderr/' or request.path == '/hdtreport/reportmtpinggu/' or request.path=='/hdtreport/reportmtpingguhour/'):
+        if (request.path == '/hdtredis/orderr/' or request.path == '/hdtreport/reportmtpinggu/' or request.path=='/hdtreport/reportmtpingguhour/'  or request.path=='/hdtreport/reporregionbyday/'  or request.path=='/hdtreport/reporregionbyadv/' or request.path=='/hdtreport/reportOrderState/'):
             return None
         else:
             return redirect('/hdtredis/orderr/')

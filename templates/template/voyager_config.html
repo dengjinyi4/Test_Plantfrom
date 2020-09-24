@@ -1,0 +1,68 @@
+{% extends "base.html"%}
+{% block main %}
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>表数据及表结构</title>
+</head>
+<style>
+    thead {
+        background-color: #398439;
+    }
+    div.container {
+        width: 96%;
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<body>
+<div class="container">
+<div>
+    {% if flag==1 %}
+        <table class="table table-hover table-bordered">
+            <caption><span class="glyphicon glyphicon-heart"> {{ env_ch }}{{ selected_table }}表结构</caption>
+                <thead>
+                    <tr>
+                        {% for c in structure_re[1] %}
+                        <td>{{ c|safe }}</td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                {% for r in structure_re[0] %}
+                    <tr>
+                        {% for c in r %}
+                            <td>{{ c|safe }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div>
+            <table class="table table-hover table-bordered">
+            <caption><span class="glyphicon glyphicon-heart"> {{ env_ch }}{{ selected_table }}表数据</caption>
+                <thead>
+                    <tr>
+                        {% for c in data_re[1] %}
+                        <td>{{ c|safe }}</td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                {% for r in data_re[0] %}
+                    <tr>
+                        {% for c in r %}
+                            <td style="word-break:break-all; word-wrap:break-word;">{{ c|safe }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <p>{{ env_ch }}的{{ selected_table }}的结果为：{{ voyager_configs }}</p>
+    {% endif %}
+</div>
+</body>
+</html>
+{% endblock %}

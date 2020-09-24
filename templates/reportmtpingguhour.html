@@ -5,16 +5,16 @@
 <script>
         $(document).ready(function() {
     $('#example').DataTable({
-    "order": [[8+{{addfieldnum|safe|int}},'desc']], //排序
+    "order": [[9+{{addfieldnum|safe|int}},'desc']], //排序
     "iDisplayLength" : 100, //默认显示的记录数
 
-    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[1]},{"sClass":"alignleft cutLongText","aTargets":[2]},{"sClass":"alignleft cutLongText","aTargets":[5+{{addfieldnum|safe|int}}]}{% if  addfieldnum|safe|int > 0 %},{"sClass":"alignleft cutLongText","aTargets":[3]},{"sClass":"alignleft cutLongText","aTargets":[4]}{% endif %}],
+    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[2]},{"sClass":"alignleft cutLongText","aTargets":[3]},{"sClass":"alignleft cutLongText","aTargets":[6+{{addfieldnum|safe|int}}]}{% if  addfieldnum|safe|int > 0 %},{"sClass":"alignleft cutLongText","aTargets":[4]},{"sClass":"alignleft cutLongText","aTargets":[5]}{% endif %}],
 
     "fixedHeader": true,  //固定表头
                 "scrollX": "500px",
                 "scrollY": "550px",  //高度
                 "scrollCollapse": true,
-    "fixedColumns": { "leftColumns": 5+{{addfieldnum|safe|int}} } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    "fixedColumns": { "leftColumns": 6+{{addfieldnum|safe|int}} } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
     });
 } );</script>
 <style type="text/css">
@@ -40,6 +40,7 @@
 
            <tr>
                <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}
+                   {{ form.enddate.label }}{{form.enddate(autocomplete="off")}}
                    {{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}}
                    {{ form.advertiser.label }}{{form.advertiser(autocomplete="off")}} {{ form.submit() }}
                    &nbsp;&nbsp;&nbsp;<a id="export" download="reportmtpingguhour.xlsx" href="../../../static/result/reportmtpingguhour.xlsx">导出</a>
@@ -57,8 +58,8 @@
                      {% if loop.index < loop.length%}
                              <td><font {% if i1|string|replace('%','')|int<0  %}
                                 color="red"
-                            {% elif ((loop.index >= 13+addfieldnum|int and loop.index < 13+24+addfieldnum|int) or loop.index == 5+addfieldnum|int ) and k1[3+addfieldnum|int]|int>0 and i1>0 %}
-                                    {% if i1>k1[3+addfieldnum|int]|int %}
+                            {% elif ((loop.index >= 16+addfieldnum|int and loop.index < 16+24+addfieldnum|int) or loop.index == 6+addfieldnum|int ) and k1[4+addfieldnum|int]|int>0 and i1>0 %}
+                                    {% if i1>k1[4+addfieldnum|int]|int %}
                                         color="red"
                                     {% else %}
                                         color="green"
@@ -73,7 +74,7 @@
                 <tr>
                     <td align="center" colspan=6>&nbsp;全部为去联动数据</td>
                     {% if  addfieldnum|safe|int > 0 %}<td>&nbsp;</td><td>&nbsp;</td>{% endif %}
-                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                    <td align="center" colspan=24>效果成本</td>
                     <td align="center" colspan=24>CPC</td>
                     <td align="center" colspan=24>消耗</td>
@@ -94,13 +95,13 @@
 
                 {% for i in k%}
                 {% if loop.index < loop.length%}
-                    <td><span {% if k[108+addfieldnum|int]|int == 0  %} class="gray"
-                        {% elif k[108+addfieldnum|int]|int <  0 %}class="red"
+                    <td><span {% if k[111+addfieldnum|int]|int == 0  %} class="gray"
+                        {% elif k[111+addfieldnum|int]|int <  0 %}class="red"
                         {% endif %} >
                         <font {% if i|string|replace('%','')|int<0  %}
                                 color="red"
-                            {% elif ((loop.index >= 13+addfieldnum|int and loop.index < 13+24+addfieldnum|int) or loop.index == 5+addfieldnum|int ) and k[3+addfieldnum|int]|int>0 and i>0 %}
-                                    {% if i>k[3+addfieldnum|int]|int %}
+                            {% elif ((loop.index >= 16+addfieldnum|int and loop.index < 16+24+addfieldnum|int) or loop.index == 6+addfieldnum|int ) and k[4+addfieldnum|int]|int>0 and i>0 %}
+                                    {% if i>k[4+addfieldnum|int]|int %}
                                         color="red"
                                     {% else %}
                                         color="green"

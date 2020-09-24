@@ -47,21 +47,34 @@ def execsql(env,sql):
 
 def selectsqlnew(env,sql):
     tmpmyc,tmpdb=myc(env)
+    print tmpmyc
+    print tmpdb
     try:
         tmpmyc.execute(sql)
         result=tmpmyc.fetchall()
         filed=tmpmyc.description
+        asss = tmpmyc.description_flags
         tmpfiled=[]
-        for i in filed:
-            tmpfiled.append(i[0])
-    except:
-        raise SystemError
+        if result and filed:
+            for i in filed:
+                tmpfiled.append(i[0])
+            return result, tmpfiled
+        else:
+            return '',''
+            # return '没有查询到结果'
+    except Exception,e:
+        return str(e)[1:-1]
+        # raise Exception,e
+        # tmpmyc.messages
     tmpmyc.close()
     tmpdb.close()
-    return result,tmpfiled
+
 if __name__ == '__main__':
-    tmpsql='''SELECT ad_click_tag FROM voyagerlog.ad_click_log20180930 where ad_choosen_tag='D3W1CD6R1IIZXEMSKH' '''
-    re=selectsql('testvoyager',tmpsql)
+    tmpsql='''select * from voyager.config_parameters_copy1;  '''
+    re=selectsqlnew('devvoyager',tmpsql)
+    print '111111111'
     print re
+    print '222221'
     print re[0][0]
+    print '33331'
     print type(re[0][0])

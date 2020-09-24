@@ -7,7 +7,7 @@ from openpyxl import  Workbook,load_workbook
 import os
 
 class myreport(object):
-    def __init__(self,begintime='',endtime='',adzoneids='',advertiser_id='',region='',showadzone='',tagorad=''):
+    def __init__(self,begintime='',endtime='',adzoneids='',advertiser_id='',region='',showadzone='',tagorad='',isstatus=''):
         self.begintime=begintime
         self.endtime=endtime
         self.adzoneids=adzoneids
@@ -15,6 +15,8 @@ class myreport(object):
         self.region=region
         self.showadzone=showadzone
         self.tagorad=tagorad
+        self.isstatus=isstatus
+
     # 根据输入的日期返回时间列表
     # ['2020-04-01', '2020-04-02', '2020-04-03', '2020-04-04', '2020-04-05', '2020-04-06']
     def gettimelist(self,):
@@ -25,6 +27,9 @@ class myreport(object):
             dates.append(bgintime.strftime('%Y-%m-%d')[0:10])
             bgintime=bgintime+relativedelta(days=+1)
         return dates
+
+
+
     # 处理fload展示小数据点.0的问题
     def getresfloadtoint(self,res):
         tmpres=[]
@@ -67,26 +72,34 @@ class myreport(object):
                     ,round(ifnull(sum(platform_profit)-sum(linkage_cash_consume),0),0) as 去联毛利
                     ,concat(round(ifnull((sum(platform_profit)-sum(linkage_cash_consume))/(sum(cash_consume)-sum(linkage_cash_consume)),0)*100,0),"%") as 去联毛利率'''
         tmp1=''
+        tmp11=''
+        tmp12=''
         colspanx=0
         for i in daylist:  #消耗
-            tmp1=tmp1+''', round(ifnull(sum(case date when "{0}" then consume else 0 end),0),0) as "{1}" '''.format(i,i.replace("2020-",""))
+            tmp12=tmp12+''', round(ifnull(sum(case date when "{0}" then adzone_click else 0 end),0),0) as "{1}" '''.format(i,i.replace("2020-","")) #入口点击
+            tmp1=tmp1+''', round(ifnull(sum(case date when "{0}" then consume else 0 end),0),0) as "{1}" '''.format(i,i.replace("2020-",""))  #消耗
+            tmp11=tmp11+''', round(ifnull(sum(case date when "{0}" then consume-linkage_consume else 0 end),0),0) as "{1}" '''.format(i,i.replace("2020-",""))  #去联消耗
             colspanx=colspanx+1
             # tmpsql=tmpsql+tmp1
         tmp2=''
         for i in daylist: #去除联动平台毛利
             tmp2=tmp2+''',round(ifnull(sum(case date when "{0}" then platform_profit-linkage_cash_consume else 0 end),0),0) as "{1}" '''.format(i,i.replace("2020-",""))
         tmp3=''
+        tmp31 = ''
         for i in daylist: #入口点击成本
             tmp3=tmp3+''',round(ifnull(sum(case date when "{0}" then adzone_ecpc else 0 end),0),2) as "{1}"'''.format(i,i.replace("2020-",""))
+            tmp31=tmp31+''',round(ifnull(sum(case date when "{0}" then adzone_cost else 0 end),0),0) as "{1}"'''.format(i,i.replace("2020-",""))  #成本
         tmp4=''
+        tmp41=''
         for i in daylist: #去除联动毛利率
             tmp4=tmp4+''',concat(round(ifnull(sum(case when date="{0}" and (cash_consume-linkage_cash_consume)>0 then (platform_profit-linkage_cash_consume) / (cash_consume-linkage_cash_consume) else 0 end),0)*100,0),"%") as "{1}"'''.format(i,i.replace("2020-",""))
+            tmp41=tmp41+''',round(ifnull(sum(case date when "{0}" then consume-linkage_consume else 0 end)/sum(case date when "{0}" then ad_click else 0 end),0),2) as "{1}"'''.format(i,i.replace("2020-",""))  #CPC
         tmpend=''' from tt.tt_adzone_data
                 where date between "{0}" and "{1}"
                 group by adzone_id order by 总消耗 desc;'''.format(self.begintime,self.endtime)
-        tmpsql=tmpsql+tmp1+tmp2+tmp3+tmp4+tmpend
+        tmpsql=tmpsql+tmp12+tmp1+tmp11+tmp2+tmp3+tmp31+tmp4+tmp41+tmpend
         headtr='''<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-            <td align="center" colspan={0}>消耗</td><td align="center" colspan={1}>去除联动平台毛利</td><td align="center" colspan={2}>入口点击成本</td><td align="center" colspan={3}>去除联动毛利率</td></tr>'''.format(colspanx,colspanx,colspanx,colspanx)
+            <td align="center" colspan={0}>入口点击</td><td align="center" colspan={0}>消耗</td><td align="center" colspan={0}>去联消耗</td><td align="center" colspan={1}>去除联动平台毛利</td><td align="center" colspan={2}>入口点击成本</td><td align="center" colspan={2}>成本</td><td align="center" colspan={3}>去除联动毛利率</td><td align="center" colspan={3}>CPC</td></tr>'''.format(colspanx,colspanx,colspanx,colspanx)
         # print tmpsql
         res,filed=db.selectsqlnew('devtidb',tmpsql)
         res=self.getresfloadtoint(res)
@@ -159,57 +172,100 @@ class myreport(object):
     # 汇总   菜单名---- 毛利表-平台毛利细化
     def getptmaoli(self):
         tmpsql = '''select adzonedata.date as 日期
-                ,round(ifnull(adzonedata.现金消耗,0),0) as 现金消耗
-                ,round(ifnull(adzonedata.媒体成本,0),0) as 媒体成本
-                ,round(ifnull(adzonedata.平台毛利,0),0) as 平台毛利
-                ,concat(round(ifnull(adzonedata.平台毛利/adzonedata.现金消耗,0)*100,0),"%") as 毛利率
-                ,round(ifnull(adzonedata.R1去联动现金消耗,0),0) as R1去联动现金消耗
-                ,round(ifnull(adzonedata.R1媒体成本,0),0) as R1媒体成本
-                ,round(ifnull(adzonedata.R1去联动毛利,0),0) as R1去联动毛利
-                ,concat(round(ifnull(adzonedata.R1去联动毛利/adzonedata.R1去联动现金消耗,0)*100,0),"%") as 毛利率
-                ,round(ifnull(adzonedata.R5去联动现金消耗,0),0) as R5去联动现金消耗
-                ,round(ifnull(adzonedata.R5媒体成本,0),0) as R5媒体成本
-                ,round(ifnull(adzonedata.R5去联动毛利,0),0) as R5去联动毛利
-                ,concat(round(ifnull(adzonedata.R5去联动毛利/adzonedata.R5去联动现金消耗,0)*100,0),"%") as 毛利率
-                ,round(ifnull(addata.联动现金消耗,0),0) as 联动现金消耗
-                ,round(ifnull(adzonedata.联动媒体成本,0),0) as 联动媒体成本
-                ,round(ifnull(addata.联动现金消耗-adzonedata.联动媒体成本,0),0) as 联动毛利
-                ,concat(round(ifnull((addata.联动现金消耗-adzonedata.联动媒体成本)/addata.联动现金消耗,0)*100,0),"%") as 毛利率
-                ,round(ifnull(addata.广点通现金消耗,0),0) as 广点通现金消耗
-                from (
-                    select date
-                     ,sum(cash_consume) as 现金消耗
-                     ,sum(adzone_cost) as 媒体成本
-                     ,sum(platform_profit) as 平台毛利
-                     ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when jf97_consume>0 then 0 else ifnull(cash_consume,0)-ifnull(linkage_cash_consume,0) end) as R1去联动现金消耗
-                     ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when jf97_consume>0 then 0 else ifnull(adzone_cost,0) end) as R1媒体成本
-                     ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when jf97_consume>0 then 0 else ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) end) as R1去联动毛利
-                     ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when jf97_consume>0 then ifnull(cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as R5去联动现金消耗
-                     ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when jf97_consume>0 then ifnull(adzone_cost,0) else 0 end) as R5媒体成本
-                     ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when jf97_consume>0 then ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) else 0 end) as R5去联动毛利
-                     ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then ifnull(adzone_cost,0) else 0 end) as 联动媒体成本
-                    from tt.tt_adzone_data a
-                    where date between "{begin1}" and "{end1}"
-                    group by date
-                ) adzonedata left join(    
-                    select date        
-                    ,sum(case  when instr(advertiser_name,"广点通")>0 then 0 else linkage_cash_consume end) as 联动现金消耗
-                    ,sum(case  when instr(advertiser_name,"广点通")>0 then cash_consume else 0 end) as 广点通现金消耗
-                    from tt.tt_advertiser_data    where 1=1 
-                    and date between "{begin2}" and "{end2}"    group by date
-                ) addata on adzonedata.date=addata.date;'''.format(begin1=self.begintime, end1=self.endtime, begin2=self.begintime,
-                                                       end2=self.endtime)
+                        ,round(ifnull(adzonedata.现金消耗,0),0) as 现金消耗
+                        ,round(ifnull(adzonedata.媒体成本,0),0) as 媒体成本
+                        ,round(ifnull(adzonedata.平台毛利,0),0) as 平台毛利
+                        ,concat(round(ifnull(adzonedata.平台毛利/adzonedata.现金消耗,0)*100,0),"%") as 毛利率
+                        ,round(ifnull(adzonedata.媒购去联动现金消耗,0),0) as 媒购去联动现金消耗
+                        ,round(ifnull(adzonedata.媒购媒体成本,0),0) as 媒购媒体成本
+                        ,round(ifnull(adzonedata.媒购去联动毛利,0),0) as 媒购去联动毛利
+                        ,concat(round(ifnull((adzonedata.媒购去联动毛利)/(adzonedata.媒购去联动现金消耗),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(adzonedata.CPS去联动现金消耗,0),0) as CPS去联动现金消耗
+                        ,round(ifnull(adzonedata.CPS媒体成本,0),0) as CPS媒体成本
+                        ,round(ifnull(adzonedata.CPS去联动毛利,0),0) as CPS去联动毛利
+                        ,concat(round(ifnull((adzonedata.CPS去联动毛利)/(adzonedata.CPS去联动现金消耗),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(adzonedata.竞价平台去联现金,0),0) as 竞价平台去联现金
+                        ,round(ifnull(adzonedata.竞价平台成本,0),0) as 竞价平台成本
+                        ,round(ifnull(adzonedata.竞价平台去联现金-adzonedata.竞价平台成本,0),0) as 竞价平台毛利
+                        ,concat(round(ifnull((adzonedata.竞价平台去联现金-adzonedata.竞价平台成本)/(adzonedata.竞价平台去联现金),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(adzonedata.百度媒体去联现金,0),0) as 百度媒体去联现金
+                        ,round(ifnull(adzonedata.百度媒体成本,0),0) as 百度媒体成本
+                        ,round(ifnull(adzonedata.百度媒体去联现金-adzonedata.百度媒体成本,0),0) as 百度媒体毛利
+                        ,concat(round(ifnull((adzonedata.百度媒体去联现金-adzonedata.百度媒体成本)/(adzonedata.百度媒体去联现金),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(adzonedata.骑士卡媒体去联现金,0),0) as 骑士卡媒体去联现金
+                        ,round(ifnull(adzonedata.骑士卡媒体成本,0),0) as 骑士卡媒体成本
+                        ,round(ifnull(adzonedata.骑士卡媒体去联现金-adzonedata.骑士卡媒体成本,0),0) as 骑士卡媒体毛利
+                        ,concat(round(ifnull((adzonedata.骑士卡媒体去联现金-adzonedata.骑士卡媒体成本)/(adzonedata.骑士卡媒体去联现金),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(adzonedata.淘礼金媒体去联现金,0),0) as 淘礼金媒体去联现金
+                        ,round(ifnull(adzonedata.淘礼金媒体成本,0),0) as 淘礼金媒体成本
+                        ,round(ifnull(adzonedata.淘礼金媒体去联现金-adzonedata.淘礼金媒体成本,0),0) as 淘礼金媒体毛利
+                        ,concat(round(ifnull((adzonedata.淘礼金媒体去联现金-adzonedata.淘礼金媒体成本)/(adzonedata.淘礼金媒体去联现金),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(adzonedata.百度现金消耗,0),0) as 百度现金消耗
+                        ,round(ifnull(adzonedata.百度成本,0),0) as 百度成本
+                        ,round(ifnull(adzonedata.百度现金消耗-adzonedata.百度成本,0),0) as 百度毛利
+                        ,concat(round(ifnull((adzonedata.百度现金消耗-adzonedata.百度成本)/(adzonedata.百度现金消耗),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(addata.联动现金消耗+addata.还呗5213联动现金消耗,0),0) as 联动现金消耗
+                        ,round(ifnull(adzonedata.联动媒体成本,0),0) as 联动媒体成本
+                        ,round(ifnull(addata.联动现金消耗+addata.还呗5213联动现金消耗-adzonedata.联动媒体成本,0),0) as 联动毛利
+                        ,concat(round(ifnull((addata.联动现金消耗+addata.还呗5213联动现金消耗-adzonedata.联动媒体成本)/(addata.联动现金消耗+addata.还呗5213联动现金消耗),0)*100,0),"%") as 毛利率
+                        ,round(ifnull(addata.广点通现金消耗,0),0) as 广点通现金消耗
+                        from (
+                            select a.date
+                             ,sum(a.ad_show) as 广告曝光
+                             ,sum(a.cash_consume) as 现金消耗
+                             ,sum(a.adzone_cost) as 媒体成本
+                             ,sum(platform_profit) as 平台毛利
+                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then 0 else ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) end) as 媒购去联动现金消耗
+                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then 0 else ifnull(adzone_cost,0) end) as 媒购媒体成本
+                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then 0 else ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) end) as 媒购去联动毛利
+                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as CPS去联动现金消耗
+                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then ifnull(adzone_cost,0) else 0 end) as CPS媒体成本
+                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) else 0 end) as CPS去联动毛利
+                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then ifnull(adzone_cost,0) else 0 end) as 联动媒体成本
+                             ,sum(case  when instr(",,3573,3570,3568,3564,3559,3555,3552,3532,3531,3527,3506,3500,2501,3284,3481,3486,,",concat(",",media_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 竞价平台去联现金
+                             ,sum(case  when instr(",,3573,3570,3568,3564,3559,3555,3552,3532,3531,3527,3506,3500,2501,3284,3481,3486,,",concat(",",media_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 竞价平台成本
+                             ,sum(case  when instr(",,5403,7221,6810,6910,6329,4736,7459,5402,3171,7344,7478,6742,7508,6476,7482,6677,7360,5908,5303,5909,6749,1766,7610,7223,5302,6705,,",concat(",",a.adzone_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 百度媒体去联现金
+                             ,sum(case  when instr(",,5403,7221,6810,6910,6329,4736,7459,5402,3171,7344,7478,6742,7508,6476,7482,6677,7360,5908,5303,5909,6749,1766,7610,7223,5302,6705,,",concat(",",a.adzone_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 百度媒体成本
+                             ,sum(case  when instr(",,7309,6694,,",concat(",",a.adzone_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 骑士卡媒体去联现金
+                             ,sum(case  when instr(",,7309,6694,,",concat(",",a.adzone_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 骑士卡媒体成本
+                             ,sum(case  when instr(",,3545,599,,",concat(",",a.media_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 淘礼金媒体去联现金
+                             ,sum(case  when instr(",,3545,599,,",concat(",",a.media_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 淘礼金媒体成本
+                             ,sum(b.百度现金消耗) as 百度现金消耗
+                             ,sum(a.adzone_cost/a.ad_show*b.百度曝光) as 百度成本
+                             ,sum(b.百度现金消耗)-sum(a.adzone_cost/a.ad_show*b.百度曝光) as 百度毛利
+                            from tt.tt_adzone_data a
+                                left join (
+                                    select date ,adzone_id,sum(ad_show) as ad_show,sum(cash_consume) as cash_consume
+                                        ,sum(case when advertiser_id=3051 or advertiser_id=3582 or advertiser_id=6402 or advertiser_id=6401 then ad_show else 0 end) as 百度曝光
+                                        ,sum(case when advertiser_id=3051 or advertiser_id=3582 or advertiser_id=6402 or advertiser_id=6401 then cash_consume else 0 end) as 百度现金消耗
+                                    from tt.tt_advertiser_adzone
+                                    where date between "{begin1}" and "{end1}"
+                                    group by date,adzone_id
+                                ) b on a.date=b.date and a.adzone_id=b.adzone_id
+                            where a.date between "{begin1}" and "{end1}"
+                            group by a.date
+                        ) adzonedata left join(    
+                            select date        
+                            ,sum(case  when advertiser_id=5213 then cash_consume else 0 end) as 还呗5213联动现金消耗
+                            ,sum(case  when advertiser_id=3051 or  advertiser_id=3582 then cash_consume else 0 end) as 百度现金消耗 
+                            ,sum(case  when instr(advertiser_name,"广点通")>0 then 0 else linkage_cash_consume end) as 联动现金消耗
+                            ,sum(case  when instr(advertiser_name,"广点通")>0 then cash_consume else 0 end) as 广点通现金消耗
+                            from tt.tt_advertiser_data    where 1=1 
+                            and date between "{begin2}" and "{end2}"    group by date
+                        ) addata on adzonedata.date=addata.date;'''.format(begin1=self.begintime, end1=self.endtime,
+                                                                           begin2=self.begintime,
+                                                                           end2=self.endtime)
         print tmpsql
         res, filed = db.selectsqlnew('devtidb', tmpsql)
         res = self.getresfloadtoint(res)
         self.exportexcel(filed,res,"reportptmaoli")
 
-        tmpsqlsum = tmpsql.replace("group by date","").replace("select date","select 1 as date ").replace("select adzonedata.date","select '汇总' ")
+        tmpsqlsum = tmpsql.replace("group by a.date","").replace("select a.date","select 1 as date ").replace("select adzonedata.date","select '汇总' ")
         ressum, filedsum = db.selectsqlnew('devtidb', tmpsqlsum)
         ressum = self.getresfloadtoint(ressum)
 
 
-        return res, filed, tmpsql ,ressum
+        return res, filed, tmpsql+'''|||'''+tmpsqlsum ,ressum
 
         # 菜单名：毛利细化-广告主维度
         # 查询日期，广告位（广告位为可选）
@@ -228,9 +284,9 @@ class myreport(object):
         else:
             tmpadz = ''
 
-        tmpshowadzone =''
-        tmpshowadzone1 =''
-        tmpshowadzonesum =''
+        tmpshowadzone = ''
+        tmpshowadzone1 = ''
+        tmpshowadzonesum = ''
         if self.showadzone == '1':
             tmpshowadzone = ''' ,aa.adzone_id as  广告位ID,aa.adzone_name as 广告位名称 '''
             tmpshowadzone1 = ''' ,aa.adzone_id '''
@@ -238,30 +294,48 @@ class myreport(object):
         else:
             tmpshowadzone = ''
             tmpshowadzone1 = ''
-            tmpshowadzonesum =''
+            tmpshowadzonesum = ''
 
-        tmptagorad=''
-        tmptagorad1=''
+        tmptagorad = ''
+        tmptagorad1 = ''
         tmptagoradsum = ''
+        tmpCB = ''
+        tmpCBsum = ''
+        tmpCBTable = ''
         if self.tagorad == 'tag':
             tmptagorad = ''' ifnull(tag, "")    as 类型 '''
             tmptagorad1 = ''' aa.tag '''
             tmptagoradsum = ''' "--" '''
-        elif self.tagorad =='ad':
+        elif self.tagorad == 'ad':
             tmptagorad = '''  ifnull(tag, "")    as 类型 ,aa.advertiser_id  as 广告主ID, aa.advertiser_name  as 广告主名称 '''
             tmptagorad1 = ''' aa.advertiser_id '''
             tmptagoradsum = ''' "--","--","--" '''
+            tmpCB = '''  ,round(ifnull((sum(aa.consume) - sum(aa.linkage_consume)) / sum(
+                                ELT(c.effect_type, aa.t1_num, aa.t2_num, aa.t3_num, aa.t4_num, aa.t5_num, aa.t6_num, aa.t7_num, aa.t8_num, aa.t9_num, aa.t10_num, aa.t11_num,
+                            aa.t12_num, aa.t13_num, aa.t14_num, aa.t15_num, aa.t16_num)), 0), 2)    as 转化成本,ifnull(c.standard,"") as 要求 '''
+            tmpCBTable = ''' left join tt.tt_advertiser_effect_standard c on aa.advertiser_id = c.advertiser_id  '''
+            tmpCBsum = ''' ,"--","--" '''
         else:
             tmptagorad = ''
             tmptagorad1 = ''
-
-
+            tmpCB = ''
+            tmpCBTable = ''
 
         colspanx = 0
         tmp1 = ''
+        tmp1CB = ''
         for i in daylist:  # 转化成本
             colspanx = colspanx + 1
-            tmp1 = tmp1 + ''' , round(ifnull(sum(case aa.date when "{begin1}" then aa.cash_consume-aa.linkage_cash_consume-ifnull(b.singleshowvalue,0)*ifnull(aa.ad_show,0) else 0 end), 0), 0) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", ""))
+            tmp1 = tmp1 + ''' , round(ifnull(sum(case aa.date when "{begin1}" then aa.cash_consume-aa.linkage_cash_consume-ifnull(b.singleshowvalue,0)*ifnull(aa.ad_show,0) else 0 end), 0), 0) as "{begin2}" '''.format(
+                begin1=i, begin2=i.replace("2020-", ""))
+            tmp1CB = tmp1CB + ''' ,round(ifnull(sum(case aa.date when "{begin1}" then aa.consume - aa.linkage_consume else 0 end) / sum(case aa.date when "{begin1}" then ELT(c.effect_type, aa.t1_num, aa.t2_num, aa.t3_num, aa.t4_num, aa.t5_num, aa.t6_num, aa.t7_num, aa.t8_num, aa.t9_num, aa.t10_num, aa.t11_num,
+                            aa.t12_num, aa.t13_num, aa.t14_num, aa.t15_num, aa.t16_num)  else 0 end), 0), 2)  as "转化成本{begin2}" '''.format(
+                begin1=i, begin2=i.replace("2020-", ""))
+
+        if self.tagorad == 'ad':
+            tmp1CB = tmp1CB
+        else:
+            tmp1CB = ''
 
         tmp = '''select  {tmptagorad}  {tmpshowadzone} 
                  , round(ifnull(sum(aa.ad_show), 0), 0)                                                               as 曝光
@@ -269,24 +343,30 @@ class myreport(object):
                  , round(ifnull(sum(aa.consume) - sum(aa.linkage_consume), 0), 0)                                        as 消耗
                  , round(ifnull(sum(aa.cash_consume-aa.linkage_cash_consume),0)-sum(ifnull(b.singleshowvalue,0)*ifnull(aa.ad_show,0)),0) as 总盈亏
                  , round(ifnull((sum(aa.consume) - sum(aa.linkage_consume)) / sum(aa.ad_click), 0), 2)       as CPC
-                 ''' + tmp1 + '''
+                 , concat(round(ifnull(sum(aa.ad_click) / sum(aa.ad_show) *100 , 0), 0),"%")       as CTR
+                 , round(ifnull((sum(aa.consume) - sum(aa.linkage_consume)) / sum(aa.ad_show) * 1000, 0), 0)       as CPM
+                 {tmpCB}  {tmp1}  {tmp1CB}
+                 ''' + '''
             from tt.tt_advertiser_adzone aa
                      left join (select adzone_id,date,adzone_cost/ad_show as singleshowvalue,ad_show from tt.tt_adzone_data where adzone_name not like "%亿起发%" or (adzone_name  like "%亿起发%" and adzone_name not like "%anyi%" and adzone_name not like "%马上%")) b on aa.adzone_id = b.adzone_id and aa.date=b.date
-            where aa.date between "{begin}" and "{end}" '''.format(begin=self.begintime, end=self.endtime) + tmpad + tmpadz + '''
+                    {tmpCBTable}
+            where aa.date between "{begin}" and "{end}" '''.format(begin=self.begintime, end=self.endtime,
+                                                                   tmpCBTable=tmpCBTable) + tmpad + tmpadz + '''
             group by   {tmptagorad1}  {tmpshowadzone1} '''
 
-        tmpsql = tmp.format( tmptagorad=tmptagorad, tmpshowadzone=tmpshowadzone, tmptagorad1=tmptagorad1, tmpshowadzone1=tmpshowadzone1)
+        tmpsql = tmp.format(tmptagorad=tmptagorad, tmpshowadzone=tmpshowadzone, tmptagorad1=tmptagorad1,
+                            tmpshowadzone1=tmpshowadzone1,tmpCB=tmpCB,tmp1=tmp1,tmp1CB=tmp1CB)
 
         res, filed = db.selectsqlnew('devtidb', tmpsql)
         res = self.getresfloadtoint(res)
-        self.exportexcel(filed,res,"reportptmaoliadtag")
+        self.exportexcel(filed, res, "reportptmaoliadtag")
 
-        tmpsqlsum = tmp.format(tmptagorad=tmptagoradsum, tmpshowadzone=tmpshowadzonesum, tmptagorad1='', tmpshowadzone1='').replace("group by","")
+        tmpsqlsum = tmp.format(tmptagorad=tmptagoradsum, tmpshowadzone=tmpshowadzonesum, tmptagorad1='',
+                               tmpshowadzone1='',tmpCB=tmpCBsum,tmp1=tmp1,tmp1CB=" ").replace("group by", "")
         ressum, filedsum = db.selectsqlnew('devtidb', tmpsqlsum)
         ressum = self.getresfloadtoint(ressum)
 
-        return res, filed, tmpsql, colspanx,ressum
-
+        return res, filed, tmpsql, colspanx, ressum
 
     #菜单名：媒体效果-评估-日表   曝光点击无联动值；消耗包含联动
     # 查询日期，广告位（广告位为可选）
@@ -297,14 +377,17 @@ class myreport(object):
         tmpt02=''
         tmpt03=''
         tmpt01sum=''
+        UnmatchedHead=''
         if self.advertiser_id<>'' and self.advertiser_id<>'mytest':
             tmpt01=''' aa.advertiser_id as 广告主ID ,aa.advertiser_name as 广告主名称,aa.adzone_id as 广告位ID ,concat(aa.adzone_name,"&nbsp;-&nbsp;",tad.settle_type)  as 广告位名称 '''
             tmpt01sum = ''' "","","","汇总" '''
+            UnmatchedHead = ''' "","","","未匹配效果数" '''
             tmpt02=''' and aa.advertiser_id in ({0}) '''.format(self.advertiser_id)
             tmpt03=''' ,aa.adzone_id '''
         else:
             tmpt01=''' aa.advertiser_id as 广告主ID ,aa.advertiser_name as 广告主名称 '''
             tmpt01sum=''' "","汇总" '''
+            UnmatchedHead = ''' "","未匹配效果数" '''
 
         tmpsql000=''' ,ifnull(b.effect_typename,"") as 考核 ,ifnull(b.standard,"") as 要求 ,ifnull(tag,"") as 类型 '''
         tmp='''select '''+tmpt01+tmpsql000+'''
@@ -318,6 +401,8 @@ class myreport(object):
             ,round(ifnull((sum(consume)-sum(linkage_consume))/sum(ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num)),0),2) as 转化成本
             '''
         tmp1=''
+        UnmatchedEffectNum = ''
+        UnmatchedEffectNum1 = ''
         colspanx = 0
         for i in daylist: #转化成本
             colspanx=colspanx+1
@@ -325,9 +410,12 @@ class myreport(object):
      sum(case date
             when "{begin2}" then ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num)
         else 0 end),0),2) as "{begin3}"'''.format(begin1=i,begin2=i,begin3=i.replace("2020-",""))
+            UnmatchedEffectNum = UnmatchedEffectNum + ''' ,sum(case date_format(create_time,"%Y-%m-%d") when "{begin1}" then 1 else 0 end) as "{begin2}" '''.format(begin1=i,begin2=i.replace("2020-",""))
+            UnmatchedEffectNum1 = UnmatchedEffectNum1 + ''' ,"" '''
         tmp2=''
         for i in daylist:   #CPC
             tmp2=tmp2+''' , round(ifnull(sum(case date when "{begin1}" then consume-linkage_consume else 0 end)/sum(case date when "{begin2}" then ad_click else 0 end),0),2) as "{begin3}"'''.format(begin1=i,begin2=i,begin3=i.replace("2020-",""))
+
         tmp3=''
         for i in daylist:  #消耗
             tmp3=tmp3+''' , round(ifnull(sum(case date when "{begin1}" then consume-linkage_consume else 0 end),0),0) as "{begin2}"'''.format(begin1=i,begin2=i.replace("2020-",""))
@@ -348,13 +436,14 @@ class myreport(object):
         res = self.getresfloadtoint(res)
         self.exportexcel(filed,res,"reportmtpinggu")
 
+        UnmatchedSQL = '''select ''' + UnmatchedHead + ''' ,"","","","","","","","",count(1),"","" '''+ UnmatchedEffectNum+ UnmatchedEffectNum1+ UnmatchedEffectNum1+ UnmatchedEffectNum1 +''' from voyagerlog.ad_effect_log_{month1} where (adzone_id is null or adzone_id="" or adzone_id=0 or advertiser_id is null or advertiser_id=""  or advertiser_id=0) and date_format(create_time,"%Y-%m-%d") between "{begin}" and "{end}" '''.format(month1=self.begintime[5:7],begin=self.begintime,end=self.endtime)
 
         ressum=""
-        tmpsqlsum = tmpsql.replace(tmpt01,tmpt01sum).replace(tmpsql000,' ,"","","" ').replace(tmp6,"")
+        tmpsqlsum = '''(''' +UnmatchedSQL+''') union all('''+ tmpsql.replace(tmpt01,tmpt01sum).replace(tmpsql000,' ,"","","" ').replace(tmp6,"")+''')'''
         ressum, filedsum = db.selectsqlnew('devtidb', tmpsqlsum)
         ressum = self.getresfloadtoint(ressum)
 
-        return res,filed,tmpsql,colspanx,ressum
+        return res,filed,tmpsql+'''|||'''+tmpsqlsum,colspanx,ressum
         # return 1
 
 
@@ -367,17 +456,27 @@ class myreport(object):
         tmpt03=''
         tmpt04=''
         tmpt05=''
+        tmpAd=''
+        UnmatchedHead=''
         if self.advertiser_id<>'' and self.advertiser_id<>'mytest':
-            tmpt01=''' azh.advertiser_id as 广告主ID ,azh.advertiser_name as 广告主名称,azh.adzone_id as 广告位ID ,concat(azh.adzone_name,"&nbsp;-&nbsp;",adz.settle_type) as 广告位名称 '''
-            tmpt01sum = ''' "","","","汇总" '''
+            tmpt01=''' azh.date as 日期,azh.advertiser_id as 广告主ID ,azh.advertiser_name as 广告主名称,azh.adzone_id as 广告位ID ,concat(azh.adzone_name,"&nbsp;-&nbsp;",ifnull(adz.settle_type,"")) as 广告位名称 '''
+            tmpt01sum = ''' "","","","","汇总" '''
+            UnmatchedHead=''' "","","","","未匹配效果数" '''
             tmpt02=''' and azh.advertiser_id in ({0}) '''.format(self.advertiser_id)
             tmpt03=''' ,azh.adzone_id '''
             tmpt04=''' left join (select adzone_id,sum(ifnull(platform_profit,0)) as platform_profit, (case lower(settle_type) when "cps" then "cps" else "媒购" end) as settle_type  from tt.tt_adzone_data where date between date_format(date_add(now() ,interval -7 day),'%Y-%m-%d') and  date_format(now(),'%Y-%m-%d') and adzone_cost>0 group by adzone_id) adz on adz.adzone_id=azh.adzone_id '''
             tmpt05=''' ,sum(ifnull(adz.platform_profit,0)) as platform_profit '''
+            tmpAd=''' and a.advertiser_id in ({0}) '''.format(self.advertiser_id)
         else:
-            tmpt01=''' azh.advertiser_id as 广告主ID ,azh.advertiser_name as 广告主名称 '''
-            tmpt01sum = ''' "","汇总" '''
+            tmpt01=''' azh.date as 日期,azh.advertiser_id as 广告主ID ,azh.advertiser_name as 广告主名称 '''
+            tmpt01sum = ''' "","","汇总" '''
+            UnmatchedHead=''' "","","未匹配效果数" '''
             tmpt05 = ''' ,999 as platform_profit '''
+
+        if self.adzoneids <> '' and self.adzoneids <> 'mytest':
+            tmpAz = ''' and adzone_id in ({0}) '''.format(self.adzoneids)
+        else:
+            tmpAz = ' '
 
         tmpsql000='''  ,ifnull(b.effect_typename,"") as 考核 ,ifnull(b.standard,"") as 要求 ,round(ifnull((sum(consume)-sum(linkage_consume))/sum(ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num)),0),2) as 总成本,ifnull(tag,"") as 类型 '''
         tmpsql000sum='''  ,"","" ,round(ifnull((sum(consume)-sum(linkage_consume))/sum(ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num)),0),2) as 总成本,"" '''
@@ -387,14 +486,19 @@ class myreport(object):
                 ,round(ifnull(sum(ad_click),0),0) as 点击
                 ,round(ifnull(sum(consume)-sum(linkage_consume),0),0) as 消耗
                 ,round(ifnull((sum(consume)-sum(linkage_consume))/sum(ad_click),0),2) as CPC
+                ,concat(round(ifnull(sum(ad_click)/sum(ad_show)*100,0),0),"%") as CTR
+                ,round(ifnull((sum(consume)-sum(linkage_consume))/sum(ad_show)*1000,0),0) as CPM
                 ,ifnull(sum(ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num)),0) as 效果数
-            ,concat(round(ifnull(sum(ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num))/sum(ad_click),0)*100,0),"%") as 转化率
+            ,concat(round(ifnull(sum(ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num))/sum(ad_click),0)*100,2),"%") as 转化率
             '''
         tmpsql1=''
         tmpsql2=''
         tmpsql3=''
         tmpsql6=''
         tmpcvr=''
+        UnmatchedEffectNum=''
+        UnmatchedEffectNum1=''
+
         for i in range(0,24):
             tmpsql1=tmpsql1+''' ,round(ifnull(sum(case hour when {0} then consume-linkage_consume else 0 end)/
                                 sum(case hour when {1} then
@@ -403,27 +507,91 @@ class myreport(object):
             tmpsql2=tmpsql2+''' ,round(ifnull(sum(case hour when "{0}" then consume-linkage_consume else 0 end)/sum(case hour when "{1}" then ad_click else 0 end),0),2) as "{2}" '''.format(i,i,i)  #CPC
             tmpsql3=tmpsql3+''' ,round(ifnull(sum(case hour when "{0}" then consume-linkage_consume else 0 end),0),0) as "{1}" '''.format(i,i)  #消耗
             #转化率
-            tmpcvr=tmpcvr+''' , concat(round(ifnull(sum(case date when "{0}" then ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num) else 0 end)/sum(case date when "{1}" then ad_click else 0 end),0)*100,0),"%") as "{2}"'''.format(i,i,i)
-        tmpsql4=''' from tt.tt_advertiser_adzone_hour azh
-                left join  tt.tt_advertiser_effect_standard b on azh.advertiser_id=b.advertiser_id {0}  
-                where ifnull(azh.consume,0)-ifnull(azh.linkage_consume,0) >0 and azh.date = "{1}" '''.format(tmpt04,self.begintime)
+            tmpcvr=tmpcvr+''' , concat(round(ifnull(sum(case hour when "{0}" then ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num) else 0 end)/sum(case hour when "{1}" then ad_click else 0 end),0)*100,2),"%") as "{2}"'''.format(i,i,i)
+            UnmatchedEffectNum = UnmatchedEffectNum + ''' ,sum(case hour(create_time) when {i} then 1 else 0 end) as "{i}" '''.format(i=i)
+            UnmatchedEffectNum1 = UnmatchedEffectNum1 + ''' ,"" '''
+        if self.begintime ==self.endtime and self.begintime==datetime.datetime.now().strftime('%Y-%m-%d')  :
+            tmpTodayTable ='''(
+                            select s.d    as date,
+                                   s.h   as hour,
+                                   s.advertiser_id as advertiser_id,
+                                   (select name from voyager.advertiser where id = s.advertiser_id limit 1) as advertiser_name,
+                                   (select (select name from voyager.industry where id = x.industry_id) from voyager.advertiser x where id = s.advertiser_id limit 1) as tag,
+                                   s.adzone_id as adzone_id,
+                                   (select adzone_name from voyager.base_adzone_info where id=s.adzone_id limit 1) as adzone_name,
+                                   s.n as ad_show,
+                                   c.n as ad_click,
+                                   c.amount as consume,
+                                   c.cashamount as cash_consume,
+                                   c.linkageamount as linkage_consume,
+                                   c.linkagecashamount as linkage_cash_consume,
+                                   t1_num, t2_num, t3_num, t4_num, t5_num, t6_num, t7_num, t8_num, t9_num, t10_num, t11_num, t12_num, t13_num, t14_num, t15_num, t16_num
+                            from (
+                                     select date_format(create_time, '%Y-%m-%d') as d,hour(create_time) as h, advertiser_id, adzone_id, count(1) as n
+                                     from ((select create_time,advertiser_id,adzone_id,status,position_id,"a" from voyagerlog.ad_show_log{day1}) union all(select create_time,advertiser_id,adzone_id,1,1,"b" from voyagerlog.ad_effect_log_{month0}  where date_format(create_time, '%Y-%m-%d')="{day11}")) a
+                                     where status = 1
+                                       and position_id <> 0 {ad1} {az1}
+                                     group by date_format(create_time, '%Y-%m-%d'),hour(create_time), advertiser_id, adzone_id
+                                 ) s left join (
+                                     select date_format(a.create_time, '%Y-%m-%d') as d,hour(a.create_time) as h, a.advertiser_id, adzone_id, count(1) as n
+                                          ,sum(charge_amount)/100 as amount
+                                          ,sum(system_income + media_income_cash) / 100 as cashamount
+                                          ,sum(case b.ocpa_ext_order when 1 then charge_amount  else 0 end) / 100    as linkageamount
+                                          ,sum(case b.ocpa_ext_order when 1 then system_income + media_income_cash else 0 end) / 100   as linkagecashamount
+                                     from voyagerlog.ad_click_log{day2} a left join voyager.ad_order b on a.ad_order_id=b.id
+                                     where a.status = 1 {ad1} {az1}
+                                     group by date_format(a.create_time, '%Y-%m-%d'),hour(a.create_time), a.advertiser_id, adzone_id
+                                 ) c on s.d=c.d and s.h=c.h and s.advertiser_id=c.advertiser_id and s.adzone_id=c.adzone_id left join(
+                                     select date_format(create_time, '%Y-%m-%d') as d,hour(create_time) as h, advertiser_id, adzone_id
+                                          ,sum(case type when 1 then 1 else 0 end)  as t1_num
+                                          ,sum(case type when 2 then 1 else 0 end)  as t2_num
+                                          ,sum(case type when 3 then 1 else 0 end)  as t3_num
+                                          ,sum(case type when 4 then 1 else 0 end)  as t4_num
+                                          ,sum(case type when 5 then 1 else 0 end)  as t5_num
+                                          ,sum(case type when 6 then 1 else 0 end)  as t6_num
+                                          ,sum(case type when 7 then 1 else 0 end)  as t7_num
+                                          ,sum(case type when 8 then 1 else 0 end)  as t8_num
+                                          ,sum(case type when 9 then 1 else 0 end)  as t9_num
+                                          ,sum(case type when 10 then 1 else 0 end)  as t10_num
+                                          ,sum(case type when 11 then 1 else 0 end)  as t11_num
+                                          ,sum(case type when 12 then 1 else 0 end)  as t12_num
+                                          ,sum(case type when 13 then 1 else 0 end)  as t13_num
+                                          ,sum(case type when 14 then 1 else 0 end)  as t14_num
+                                          ,sum(case type when 15 then 1 else 0 end)  as t15_num
+                                          ,sum(case type when 16 then 1 else 0 end)  as t16_num
+                                     from voyagerlog.ad_effect_log_{month} a
+                                     where  DATE_FORMAT(create_time, '%Y-%m-%d') = '{day3}'
+                                        and ad_order_id not in (select id from voyager.ad_order where ocpa_ext_order = 1)
+                                         {ad1} {az1}
+                                     group by date_format(create_time, '%Y-%m-%d'),hour(create_time), advertiser_id, adzone_id
+                                ) e on s.d=e.d and s.h=e.h and s.advertiser_id=e.advertiser_id and s.adzone_id=e.adzone_id 
+                            )'''.format(day1=self.begintime.replace("-",""),month0=self.begintime[5:7],day11=self.begintime,day2=self.begintime.replace("-",""),month=self.begintime[5:7],day3=self.begintime,ad1=tmpAd,az1=tmpAz)
+        else:
+            tmpTodayTable = ''' tt.tt_advertiser_adzone_hour '''
+
+        tmpsql4=''' from {0} azh
+                left join  tt.tt_advertiser_effect_standard b on azh.advertiser_id=b.advertiser_id {1}  
+                where ifnull(azh.consume,0)-ifnull(azh.linkage_consume,0) >0 and azh.date between "{2}" and "{3}" '''.format(tmpTodayTable,tmpt04,self.begintime,self.endtime)
         if self.adzoneids<>'' and self.adzoneids<>'mytest' :
             tmpsql5=''' and azh.adzone_id in ({0}) '''.format(self.adzoneids)
         else:
             tmpsql5=' '
-        tmpsql6 = ''' group by azh.advertiser_id '''+tmpt03
+        tmpsql6 = ''' group by azh.date,azh.advertiser_id '''+tmpt03
         tmpsqlall=tmpsql+tmpsql1+tmpsql2+tmpsql3+tmpcvr+tmpt05+tmpsql4+tmpsql5+tmpt02+tmpsql6
 
         res,filed=db.selectsqlnew('devtidb',tmpsqlall)
         res = self.getresfloadtoint(res)
         self.exportexcel(filed,res,"reportmtpingguhour")
 
+        UnmatchedSQL = '''select ''' + UnmatchedHead + ''' ,"","","","","","","","","","",count(1),"" '''+ UnmatchedEffectNum+ UnmatchedEffectNum1+ UnmatchedEffectNum1+ UnmatchedEffectNum1 +''',999 from voyagerlog.ad_effect_log_{month1} where (adzone_id is null or adzone_id="" or adzone_id=0 or advertiser_id is null or advertiser_id=""  or advertiser_id=0) and date_format(create_time,"%Y-%m-%d") = "{begin}"  '''.format(month1=self.begintime[5:7],begin=self.begintime)
+
         ressum=""
-        tmpsqlsum = tmpsqlall.replace(tmpt01,tmpt01sum).replace(tmpsql000,tmpsql000sum).replace(tmpsql6,"").replace(tmpt04,"").replace(tmpt05,",999")
+        tmpsqlsum = '''(''' +UnmatchedSQL+''') union all('''+ tmpsqlall.replace(tmpt01,tmpt01sum).replace(tmpsql000,tmpsql000sum).replace(tmpsql6,"").replace(tmpt04,"").replace(tmpt05,",999")+''')'''
+
         ressum, filedsum = db.selectsqlnew('devtidb', tmpsqlsum)
         ressum = self.getresfloadtoint(ressum)
 
-        return res,filed,tmpsqlall,ressum
+        return res,filed,tmpsqlall+'''|||'''+tmpsqlsum,ressum
 
     # 菜单名：媒体效果-评估-广告主类型
     def getreportByadvtag(self):
@@ -502,7 +670,7 @@ class myreport(object):
             tmpsql7=''' and adzone_id in ({0})'''.format(self.adzoneids)
         else:
             tmpsql7=' '
-        #     必填
+        # 必填
         tmpsql8=''' and aar.advertiser_id in ({0}) group by aar.advertiser_id,region;'''.format(self.advertiser_id)
         tmpall=tmpsql1+tmpsql2+tmpsql3+tmpsql4+tmpsql5+tmpsql6+tmpsql7+tmpsql8
         print tmpall
@@ -565,6 +733,273 @@ class myreport(object):
         res = self.getresfloadtoint(res)
         self.exportexcel(filed,res,"reportregionbyadv")
         return res,filed,tmpall,colspanx
+
+
+
+    # 菜单名：订单状态
+    def getreportOrderState(self):
+
+        if self.adzoneids <> '' :
+            tmpadzone = ''' and adzone_id in ({0}) '''.format(self.adzoneids)
+            #可投此位置的
+            whereSQLadzone =''' 
+                           and (adzone_id_direction = 0
+                             or (adzone_id_direction = 1 and concat(",", adzone_id_content, ",") like "%,{0},%")
+                             or (adzone_id_direction = 2 and concat(",", adzone_id_content, ",") not like "%,{1},%")
+                             ) 
+                             and (media_id_direction = 0
+                                or (media_id_direction = 1 and concat(",", media_id_content, ",") like concat("%,",(select media_id from voyager.base_adzone_info where id={2} limit 1),",%"))
+                                or (media_id_direction = 2 and concat(",", media_id_content, ",") not like concat("%,",(select media_id from voyager.base_adzone_info where id={3} limit 1),",%"))
+                             ) 
+                             '''.format(self.adzoneids,self.adzoneids,self.adzoneids,self.adzoneids)
+        else:
+            tmpadzone = ''
+            whereSQLadzone = ''
+
+        if self.isstatus == 'run':    #在投的
+            whereSQL = ''' and state=4 '''+whereSQLadzone
+        elif self.isstatus =='show':    #有曝光的
+            whereSQL = '''  and id in (select ad_order_id from voyagerlog.ad_show_log{0}  where 1=1 {1}  ) '''.format(self.begintime.replace("-",""),tmpadzone)+whereSQLadzone
+        else:
+            whereSQL = ''
+
+
+        tmpsql = '''select
+                    ao.advertiser_id as 广告主ID,
+                    concat((select name from voyager.advertiser where id=ao.advertiser_id limit 1),'<span class="redfont">',ao.托底,'</span>','<span class="redfont">',ao.ocpa_ext_order,'</span>','<span class="redfont">',ao.show_postion_fee,'</span>') as 广告主名称,
+                    ifnull(asl.s,0) as 曝光,
+                    ifnull(acl.c,0) as 点击,
+                    ifnull(round(acl.amount,0),0) as 消耗,
+                    ifnull(taen.num,0) as 效果数,
+                    ifnull(concat(ifnull(round(taen.num/ro.c*100,0),0),"%"),0) as CVR,
+                    ifnull(round(ro.consume/taen.num,2),0) as 实际成本,
+                    ifnull(taes.standard,0) as 考核要求,
+                    concat(ifnull(round(acl.c/asl.s*100,0),0),"%")  as CTR,
+                    ifnull(round(acl.amount/asl.s*1000,0),0)  as CPM,
+                    ifnull(round(acl.amount/acl.c,2),0)  as CPC,
+                    ifnull(round(ao.payment,2),0)  as 出价,
+                    ifnull(round(ro.ad_withhold,0),0) as 预扣,
+                    ifnull(concat(round(acl.amount/ro.ad_withhold*100,0),"%"),0) as 消耗比例,
+                    ao.state   as 状态,
+                    ao.tag as   类型,
+                    taes.effect_typename as 考核环节,
+                    ao.run_type     as  竞价层级,
+                    ao.id as 订单ID,
+                    ao.name as 订单名称,
+                    concat('<a href="',ac.image,'" target="_blank" >素材地址</a>') as 素材URL,
+                    concat('<a href="',acel.link_common,'" target="_blank" >着落页</a>') as 着落页,
+                    ac.审核状态,
+                    ac.素材级别,
+                    ao.push_order_admin    as  强推,
+                    ao.advertise_start    as 投放开始日期,
+                    ao.advertise_end  as 投放结束日期,
+                    ao.advertise_time_type   as 投放时段类型,
+                    concat('<input value="',replace(ao.advertise_time_type_detail,'"',''),'" />') as 投放时段,
+                    ao.budget  as 每日预算（应该看预扣）,
+                    ao.payment_mode as    投放类型,
+                    ao.frequency  as    频次,
+                    ao.budget_allocation   as   消耗速度,
+                    ao.priority   as  权重,
+                    ao.stop_time    as  订单暂停时间,
+                    ao.quality_direction  as 媒体质量定向,
+                    ao.media_id_direction    as  媒体定向,
+                    concat('<input value="',ao.media_id_content,'" />')  as   媒体id,
+                    ao.adzone_id_direction   as 广告位定向,
+                    concat('<input value="',ao.adzone_id_content,'" />')      as  广告位id,
+                    ao.adzone_limit  as  单位消耗上限,
+                    ao.optimization_goal    as OCPA目标,
+                    ao.target_cost  as  智能增量目标成本,
+                    aod.region_direction   as 地域定向,
+                    concat('<input value="',replace(aod.region,'"',''),'" />') as 地域,
+                    aod.device_direction   as 设备定向,
+                    aod.position_direction as 坑位定向
+                from (
+                         select id , advertiser_id , name
+                              , (case (select id from voyager.config_parameters a where `desc` like '%托底%' and a.id = 20 and value like concat("%",aox.advertiser_id,"%")) when 20 then "托底" else "" end ) as 托底
+                              , advertise_start    as advertise_start
+                              , ELT(FIELD(advertise_long,0,1),advertise_end,"长期") as advertise_end
+                              , ELT(advertise_time_type,"全时段","特定时段","高级")  as advertise_time_type
+                              , ELT(advertise_time_type,"",concat(advertise_time_start,"至",advertise_time_end),advertise_time_perid) as advertise_time_type_detail
+                              , budget / 100     as budget
+                              , ELT(payment_mode,"CPM","CPC","CPA","OCPA") as payment_mode
+                              , payment / 100  as payment
+                              , ELT(FIELD(frequency_control,0,1),"无",frequency)  as  frequency
+                              , ELT(budget_allocation,"标准","加速") as budget_allocation
+                              , IFNULL(ELT(FIELD(state ,4,5,6),"投放中","暂停","结束"),"其他不可投放状态")  as state
+                              , stop_time     as stop_time
+                              , priority  as priority
+                              , tag    as tag
+                              , ELT(FIELD(quality_direction,0,1,2),"不限","普通","优媒")  as quality_direction
+                              , ELT(FIELD(media_id_direction,0,1,2),"不限","媒体ID定向","媒体ID排除")   as media_id_direction
+                              , media_id_content    as media_id_content
+                              , ELT(FIELD(adzone_id_direction,0,1,2),"不限","广告位ID定向","广告位ID排除")   as adzone_id_direction
+                              , adzone_id_content    as adzone_id_content
+                              , adzone_limit   as adzone_limit
+                              , ELT(run_type,"定向","通投")   as run_type
+                              , ELT(optimization_goal,"表单预约","注册")    as optimization_goal
+                              , ELT(FIELD(push_order_admin,1,0),"强推","")  as push_order_admin
+                              , ELT(FIELD(ocpa_ext_order,1,0),"智能增量","")   as ocpa_ext_order
+                              , case when ifnull(show_postion_fee,0) = 0 then "" else "只付费坑位" end as show_postion_fee
+                              , target_cost    as target_cost
+                         FROM voyager.ad_order aox
+                         where 1=1
+                         {whereSQL}
+                 ) ao left join (
+                    select order_id
+                           ,ELT(FIELD(region_direction,0,1,2),"无","定向","排除")  as region_direction
+                           ,region                            as region
+                           ,ELT(FIELD(device_direction,0,1,2),"无","IOS","Android")   as device_direction
+                           ,ifnull(ELT(FIELD(position_direction,0,1,2),"无","幸运奖弹层","天降红包"),position_direction)  as position_direction
+                    from voyager.ad_order_direction
+                    where 1=1 and is_valid = 1
+                ) aod on ao.id=aod.order_id left join(
+                    select order_id,creative_id  FROM voyager.ad_order_creative where state=1
+                ) aoc on ao.id=aoc.order_id left join(
+                    select creative_id,link_common  FROM voyager.ad_creative_link where is_valid=1
+                ) acel on aoc.creative_id=acel.creative_id  left join (
+                    select id,
+                           image,
+                           ELT(state, "待审核", "审核成功", "驳回") as 审核状态,
+                           ELT(FIELD(level, 1, 3, 5, 10), "A1", "A3", "A5", "AX") as 素材级别,
+                           ELT(creative_type, "图文", "视频") as 素材类型,
+                           video_url
+                    from voyager.ad_creative
+                ) ac on aoc.creative_id=ac.id left join (
+                    select count(1) as s,ad_order_id from voyagerlog.ad_show_log{begin1}  where status=1  {adzone_id1} group by ad_order_id
+                ) asl on ao.id=asl.ad_order_id left join (
+                    select count(1) as c,sum(charge_amount)/100 as amount,ad_order_id from voyagerlog.ad_click_log{begin2}  where status=1 and position_id<>0  {adzone_id2} group by ad_order_id
+                ) acl on ao.id=acl.ad_order_id left join (
+                    select adorder_id,
+                           sum(show_num)           as s,
+                           sum(adclick_num)        as c,
+                           sum(ad_consume) / 100   as consume,
+                           sum(cash_consume) / 100 as cash_consume,
+                           sum(ad_withhold) / 100  as ad_withhold
+                    from voyager.report_order
+                    where  date = "{begin3}"
+                    group by adorder_id
+                ) ro on ao.id=ro.adorder_id left join (
+                    select advertiser_id,effect_type,standard,effect_typename from tt.tt_advertiser_effect_standard
+                ) taes on ao.advertiser_id=taes.advertiser_id left join (
+                    select advertiser_id,ad_order_id,type,count(1) as num from voyagerlog.ad_effect_log_{month1} where date_format(create_time,"%Y-%m-%d")="{begin4}"  {adzone_id3}  group by ad_order_id,type
+                ) taen on ao.id=taen.ad_order_id and taes.effect_type=taen.type 
+            '''.format(whereSQL=whereSQL,begin1=self.begintime.replace("-",""),adzone_id1=tmpadzone,begin2=self.begintime.replace("-",""),adzone_id2=tmpadzone,begin3=self.begintime,month1=self.begintime[5:7],begin4=self.begintime,adzone_id3=tmpadzone)
+
+
+        res, filed = db.selectsqlnew('devtidb', tmpsql)
+        res = self.getresfloadtoint(res)
+        #self.exportexcel(filed, res, "reportOrderState")
+
+        return res, filed, tmpsql
+
+
+
+    # 菜单名：广告位趋势
+    def getreportZoneTrend(self):
+        daylist=self.gettimelist()
+
+        tmpsqlHead = '''
+                select adzone_id as 广告位ID
+                       ,(select adzone_name from voyager.base_adzone_info where id = rz.adzone_id limit 1)  as 广告位名称
+                       ,ifnull(ELT(settle_method,"CPC","CPM","CPT","CPS","CPA","补量"),"") as 结算方式
+                     '''
+        tmpsqlHeadSum =''' select "","汇总","" '''
+        colspanx = 0
+        tmpsqlM1 = ""
+        tmpsqlM2 = ""
+        tmpsqlM3 = ""
+        tmpsqlM4 = ""
+        for i in daylist:
+            colspanx=colspanx+1
+            tmpsqlM1 = tmpsqlM1 + ''' ,round(ifnull(sum(case when date="{date}" then adzone_effect_num else 0 end),0),0) as "{dateTitle}" '''.format(date=i,dateTitle=i.replace("2020-",""))  #入口点击
+            tmpsqlM2 = tmpsqlM2 + ''' ,round(ifnull(sum(case when date="{date}" then media_cost else 0 end)/100/sum(case when date="{date}" then adzone_effect_num else 0 end),0),3) as "{dateTitle}" '''.format(date=i,dateTitle=i.replace("2020-",""))   #入口成本
+            tmpsqlM3 = tmpsqlM3 + ''' ,round(ifnull(sum(case when date="{date}" then platform_income + media_income_cash else 0 end)/100/sum(case when date="{date}" then adzone_effect_num else 0 end),0),3) as "{dateTitle}" '''.format(date=i,dateTitle=i.replace("2020-",""))  #入口收益
+            tmpsqlM4 = tmpsqlM4 + ''' ,round(ifnull(sum(case when date="{date}" then adzone_consume else 0 end)/100,0),0) as "{dateTitle}" '''.format(date=i,dateTitle=i.replace("2020-",""))  #消耗
+        tmpsqlFoot = '''
+                from voyager.report_zone rz
+                where date between "{begin}" and "{end}"
+                group by adzone_id
+            '''.format(begin=self.begintime,end=self.endtime)
+
+        tmpsql = tmpsqlHead + tmpsqlM1 + tmpsqlM2 + tmpsqlM3 + tmpsqlM4 + tmpsqlFoot
+        tmpsqlSum = tmpsqlHeadSum + tmpsqlM1 + tmpsqlM2 + tmpsqlM3 + tmpsqlM4 + tmpsqlFoot.replace("group by adzone_id","")
+
+        res, filed = db.selectsqlnew('devtidb', tmpsql)
+        res = self.getresfloadtoint(res)
+        #self.exportexcel(filed, res, "reportZoneTrend")
+
+        resSum, filedSum = db.selectsqlnew('devtidb', tmpsqlSum)
+        resSum = self.getresfloadtoint(resSum)
+
+        return res, filed, tmpsql , colspanx ,resSum
+
+
+
+
+
+    # 菜单名：毛利预估
+    def getreportPreProfitbyDay(self):
+        daylist=self.gettimelist()
+
+        adzonecost=""
+        adzoneepc=""
+        adzonePassIF=""
+        adzoneDetail=""
+        for i in daylist:
+            adzonecost = adzonecost + ''' ,{dateTitle}adzonecost '''.format(dateTitle=i.replace("2020-","").replace("-",""))
+            adzoneepc= adzoneepc + ''' ,{dateTitle}adzoneepc '''.format(dateTitle=i.replace("2020-","").replace("-",""))
+        for i in daylist:
+            adzonePassIF = adzonePassIF + ''' when ifnull(ELT(datediff(a.date,"{date}") {adzonecost}),0)>0
+                                         then ELT(datediff(a.date,"{date}") {adzoneepc})*a.ad_show
+                                          '''.format(date=i,adzonecost=adzonecost,adzoneepc=adzoneepc)
+            adzoneDetail = adzoneDetail + ''' , sum(case when date="{date}" then adzone_click else 0 end) as {dateTitle}adzoneclick
+                                      , sum(case when date="{date}" then ad_show else 0 end) as {dateTitle}adshow
+                                      , sum(case when date="{date}" and adzone_click>100 then adzone_cost else 0 end) as {dateTitle}adzonecost
+                                      , sum(case when date="{date}" then adzone_cost else 0 end)/sum(case when date="{date}" then adzone_click else 0 end) as {dateTitle}adzoneepc 
+                                      '''.format(date=i,dateTitle=i.replace("2020-","").replace("-",""))
+
+        tmpsql = '''
+                 select a.date
+                     ,round(ifnull(sum(a.ad_show),0),0) as 广告曝光
+                     ,round(ifnull(sum(a.cash_consume),0),0) as 现金消耗
+                     ,round(ifnull(sum(a.adzone_cost),0),0) as 媒体成本
+                     ,round(ifnull(sum(a.pre_adzone_cost),0),0) as 预估媒体成本
+                     ,round(ifnull(sum(platform_profit),0),0) as 平台毛利
+                     ,round(ifnull(sum(a.cash_consume)-sum(a.pre_adzone_cost),0),0) as 预估平台毛利
+                     ,round(ifnull(sum(case when a.pre_adzone_cost=0 then  a.cash_consume-a.pre_adzone_cost else 0 end),0),0) as 无预估媒体成本的消耗即毛利值
+                 from (
+                
+                             select a.date as date,a.adzone_id
+                                 ,sum(a.ad_show) as ad_show
+                                 ,sum(a.cash_consume) as cash_consume
+                                 ,sum(a.adzone_cost) as adzone_cost
+                                 ,sum(platform_profit) as platform_profit
+                                 ,sum(case when ifnull((a.adzone_cost),0)<>0  then (a.adzone_cost)  
+                                     {adzonePassIF}
+                                     else ifnull((a.adzone_cost),0)
+                                 end) as pre_adzone_cost
+                             from tt.tt_adzone_data a
+                                left join (
+                                     select  adzone_id {adzoneDetail}
+                                     from tt.tt_adzone_data
+                                     where date between "{beginPass}" and "{end}"
+                                     group by adzone_id
+                                ) b on  a.adzone_id=b.adzone_id
+                             where a.date between "{begin}" and "{end}"
+                             group by a.date,a.adzone_id
+                
+                          ) a
+                 where a.date between "{begin}" and "{end}"
+                 group by a.date
+                 order by a.date
+            '''.format(beginPass=self.begintime,begin=self.begintime,end=self.endtime,adzonePassIF=adzonePassIF,adzoneDetail=adzoneDetail)
+
+
+        res, filed = db.selectsqlnew('devtidb', tmpsql)
+        res = self.getresfloadtoint(res)
+        self.exportexcel(filed, res, "reportPreProfitbyDay")
+
+        return res, filed, tmpsql
 
 
 if __name__ == '__main__':

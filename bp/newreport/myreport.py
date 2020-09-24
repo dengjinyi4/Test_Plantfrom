@@ -106,14 +106,14 @@ def reportmtpingguhour():
     addfieldnum=0
     if myform.validate_on_submit():
         begintime=str(myform.data['begindate'])[0:10]
-        # endtime=str(myform.data['enddate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
         adzoneid=str(myform.data['adzoneid'])
         advertiser=str(myform.data['advertiser'])
         if advertiser :
             addfieldnum=2
         else:
             addfieldnum=0
-        rp=mr.myreport(begintime=begintime,adzoneids=adzoneid,advertiser_id=advertiser)
+        rp=mr.myreport(begintime=begintime,endtime=endtime,adzoneids=adzoneid,advertiser_id=advertiser)
         data,filed,tmpsql,datasum=rp.getmtpinguhour()
         return render_template('reportmtpingguhour.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,datasum=datasum,advertiser=advertiser,addfieldnum=addfieldnum)
     return render_template('reportmtpingguhour.html',form=myform,addfieldnum=addfieldnum)
@@ -163,3 +163,44 @@ def reporregionbyadv():
         data,filed,tmpsql,colspanx=rp.getregionbyadv()
         return render_template('reporregionbyadv.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,colspanx=colspanx)
     return render_template('reporregionbyadv.html',form=myform)
+
+
+
+
+#菜单名：订单状态
+@hdtreport.route('/reportOrderState/',methods=('POST','GET'))
+def reportOrderState():
+    myform=ft.myreportOrderState()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        adzoneid=str(myform.data['adzoneid'])
+        isstatus=str(myform.data['isstatus'])
+        rp=mr.myreport(begintime=begintime,adzoneids=adzoneid,isstatus=isstatus)
+        data,filed,tmpsql=rp.getreportOrderState()
+        return render_template('reportOrderState.html',form=myform,data=data,filed=filed,tmpsql=tmpsql)
+    return render_template('reportOrderState.html',form=myform)
+
+
+#菜单名：广告位趋势
+@hdtreport.route('/reportZoneTrend/',methods=('POST','GET'))
+def reportZoneTrend():
+    myform=ft.myreportZoneTrend()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
+        rp=mr.myreport(begintime=begintime,endtime=endtime)
+        data,filed,tmpsql,colspanx,dataSum=rp.getreportZoneTrend()
+        return render_template('reportZoneTrend.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,colspanx=colspanx,dataSum=dataSum)
+    return render_template('reportZoneTrend.html',form=myform)
+
+#菜单名：预估毛利（日表）
+@hdtreport.route('/reportPreProfitbyDay/',methods=('POST','GET'))
+def reportPreProfitbyDay():
+    myform=ft.myreportPreProfitbyDay()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
+        rp=mr.myreport(begintime=begintime,endtime=endtime)
+        data,filed,tmpsql=rp.getreportPreProfitbyDay()
+        return render_template('reportPreProfitbyDay.html',form=myform,data=data,filed=filed,tmpsql=tmpsql)
+    return render_template('reportPreProfitbyDay.html',form=myform)

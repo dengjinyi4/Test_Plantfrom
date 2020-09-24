@@ -1,0 +1,122 @@
+{% extends "base.html"%}
+{% block main %}
+
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>互动推平台配置表</title>
+</head>
+<script type="text/javascript">
+{#    调用接口获取数据，但是在body中怎么使用还不知道。。。。#}
+{#    $(document).ready(function(){#}
+{#        var xmlhttp;#}
+{#        if (window.XMLHttpRequest){ // IE7+, FireFox, chrome,opera,safari#}
+{#            xmlhttp = new XMLHttpRequest()#}
+{#        }#}
+{#        else{#}
+{#            xmlhttp = new ActiveXObject()#}
+{#        }#}
+{#        xmlhttp.onreadystatechange=function(){#}
+{##}
+{#        }#}
+{#        var re_data = xmlhttp.open("POST","/mypig/init/",true);#}
+{#        var re_data = xmlhttp.send();#}
+{#        console.log("okmesl??????");#}
+{#        console.log(re_data);#}
+{#    })#}
+</script>
+<style>
+    thead {
+        background-color: #398439;
+    }
+    div.container {
+        width: 80%;
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<body>
+<div class="container">
+    <!--<div>-->
+        <!--<table class="table table-hover table-bordered">-->
+            <!--<caption><span class="glyphicon glyphicon-heart">  合成养猪游戏相关配置，默认查询结果为测试环境数据</caption>-->
+            <!--<thead>-->
+            <!--<tr>-->
+                <!--{% for c in pig_game_cfgs[1] %}-->
+                <!--<td>{{ c|safe }}</td>-->
+                <!--{% endfor %}-->
+                <!--<td>操作</td>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--{% for r in pig_game_cfgs[0] %}-->
+            <!--<tr>-->
+                <!--{% for c in r %}-->
+                <!--<td>{{ c|safe }}</td>-->
+                <!--{% endfor %}-->
+                <!--<td>-->
+                    <!--<a target="_blank" href="{{ url_for("act.voyager_pig_configs",env='testvoyager',selected_table=r[0])}}">测试</a>-->
+                    <!--<span style="margin: 0 8px">|</span>-->
+                    <!--<a target="_blank" href="{{ url_for("act.voyager_pig_configs",env='devvoyager',selected_table=r[0])}}">线上</a>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--{% endfor %}-->
+        <!--</table>-->
+    <!--</div>-->
+
+    <div>
+        <table class="table table-hover table-bordered">
+        <caption><span class="glyphicon glyphicon-heart">  养成水果游戏相关配置，默认查询结果为测试环境数据</caption>
+            <thead>
+                <tr>
+                    {% for c in act_game_cfgs[1] %}
+                    <td>{{ c|safe }}</td>
+                    {% endfor %}
+                    <td>操作</td>
+                </tr>
+            </thead>
+            {% for r in act_game_cfgs[0] %}
+                <tr>
+                    {% for c in r %}
+                        <td>{{ c|safe }}</td>
+                    {% endfor %}
+                    <td>
+                        <a target="_blank" href="{{ url_for("act.voyager_configs",env='testvoyager',selected_table=r[0])}}">测试</a>
+                        <span style="margin: 0 8px">|</span>
+                        <a target="_blank" href="{{ url_for("act.voyager_configs",env='devvoyager',selected_table=r[0])}}">线上</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <hr color="#222222" style="margin: 30px 0px">
+    <div>
+        <table class="table table-hover table-bordered">
+        <caption><span class="glyphicon glyphicon-heart">  互动推其他配置，默认查询结果为测试环境数据</caption>
+            <thead>
+                <tr>
+                    {% for c in other_cfgs[1] %}
+                    <td>{{ c|safe }}</td>
+                    {% endfor %}
+                    <td>操作</td>
+                </tr>
+            </thead>
+            {% for r in other_cfgs[0] %}
+                <tr>
+                    {% for c in r %}
+                        <td>{{ c|safe }}</td>
+                    {% endfor %}
+                    <td>
+                        <a target="_blank" href="{{ url_for("act.voyager_configs",env='testvoyager',selected_table=r[0])}}">测试</a>
+                        <span style="margin: 0 8px">|</span>
+                        <a target="_blank" href="{{ url_for("act.voyager_configs",env='devvoyager',selected_table=r[0])}}">线上</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

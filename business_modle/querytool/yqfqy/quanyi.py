@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'jinyi'
 from business_modle.querytool import db
+import requests as r
 import datetime
 from dateutil.relativedelta import relativedelta
 from openpyxl import  Workbook,load_workbook
@@ -25,11 +26,18 @@ class quanyi(object):
             except Exception as e:
                 print e.message
         return ''
+    def dubtolist(self,re):
+        tmp=[]
+        for i in re:
+            tmp.append(list(i))
+        return tmp
     def selectre(self,tmpsql):
         if self.env=='test':
             res,filed=db.selectsqlnew('testquanyi',tmpsql)
+            res=self.dubtolist(res)
         else:
             res,filed=db.selectsqlnew('devquanyi',tmpsql)
+            res=self.dubtolist(res)
         return  res,filed
     # 查询权益订单
     def georder(self):
@@ -91,13 +99,37 @@ class quanyi(object):
         # self.exportexcel(filed,res,"reportall")
 
         return res,filed,tmpsql
+    def getthirdproduct(self):
+        tmpsql='''SELECT ib.ID 品牌id,ib.BRAND_NAME,ip.ID 商品id,ip.PRODUCT_ID 第三方商品id,
+                case ip.PRODUCT_STATUS when 1 THEN '有效' WHEN 0 THEN '无效' END as '商品状态'
+                FROM interest_product ip ,interest_brand ib
+                where ib.ID=ip.BRAND_ID and ip.SHOP_SHORT_NAME='tq365'
+                ORDER BY ip.PRODUCT_STATUS desc;'''
+        res,filed=self.selectre(tmpsql)
+        # filed=list(filed)
+        filed.append(u'第三方库存')
+        tmp=[]
+        for i in res:
+            num=self.getthirdprodcutstock(int(i[3]))
+            i.append(num)
+            tmp.append(i)
+        return res,filed,tmpsql
+    # 接口返回类似 {"msg":"库存数量：10","code":"0"} 数据，取得库存数量字段
+    def getthirdprodcutstock(self,productid):
+        url='http://221.122.127.206:18080/365tq/getNum'
+        params={'productId': productid}
+        re=r.get(url=url,params=params)
+        num=re.json()['msg'][5:7]
+        print type(int(num))
+        return num
 
 
 if __name__ == '__main__':
     # test=myreport(begintime='2020-04-1',endtime='2020-04-02',adzoneids='21')
     test=quanyi(env='test')
-    tmp,filed,tmpsql=test.geproduct()
-    print tmp
+    # tmp,filed,tmpsql=test.geproduct()
+    tmp,tmp1=test.getthirdproduct()
+    print tmp,tmp1
     # print tmp
     # print get_date_list('2018-01-01','2018-02-28')
     # cwd = os.getcwd()

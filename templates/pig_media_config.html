@@ -1,0 +1,504 @@
+{% extends "base.html"%}
+{% block main %}
+
+
+<link href="//cdn.datatables.net/fixedcolumns/3.3.0/css/fixedColumns.dataTables.min.css" rel="stylesheet">
+<script src="//cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
+<script>
+        $(document).ready(function() {
+    $('#example','#example1').DataTable({
+    "iDisplayLength" : 100, //默认显示的记录数
+    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[0]}],
+
+    "fixedHeader": true,  //固定表头
+                "scrollX": "500px",
+                "scrollY": "550px",  //高度
+                "scrollCollapse": true,
+    "fixedColumns": { "leftColumns": 1 } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    });
+} );</script>
+<!--<style type="text/css">-->
+    <!--*{font-size: 12px;}-->
+    <!--thead tr td{white-space: nowrap;}-->
+    <!--table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {-->
+    <!--background-color:#fff000-->
+    <!--}-->
+    <!--table.dataTable tbody tr td ,table.dataTable thead tr.tsum { text-align: right; }-->
+    <!--table.dataTable tbody tr td.alignleft{ text-align: left;}-->
+
+    <!--.cutLongText{white-space: nowrap;}-->
+<!--</style>-->
+<style>
+    thead {
+    background-color: #398439;
+    }
+    div.container {
+    width: 80%;
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    }
+</style>
+
+<p hidden="hidden">{{tmpsql|safe}}</p>
+
+
+<br>
+<br>
+
+<form action="{{url_for('mypig.pig_media_cfg')}}" method="post">
+        <select  name="env" style="padding: 5px">
+            <option>选择查询环境</option>
+            <option>测试环境</option>
+            <option>线上环境</option>
+            {{env|safe}}
+        </select>
+
+        <input type="submit" name="submit" value="查询"/>
+
+
+
+</form>
+
+<br>
+<br>
+<div>
+<table class="table table-hover table-bordered"  id="example2" class="display" style="float:left;"  border="1">
+    <caption>合成养猪活动配置表</caption>
+    <thead>
+    <tr>
+        {% for i in tablefield %}
+        <td>{{i|safe}}</td>
+        {% endfor %}
+    </tr>
+    </thead>
+
+    <tbody>
+
+    {% for k in tableres%}
+    <tr>
+        {% for m in k%}
+        <td>{{m|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+</div>
+<br>
+<br>
+
+<div>
+    <table class="table table-hover table-bordered"  id="example3" class="display" style="float:left;"  border="1">
+        <caption border="1">福气值单位配置表</caption>
+
+        <tbody>
+
+        {% for k in res_unitnote%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        <thead>
+        <tr>
+            {% for i in field_unitnote %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+
+    </table>
+
+
+    <table class="table table-hover table-bordered" id="example" class="display" style="float:left;"  border="1">
+        <tbody>
+        {% for k in res_unit%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+
+        <thead>
+
+        <tr>
+            {% for i in field_unit %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+
+    </table>
+
+</div>
+
+
+
+
+
+<div>
+    <table class="table table-hover table-bordered"  id="example1" class="display" style="float:left;"  border="1">
+        <caption border="1">养猪活动媒体配置表</caption>
+
+        <tbody>
+
+        {% for k in resnote%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+
+
+        <thead>
+        <tr>
+            {% for i in fieldnote %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+
+    </table>
+<table class="table table-hover table-bordered" id="example4" class="display" style="float:left;"  border="1">
+    <tbody>
+    {% for k in res%}
+    <tr>
+        {% for m in k%}
+        <td>{{m|safe}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+    <thead>
+
+    <tr>
+        {% for i in field %}
+        <td>{{i|safe}}</td>
+        {% endfor %}
+    </tr>
+    </thead>
+
+
+</table>
+</div>
+
+<div>
+        <table class="table table-hover table-bordered"  id="example5" class="display" style="float:left;"  border="1">
+            <caption border="1">养猪模块红包分配表</caption>
+
+            <tbody>
+
+            {% for k in res_rednote%}
+            <tr>
+                {% for m in k%}
+                <td>{{m|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+
+
+            <thead>
+            <tr>
+                {% for i in field_rednote %}
+                <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            </thead>
+
+
+
+        </table>
+        <table class="table table-hover table-bordered" id="example6" class="display" style="float:left;"  border="1">
+            <tbody>
+            {% for k in res_red%}
+            <tr>
+                {% for m in k%}
+                <td>{{m|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+            <thead>
+
+            <tr>
+                {% for i in field_red %}
+                <td>{{i|safe}}</td>
+                {% endfor %}
+            </tr>
+            </thead>
+
+</table>
+</div>
+
+<div>
+         <table class="table table-hover table-bordered"  id="example7" class="display" style="float:left;"  border="1">
+             <caption border="1">猪等级配置表</caption>
+
+             <tbody>
+
+             {% for k in res_levelnote%}
+             <tr>
+                 {% for m in k%}
+                 <td>{{m|safe}}</td>
+                 {% endfor %}
+             </tr>
+             {% endfor %}
+             </tbody>
+
+
+             <thead>
+             <tr>
+                 {% for i in field_levelnote %}
+                 <td>{{i|safe}}</td>
+                 {% endfor %}
+             </tr>
+             </thead>
+
+
+
+         </table>
+         <table class="table table-hover table-bordered" id="example8" class="display" style="float:left;"  border="1">
+             <tbody>
+             {% for k in res_level%}
+             <tr>
+                 {% for m in k%}
+                 <td>{{m|safe}}</td>
+                 {% endfor %}
+             </tr>
+             {% endfor %}
+             </tbody>
+             <thead>
+
+             <tr>
+                 {% for i in field_level %}
+                 <td>{{i|safe}}</td>
+                 {% endfor %}
+             </tr>
+             </thead>
+
+         </table>
+
+</div>
+
+
+<div>
+    <table class="table table-hover table-bordered"  id="example9" class="display" style="float:left;"  border="1">
+        <caption border="1">视频坑位与操作日志类型对照表</caption>
+
+        <tbody>
+
+        {% for k in res_positionlognote%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+
+
+        <thead>
+        <tr>
+            {% for i in field_positionlognote %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+
+    </table>
+    <table class="table table-hover table-bordered" id="example10" class="display" style="float:left;"  border="1">
+        <tbody>
+        {% for k in res_positionlog%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        <thead>
+
+        <tr>
+            {% for i in field_positionlog %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+<div>
+    <table class="table table-hover table-bordered"  id="example11" class="display" style="float:left;"  border="1">
+        <caption border="1">基础信息配置表</caption>
+
+        <tbody>
+
+        {% for k in res_tasknote%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+
+
+        <thead>
+        <tr>
+            {% for i in field_tasknote %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+
+    </table>
+    <table class="table table-hover table-bordered" id="example12" class="display" style="float:left;"  border="1">
+        <tbody>
+        {% for k in res_task%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        <thead>
+
+        <tr>
+            {% for i in field_task %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+<div>
+    <table class="table table-hover table-bordered"  id="example13" class="display" style="float:left;"  border="1">
+        <caption border="1">解锁红包类型对照表</caption>
+
+        <tbody>
+
+        {% for k in res_unlocknote%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+
+
+        <thead>
+        <tr>
+            {% for i in field_unlocknote %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+
+    </table>
+    <table class="table table-hover table-bordered" id="example14" class="display" style="float:left;"  border="1">
+        <tbody>
+        {% for k in res_unlock%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        <thead>
+
+        <tr>
+            {% for i in field_unlock %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+
+<div>
+    <table class="table table-hover table-bordered"  id="example15" class="display" style="float:left;"  border="1">
+        <caption border="1">用户等级对照表</caption>
+
+        <tbody>
+
+        {% for k in res_userlevelnote%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+
+
+        <thead>
+        <tr>
+            {% for i in field_levelnote %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+
+
+    </table>
+    <table class="table table-hover table-bordered" id="example16" class="display" style="float:left;"  border="1">
+        <tbody>
+        {% for k in res_userlevel%}
+        <tr>
+            {% for m in k%}
+            <td>{{m|safe}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        <thead>
+
+        <tr>
+            {% for i in field_userlevel %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+        </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+
+
+
+{% endblock %}

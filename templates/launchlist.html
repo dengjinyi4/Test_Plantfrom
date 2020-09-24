@@ -30,7 +30,20 @@
         $(document).ready(function() {
         $('#launchlist').DataTable()} );
     </script>
-    <table id="launchlist"  border="2" class="table table-striped table-bordered">
+    <style>
+        thead {
+            background-color: #398439;
+        }
+        div.container {
+            width: 90%;
+            float: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <table id="launchlist"  border="2">
+           <!-- class="table table-striped table-bordered" -->
         <thead style="background-color: #66cc66">
             <tr>
                 <th style="display: none">序号</th>
@@ -54,7 +67,7 @@
                     {% if i == None %}
                         <td> -- </td>
                     {% else %}
-                        <td>{{i|safe}}</td>
+                        <td style="word-break:break-all; word-wrap:break-word;">{{i|safe}}</td>
                     {% endif %}
                 {% endfor %}
                 <td><a href="{{url_for('getlanuch',id=trcout[0]|safe)}}">编辑</a></td>

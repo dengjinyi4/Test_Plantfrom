@@ -53,6 +53,24 @@ class DbOperations(object):
             return results
         except Exception as e:
             print e
+    def selectsqlnew(self,sql):
+            try:
+                self.cursor.execute(sql)
+                self.db.commit()
+                result=self.cursor.fetchall()
+                filed=self.cursor.description
+                tmpfiled=[]
+                for i in filed:
+                    tmpfiled.append(i[0])
+                print "==========="
+                print tmpfiled
+                print result
+                return result,tmpfiled
+            except Exception as e:
+                print e
+            self.cursor.close()
+            self.db.close()
+
 
     def len_value(self, sql):
         # print '执行的sql是： '+ sql

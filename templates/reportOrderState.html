@@ -1,0 +1,97 @@
+{% extends "base.html"%}
+{% block main %}
+
+
+<script>
+$(document).ready(function() {
+    //--------------------------
+    //|     顺序号由0开始        |
+    //--------------------------
+    $('#example').DataTable({
+    "order": [[4,'desc']], //排序
+    "iDisplayLength" : 100, //默认显示的记录数
+
+    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[1]},{"sClass":"alignleft cutLongText","aTargets":[2]}],
+
+    "fixedHeader": true,  //固定表头
+                "scrollX": "500px",
+                "scrollY": "550px",  //高度
+                "scrollCollapse": true //,
+    //"fixedColumns": { "leftColumns": 6 } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    });
+} );</script>
+<style type="text/css">
+    *{font-size: 12px;}
+    thead tr td{white-space: nowrap;}
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+         background-color:#fff000
+    }
+    table.dataTable tbody tr td { text-align: right; white-space: nowrap;}
+    table.dataTable tbody tr td.alignleft{ text-align: left;white-space: nowrap;}
+
+    .cutLongText{white-space: nowrap;}
+
+    .display ul{display: inline;padding-left: 1px;}
+    .display ul li{display: inline;}
+
+    .gray{border-bottom: 1px solid #dddddd;}
+    .grayfont{color: #999999;}
+    .red{border-bottom: 1px solid  #ff3300;}
+    .redfont{color: #ff3300;}
+</style>
+
+
+
+<p hidden="hidden">{{tmpsql|safe}}</p>
+订单状态
+<form action="{{url_for('myreport.reportOrderState')}}" method="post">
+        {{ form.hidden_tag()}}
+       <table class="display" style="width:100%" border="1">
+
+           <tr>
+               <td>{{ form.begindate.label }}{{form.begindate(autocomplete="off")}}
+                   {{ form.adzoneid.label }}{{form.adzoneid(autocomplete="off")}}
+                   {{ form.isstatus.label }}{{form.isstatus(autocomplete="off")}}
+                   &nbsp;&nbsp;{{ form.submit() }}
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <font color="red">{{ form.begindate.errors[0] }}</font></td>
+               </tr>
+       </table>
+</form>
+      <table  id="example" class="display" style="width:100%"  border="1">
+
+            <thead>
+                <tr>
+                   {% for i in filed%}
+                    <td>{{i|safe}}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for k in data%}
+            <tr>
+                {% for i in k%}
+                    <td {% if k[15]=="暂停" %}class="grayfont"{% endif %}><font
+                    {% if loop.index == 8 and k[8]|int>0 and i|int >0 %}
+                        {% if i>k[8]|int %}
+                            color="red"
+                        {% else %}
+                            color="green"
+                        {% endif %}
+                    {% endif %}
+                    >{{i|safe}}</font></td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    <p align="center"></p>
+
+
+
+<!--{% for i in mybudget %}-->
+<!--<li>订单是：{{i|safe}} 金额为：{{mybudget[i]|safe}} <a href="{{url_for('hdt_redis.budget_control',orderno=i|safe,jobid1=jobid1|safe)}}">查看小时预算</a></li>-->
+  <!--{% endfor %}-->
+{% endblock %}

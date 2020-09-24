@@ -6,7 +6,7 @@
     $('#example').DataTable();
 } );</script>
 
-
+<p hidden="hidden">{{tmpsql|safe}}</p>
 <form action="{{url_for('adzone11.getadzone')}}" method="post">
         {{ form.hidden_tag()}}
        <table class="display" style="width:100%" border="1">
@@ -29,37 +29,42 @@
       <table  id="example" class="display" style="width:100%"  border="1">
 
             <thead>
-                <tr>
-                    <td>类型</td>
-                    <td>屏蔽时间类型</td>
-                    <td>屏蔽时间开始时间</td>
-                    <td>屏蔽时间结束时间</td>
-                    <td>屏蔽地域类型</td>
-                    <td>地域</td>
-                    <td>屏蔽创意等级</td>
-                    <td>屏蔽广告主行业类型</td>
-                    <td>行业类型id</td>
-                    <td>屏蔽生效开始时间</td>
-                    <td>屏蔽生效结束时间</td>
-                    <td>屏蔽生效类型</td>
-                    <td>屏蔽广告主行业标签类型</td>
-                    <td>行业标签id</td>
-                    <td>屏蔽广告主标签类型</td>
-                    <td>广告主标签id</td>
-                    <td>屏蔽广告主</td>
-                    <td>广告主id</td>
-                    <td>屏蔽广告主创意品牌标签</td>
-                    <td>创意品牌标签id</td>
-                    <td>广告主_等级</td>
-                    <td>屏蔽终端设备</td>
-                    <td>终端id</td>
-                    <td>操作者</td>
-                    <td>时间</td>
+                <!--<tr>-->
+                    <!--<td>类型</td>-->
+                    <!--<td>屏蔽时间类型</td>-->
+                    <!--<td>屏蔽时间开始时间</td>-->
+                    <!--<td>屏蔽时间结束时间</td>-->
+                    <!--<td>屏蔽地域类型</td>-->
+                    <!--<td>地域</td>-->
+                    <!--<td>屏蔽创意等级</td>-->
+                    <!--<td>屏蔽广告主行业类型</td>-->
+                    <!--<td>行业类型id</td>-->
+                    <!--<td>屏蔽生效开始时间</td>-->
+                    <!--<td>屏蔽生效结束时间</td>-->
+                    <!--<td>屏蔽生效类型</td>-->
+                    <!--<td>屏蔽广告主行业标签类型</td>-->
+                    <!--<td>行业标签id</td>-->
+                    <!--<td>屏蔽广告主标签类型</td>-->
+                    <!--<td>广告主标签id</td>-->
+                    <!--<td>屏蔽广告主</td>-->
+                    <!--<td>广告主id</td>-->
+                    <!--<td>屏蔽广告主创意品牌标签</td>-->
+                    <!--<td>创意品牌标签id</td>-->
+                    <!--<td>广告主_等级</td>-->
+                    <!--<td>屏蔽终端设备</td>-->
+                    <!--<td>终端id</td>-->
+                    <!--<td>操作者</td>-->
+                    <!--<td>时间</td>-->
 
-                </tr>
+                <!--</tr>-->
+             <tr>
+           {% for i in filed %}
+            <td>{{i|safe}}</td>
+            {% endfor %}
+           </tr>
             </thead>
             <tbody>
-
+            {% if type=='1' %}
             {% for i in data%}
             <tr>
                         <td>{{i["type"]|safe}}</td>
@@ -93,6 +98,15 @@
   -->
             </tr>
             {% endfor %}
+            {% elif type=='2' %}
+            {% for i  in data %}
+            <tr>
+                {% for k in i%}
+                    <td>{{k|safe}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            {% endif %}
             </tbody>
 
         </table>

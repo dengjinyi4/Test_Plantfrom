@@ -9,7 +9,8 @@ from PIL import ImageChops
 import os
 import requests as r
 from business_modle.querytool import db
-
+import xlrd
+from openpyxl import  Workbook
 
 class comparepic(object):
     def __init__(self,env='',plantfrom=''):
@@ -97,12 +98,34 @@ class comparepic(object):
     def downpicyiqifa(self):
         tmpdict=self.getactpicpathyiqifa()
         localpicpath='./pic/'
+        return 1
+    def getallexcel(self):
+        # filePath='''D:/work/100'''
+        # filePath='''D:/work/项目/互动推/cdzz/7092/100'''
+        filePath='''D:/work/项目/互动推/cdzz/7092/100/1'''
+        filePath = unicode(filePath,'utf-8')
+        picname=os.listdir(filePath)
+        tmp=[]
+        for i in picname:
+            # excelname=unicode(filePath+'/'+str(i),'utf8')
+            excelname=str(filePath)+'/'+i.decode('utf-8')
+            # excelname = excelname.decode('utf-8')
+            data = xlrd.open_workbook(excelname)
+            table = data.sheet_by_name('访问明细')
+            # print("整行值：" + str(table.row_values(6)))
+            alldate=table.row_values(6)
+            tmp=tmp+alldate
+        wb=Workbook()
+        sheet=wb.active
+        for i in tmp:
+            sheet.append(i)
+        wb.save(filePath+'all.xlsx')
+
 
         return 1
-
 if __name__ == '__main__':
     mypic=comparepic(env='test',plantfrom='yqf')
-    re=mypic.downpic()
+    re=mypic.getallexcel()
     # re=mypic.getpicpeizhi()
     # re=mypic.getactpicpathyiqifa()
     print re

@@ -108,7 +108,10 @@
               <li><a href="{{url_for('act.simulateAdDatas')}}">创建活动测试数据</a></li>
               <li><a href="{{url_for('act.checkLottery')}}">检查抽奖接口</a></li>
               <li><a href="{{url_for('bid_reason')}}">bid过滤原因</a></li>
-            <li role="separator" class="divider"></li>
+              <li><a href="{{url_for('act.activity_config')}}">活动相关配置</a></li>
+              <li><a href="{{url_for('mypig.pig_media_cfg')}}">合成养猪相关配置</a></li>
+
+              <li role="separator" class="divider"></li>
           </ul>
         </li>
           <li class="dropdown">
@@ -174,6 +177,7 @@
           <ul class="dropdown-menu">
             <li><a href="{{url_for('yiqifaquanyi.quanyiproduct')}}">亿起发权益-商品查询</a></li>
             <li><a href="{{url_for('yiqifaquanyi.quanyiorder')}}">亿起发权益-订单查询</a></li>
+            <li><a href="{{url_for('yiqifaquanyi.thirdprodcutstock')}}">亿起发权益-亿起发权益365商品列表</a></li>
             <li><a href="{{url_for('Yiqifa.shortJump')}}">短链跳转缓存至redis集群</a></li>
             <li><a href="{{url_for('egoubaobei.payorder')}}">易购宝贝订单支付</a></li>
             <li><a href="{{url_for('egoubaobei.getproduct')}}">易购宝贝京东商品</a></li>
@@ -207,6 +211,7 @@
                   <li><a href="{{url_for('myreport.repotadvliandong')}}">毛利表-联动客户毛利</a></li>
                   <li><a href="{{url_for('myreport.repotptmaoli')}}">毛利表-平台毛利细化</a></li>
                   <li><a href="{{url_for('myreport.reportptmaoliadtag')}}">毛利表-广告主维度</a></li>
+                  <li><a href="{{url_for('myreport.reportPreProfitbyDay')}}">毛利表-预估</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="{{url_for('myreport.reportmtpinggu')}}">媒体效果-评估-日表</a></li>
                   <li><a href="{{url_for('myreport.reportmtpingguhour')}}">媒体效果-评估-小时表</a></li>
@@ -215,6 +220,8 @@
                   <li><a href="{{url_for('myreport.reporregionbyday')}}">地域指标效果数据</a></li>
                   <li><a href="{{url_for('myreport.reporregionbyadv')}}">广告主地域效果</a></li>
                   <li role="separator" class="divider"></li>
+                  <li><a href="{{url_for('myreport.reportOrderState')}}">订单状态</a></li>
+                  <li><a href="{{url_for('myreport.reportZoneTrend')}}">媒体数据趋势</a></li>
               </ul>
           </li>
       </ul>

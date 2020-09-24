@@ -19,7 +19,8 @@ def getadzone():
         begintime=str(myform.data['begindate'])
         endtime=str(myform.data['enddate'])
         adzone_id=str(myform.data['adzone_id'])
-        data=adzone.getadzoneinfo(env=myenv,mytype=type,begintime=begintime,endtime=endtime,adzoneid=adzone_id)
-        return render_template('adzon.html',form=myform,data=data)
+        adzoninfor=adzone.adzoneinfo(env=myenv,mytype=type,begintime=begintime,endtime=endtime,adzoneid=adzone_id)
+        data,filed,tmpsql=adzoninfor.getadzoneinfo()
+        return render_template('adzon.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,type=type)
     data=[]
     return render_template('adzon.html',data=data,form=myform)

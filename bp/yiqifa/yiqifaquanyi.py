@@ -30,3 +30,14 @@ def quanyiorder():
         # return str(orderid)+str(order_status)
     return render_template('yiqifaquanyi/quanyiorder.html',form=myform)
 
+@yiqifaquanyi.route('/thirdprodcutstock/',methods=('POST','GET'))
+def thirdprodcutstock():
+    myform=ft.yiqifaquanyi()
+    if myform.validate_on_submit():
+        # orderid=myform.data['orderid']
+        env=myform.data['myenv']
+        quanyi=qy.quanyi(env=env)
+        res,filed,tmpsql=quanyi.getthirdproduct()
+        return render_template('yiqifaquanyi/getthirdproduct.html',res=res,filed=filed,tmpsql=tmpsql,form=myform)
+        # return str(orderid)+str(order_status)
+    return render_template('yiqifaquanyi/getthirdproduct.html',form=myform)

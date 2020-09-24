@@ -19,7 +19,8 @@ def login111():
         # REMOTE_ADDR = request.META['REMOTE_ADDR'].split(':')[0]
         REMOTE_ADDR = request.remote_addr
         HTTP_HOST = request.remote_addr
-        r=l.loginuser(username,password,REMOTE_ADDR,HTTP_HOST)
+        user=l.login(username,password,REMOTE_ADDR,HTTP_HOST)
+        r=user.loginuser()
         if (len(r)>0):
             session['username']=str(r[0][1])
             return redirect(url_for('index'))

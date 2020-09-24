@@ -1,0 +1,128 @@
+{% extends "base.html"%}
+{% block main %}
+
+
+<script>
+$(document).ready(function() {
+    $('#example').DataTable({
+    //--------------------------
+    //|     顺序号由0开始        |
+    //--------------------------
+    "order": [[2+{{colspanx|safe|int}},'desc']], //排序
+    "iDisplayLength" : 100, //默认显示的记录数
+
+    "aoColumnDefs":[{"sClass":"alignleft cutLongText","aTargets":[1]},{"sClass":"alignleft cutLongText","aTargets":[2]}],
+
+    "fixedHeader": true,  //固定表头
+                "scrollX": "500px",
+                "scrollY": "550px",  //高度
+                "scrollCollapse": true ,
+    "fixedColumns": { "leftColumns": 2 } //固定首列，需要引入相应 dataTables.fixedColumns.min.js
+    });
+} );</script>
+<style type="text/css">
+    *{font-size: 12px;}
+    thead tr td{white-space: nowrap;}
+    table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+         background-color:#fff000
+    }
+    table.dataTable tbody tr td { text-align: right; white-space: nowrap;}
+    table.dataTable tbody tr td.alignleft{ text-align: left;white-space: nowrap;}
+
+    .cutLongText{white-space: nowrap;}
+
+    .display ul{display: inline;padding-left: 1px;}
+    .display ul li{display: inline;}
+
+    .gray{border-bottom: 1px solid #dddddd;}
+    .grayfont{color: #999999;}
+    .red{border-bottom: 1px solid  #ff3300;}
+    .redfont{color: #ff3300;}
+    .greenfont{color: #339933;}
+    .redfont_lost{color: #ff3300;border-bottom: 1px solid  #ff3300;}
+    .greenfont_new{color: #339933;border-bottom: 1px solid  #339933;}
+</style>
+
+
+
+<!--
+元素序号 k[2] 由0开始
+loop.index0 由0开始
+loop.index 由1开始
+-->
+
+<p hidden="hidden">{{tmpsql|safe}}</p>
+广告位数据趋势
+<form action="{{url_for('myreport.reportZoneTrend')}}" method="post">
+        {{ form.hidden_tag()}}
+       <table class="display" style="width:100%" border="1">
+
+           <tr>
+               <td>
+                   {{ form.begindate.label }}{{form.begindate(autocomplete="off")}}
+                   {{ form.enddate.label }}{{form.enddate(autocomplete="off")}}
+               &nbsp;   &nbsp;{{ form.submit() }}
+                   <font color="red">{{ form.begindate.errors[0] }}{{ form.enddate.errors[0] }}</font></td>
+               </tr>
+       </table>
+</form>
+      <table  id="example" class="display" style="width:100%"  border="1">
+
+            <thead>
+                {% for k in datasum%}
+                <tr>
+                    {% for i in k%}
+                        <td>
+                               {{i|safe}}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td align="center" colspan=3>&nbsp;未去联动</td>
+                    <td align="center" colspan={{colspanx|safe}}>入口点击</td>
+                    <td align="center" colspan={{colspanx|safe}}>入口成本</td>
+                    <td align="center" colspan={{colspanx|safe}}>入口收益</td>
+                    <td align="center" colspan={{colspanx|safe}}>消耗</td>
+                </tr>
+                <tr>
+                   {% for i in filed%}
+                    <td>{{i|safe}}</td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for k in data%}
+                <tr>
+                    {% for i in k%}
+                        <td
+                            {% if loop.index0 >3 and loop.index0 < 3+colspanx|int   %}
+                                {% if k[loop.index0-1]|int <100 and i|int <100  %}
+                                   class="grayfont"
+                                {% elif k[loop.index0-1]|int <100 and i|int >=100 %}
+                                    class="greenfont_new"
+                                {% elif k[loop.index0-1]|int >=100 and i|int <100 %}
+                                    class="redfont_lost"
+                                {% elif k[loop.index0-1]|int >=100 and i|int >=100 and i|int>=k[loop.index0-1]|int*1.05 %}
+                                    class="greenfont"
+                                {% elif k[loop.index0-1]|int >=100 and i|int >=100 and i|int<=k[loop.index0-1]|int*0.95 %}
+                                    class="redfont"
+                                {% endif %}
+                            {% elif loop.index0 == 3 and i|safe|int< 100 %}
+                                class="grayfont"
+                            {% endif %}
+                        >
+                          {{i|safe}}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    <p align="center"></p>
+
+
+
+
+{% endblock %}
