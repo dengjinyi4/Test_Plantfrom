@@ -93,6 +93,8 @@
             <li><a href="{{url_for('crmproduct_info')}}">查询优品购商品信息</a></li>
             <li><a href="{{url_for('reportbymin')}}">按分钟查询报表信息</a></li>
             <li><a href="{{url_for('basetools')}}">根据tag查询数据</a></li>
+            <li><a href="{{url_for('manis_error')}}">查询穿山甲视频返回错误数据</a></li>
+
 
 
               <li role="separator" class="divider"></li>
@@ -121,6 +123,13 @@
                   <li><a href="{{url_for('ocpa.ocpa_order')}}">OCPA订单明细查询</a></li>
                   <li><a href="{{url_for('ocpa.ocpa_data')}}">OCPA数据准备</a></li>
                   <li><a href="{{url_for('ocpa.ocpa_report')}}">OCPA汇总报表</a></li>
+                  <li role="separator" class="divider"></li>
+              </ul>
+          </li>
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">竞价平台数据抓取<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{url_for('ttpt.ttpt_errorlog')}}">竞价平台数据抓取错误日志</a></li>
                   <li role="separator" class="divider"></li>
               </ul>
           </li>
@@ -222,6 +231,8 @@
                   <li role="separator" class="divider"></li>
                   <li><a href="{{url_for('myreport.reportOrderState')}}">订单状态</a></li>
                   <li><a href="{{url_for('myreport.reportZoneTrend')}}">媒体数据趋势</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="{{url_for('myreport.reportAdzoneActEffect')}}">活动维度广告主效果</a></li>
               </ul>
           </li>
       </ul>

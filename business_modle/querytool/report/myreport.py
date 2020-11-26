@@ -7,15 +7,22 @@ from openpyxl import  Workbook,load_workbook
 import os
 
 class myreport(object):
-    def __init__(self,begintime='',endtime='',adzoneids='',advertiser_id='',region='',showadzone='',tagorad='',isstatus=''):
+    def __init__(self,begintime='',endtime='',adzoneids='',advertiser_id='',actid='',region='',showadzone='',tagorad='',isstatus='',showbaidu='',searchword=''):
         self.begintime=begintime
         self.endtime=endtime
         self.adzoneids=adzoneids
         self.advertiser_id=advertiser_id
+        self.actid=actid
         self.region=region
         self.showadzone=showadzone
+        self.showbaidu=showbaidu
+        self.searchword=searchword
         self.tagorad=tagorad
         self.isstatus=isstatus
+        self.tmpJingJiaMediaID = ''',,3500,3481,3284,3486,3532,3568,3552,3609,3570,3575,3555,3628,3623,3573,3621,3620,3559,3564,3653,3553,3487,2205,3686,3666,3647,3691,3653,3706,3698,3704,3709,7803,3703,3712,3719,3695,3284,3500,3486,3481,3609,3575,3555,3568,3604,3711,3728,3733,3758,3752,3753,3754,3706,,'''
+        self.tmpBaiDuAdzoneID = ''',,3171,4736,5302,5303,5402,5403,5908,5909,6329,6476,6677,6705,6742,6749,6810,6910,7221,7223,7344,7360,7396,7459,7482,7491,7492,7493,7508,7510,7566,7604,7605,7607,7608,7609,7610,7611,7612,7613,7768,,'''
+        self.tmpQiShiKaAdzoneID = ''',,7309,6694,7587,,'''
+        self.tmpTaoLiJinAdzoneID = ''',,6917,7601,3105,7434,7626,7646,7466,7642,7240,7673,7709,7710,7765,7730,,'''
 
     # 根据输入的日期返回时间列表
     # ['2020-04-01', '2020-04-02', '2020-04-03', '2020-04-04', '2020-04-05', '2020-04-06']
@@ -64,10 +71,24 @@ class myreport(object):
     # 汇总 菜单名---- 毛利表-分媒体毛利
     def getallreport(self):
         daylist=self.gettimelist()
+
+        if self.searchword.replace("竞价","")<>self.searchword:
+            tmpwhere=''' and media_id in ({tmpJingJiaMediaID}) '''.format(tmpJingJiaMediaID=self.tmpJingJiaMediaID.replace(",,",""))
+        elif self.searchword.replace("百度","")<>self.searchword:
+            tmpwhere=''' and adzone_id in ({tmpBaiDuAdzoneID}) '''.format(tmpBaiDuAdzoneID=self.tmpBaiDuAdzoneID.replace(",,",""))
+        elif self.searchword.replace("骑士","")<>self.searchword:
+            tmpwhere=''' and adzone_id in ({tmpQiShiKaAdzoneID}) '''.format(tmpQiShiKaAdzoneID=self.tmpQiShiKaAdzoneID.replace(",,",""))
+        elif self.searchword.replace("淘礼金","")<>self.searchword:
+            tmpwhere=''' and adzone_id in ({tmpTaoLiJinAdzoneID}) '''.format(tmpTaoLiJinAdzoneID=self.tmpTaoLiJinAdzoneID.replace(",,",""))
+        else:
+            tmpwhere=''
+
+
         tmpsql='''select adzone_id as ID, max(adzone_name) as 广告位, ifnull(max(settle_type),"") as 结算
                     ,ifnull((case when  instr(max(adzone_name),"亿起发")>0 and instr(max(adzone_name),"jinlika")<=0 and instr(max(adzone_name),"省点")<=0 then "--" when sum(jf97_consume)>0 then  "R5" else "R1" end),"") as R级别
-                    ,concat(round(ifnull(sum(jf97_consume)/sum(consume),0)*100,0),"%") as 加粉比例
-                    ,round(ifnull(sum(consume),0),0) as 总消耗
+                    ,concat(round(ifnull(sum(jf97_consume)/sum(consume),0)*100,0),"%") as 加粉比例'''
+
+        tmpsql0 = ''',round(ifnull(sum(consume),0),0) as 总消耗
                     ,round(ifnull(sum(cash_consume)-sum(linkage_cash_consume),0),0) as 去联现金
                     ,round(ifnull(sum(platform_profit)-sum(linkage_cash_consume),0),0) as 去联毛利
                     ,concat(round(ifnull((sum(platform_profit)-sum(linkage_cash_consume))/(sum(cash_consume)-sum(linkage_cash_consume)),0)*100,0),"%") as 去联毛利率'''
@@ -92,20 +113,31 @@ class myreport(object):
         tmp4=''
         tmp41=''
         for i in daylist: #去除联动毛利率
-            tmp4=tmp4+''',concat(round(ifnull(sum(case when date="{0}" and (cash_consume-linkage_cash_consume)>0 then (platform_profit-linkage_cash_consume) / (cash_consume-linkage_cash_consume) else 0 end),0)*100,0),"%") as "{1}"'''.format(i,i.replace("2020-",""))
+            tmp4=tmp4+''',concat(round(ifnull(sum(case when date="{0}" and (cash_consume-linkage_cash_consume)>0 then (platform_profit-linkage_cash_consume)  else 0 end)/sum(case when date="{1}" and (cash_consume-linkage_cash_consume)>0 then (cash_consume-linkage_cash_consume) else 0 end),0)*100,0),"%") as "{2}"'''.format(i,i,i.replace("2020-",""))
             tmp41=tmp41+''',round(ifnull(sum(case date when "{0}" then consume-linkage_consume else 0 end)/sum(case date when "{0}" then ad_click else 0 end),0),2) as "{1}"'''.format(i,i.replace("2020-",""))  #CPC
-        tmpend=''' from tt.tt_adzone_data
-                where date between "{0}" and "{1}"
-                group by adzone_id order by 总消耗 desc;'''.format(self.begintime,self.endtime)
-        tmpsql=tmpsql+tmp12+tmp1+tmp11+tmp2+tmp3+tmp31+tmp4+tmp41+tmpend
+        tmpend='''      ,max(case
+                        when instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0  then "竞价媒体"
+                        when instr("{tmpBaiDuAdzoneID}",concat(",",adzone_id,","))>0  then "百度广告位"
+                        when instr("{tmpQiShiKaAdzoneID}",concat(",",adzone_id,","))>0  then "骑士卡广告位"
+                        when instr("{tmpTaoLiJinAdzoneID}",concat(",",adzone_id,","))>0  then "淘礼金广告位"
+                        else 0 end) as 分类型
+                    from tt.tt_adzone_data
+                where date between "{begin1}" and "{end1}"
+                '''.format(tmpJingJiaMediaID=self.tmpJingJiaMediaID,tmpBaiDuAdzoneID=self.tmpBaiDuAdzoneID,tmpQiShiKaAdzoneID=self.tmpQiShiKaAdzoneID,tmpTaoLiJinAdzoneID=self.tmpTaoLiJinAdzoneID,begin1=self.begintime,end1=self.endtime)
+        tmpgroup =''' group by adzone_id ;'''
+        tmpsql=tmpsql+tmpsql0+tmp12+tmp1+tmp11+tmp2+tmp3+tmp31+tmp4+tmp41+tmpend+tmpwhere+tmpgroup
         headtr='''<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-            <td align="center" colspan={0}>入口点击</td><td align="center" colspan={0}>消耗</td><td align="center" colspan={0}>去联消耗</td><td align="center" colspan={1}>去除联动平台毛利</td><td align="center" colspan={2}>入口点击成本</td><td align="center" colspan={2}>成本</td><td align="center" colspan={3}>去除联动毛利率</td><td align="center" colspan={3}>CPC</td></tr>'''.format(colspanx,colspanx,colspanx,colspanx)
+            <td align="center" colspan={0}>入口点击</td><td align="center" colspan={0}>消耗</td><td align="center" colspan={0}>去联消耗</td><td align="center" colspan={1}>去除联动平台毛利</td><td align="center" colspan={2}>入口点击成本</td><td align="center" colspan={2}>成本</td><td align="center" colspan={3}>去除联动毛利率</td><td align="center" colspan={3}>CPC</td><td>分类型</td></tr>'''.format(colspanx,colspanx,colspanx,colspanx)
         # print tmpsql
         res,filed=db.selectsqlnew('devtidb',tmpsql)
         res=self.getresfloadtoint(res)
         self.exportexcel(filed,res,"reportall")
 
-        return res,filed,tmpsql ,headtr
+        tmpsqlsum = 'select "","","","","" ' + tmpsql0 + tmp12 + tmp1 + tmp11 + tmp2 + tmp3 + tmp31 + tmp4 + tmp41 + tmpend+tmpwhere
+        ressum,filedsum=db.selectsqlnew('devtidb',tmpsqlsum)
+        ressum=self.getresfloadtoint(ressum)
+
+        return res,filed,tmpsql ,headtr,ressum
 
 
 
@@ -171,6 +203,7 @@ class myreport(object):
 
     # 汇总   菜单名---- 毛利表-平台毛利细化
     def getptmaoli(self):
+
         tmpsql = '''select adzonedata.date as 日期
                         ,round(ifnull(adzonedata.现金消耗,0),0) as 现金消耗
                         ,round(ifnull(adzonedata.媒体成本,0),0) as 媒体成本
@@ -200,10 +233,6 @@ class myreport(object):
                         ,round(ifnull(adzonedata.淘礼金媒体成本,0),0) as 淘礼金媒体成本
                         ,round(ifnull(adzonedata.淘礼金媒体去联现金-adzonedata.淘礼金媒体成本,0),0) as 淘礼金媒体毛利
                         ,concat(round(ifnull((adzonedata.淘礼金媒体去联现金-adzonedata.淘礼金媒体成本)/(adzonedata.淘礼金媒体去联现金),0)*100,0),"%") as 毛利率
-                        ,round(ifnull(adzonedata.百度现金消耗,0),0) as 百度现金消耗
-                        ,round(ifnull(adzonedata.百度成本,0),0) as 百度成本
-                        ,round(ifnull(adzonedata.百度现金消耗-adzonedata.百度成本,0),0) as 百度毛利
-                        ,concat(round(ifnull((adzonedata.百度现金消耗-adzonedata.百度成本)/(adzonedata.百度现金消耗),0)*100,0),"%") as 毛利率
                         ,round(ifnull(addata.联动现金消耗+addata.还呗5213联动现金消耗,0),0) as 联动现金消耗
                         ,round(ifnull(adzonedata.联动媒体成本,0),0) as 联动媒体成本
                         ,round(ifnull(addata.联动现金消耗+addata.还呗5213联动现金消耗-adzonedata.联动媒体成本,0),0) as 联动毛利
@@ -215,21 +244,21 @@ class myreport(object):
                              ,sum(a.cash_consume) as 现金消耗
                              ,sum(a.adzone_cost) as 媒体成本
                              ,sum(platform_profit) as 平台毛利
-                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then 0 else ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) end) as 媒购去联动现金消耗
-                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then 0 else ifnull(adzone_cost,0) end) as 媒购媒体成本
-                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then 0 else ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) end) as 媒购去联动毛利
-                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as CPS去联动现金消耗
-                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then ifnull(adzone_cost,0) else 0 end) as CPS媒体成本
-                             ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then 0 when lower(settle_type)="cps" then ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) else 0 end) as CPS去联动毛利
+                             ,sum(case  when (instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0) or (instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0) or (instr("{tmpBaiDuAdzoneID}{tmpQiShiKaAdzoneID}{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0) then 0 when lower(settle_type)="cps" then 0 else ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) end) as 媒购去联动现金消耗
+                             ,sum(case  when (instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0) or (instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0) or (instr("{tmpBaiDuAdzoneID}{tmpQiShiKaAdzoneID}{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0) then 0 when lower(settle_type)="cps" then 0 else ifnull(adzone_cost,0) end) as 媒购媒体成本
+                             ,sum(case  when (instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0) or (instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0) or (instr("{tmpBaiDuAdzoneID}{tmpQiShiKaAdzoneID}{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0) then 0 when lower(settle_type)="cps" then 0 else ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) end) as 媒购去联动毛利
+                             ,sum(case  when (instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0) or (instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0) or (instr("{tmpBaiDuAdzoneID}{tmpQiShiKaAdzoneID}{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0) then 0 when lower(settle_type)="cps" then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as CPS去联动现金消耗
+                             ,sum(case  when (instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0) or (instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0) or (instr("{tmpBaiDuAdzoneID}{tmpQiShiKaAdzoneID}{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0) then 0 when lower(settle_type)="cps" then ifnull(adzone_cost,0) else 0 end) as CPS媒体成本
+                             ,sum(case  when (instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0) or (instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0) or (instr("{tmpBaiDuAdzoneID}{tmpQiShiKaAdzoneID}{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0) then 0 when lower(settle_type)="cps" then ifnull(platform_profit,0)-ifnull(linkage_cash_consume,0) else 0 end) as CPS去联动毛利
                              ,sum(case  when instr(adzone_name,"亿起发")>0 and instr(adzone_name,"jinlika")<=0 and instr(adzone_name,"省点")<=0 and instr(adzone_name,"优惠现报")<=0 then ifnull(adzone_cost,0) else 0 end) as 联动媒体成本
-                             ,sum(case  when instr(",,3573,3570,3568,3564,3559,3555,3552,3532,3531,3527,3506,3500,2501,3284,3481,3486,,",concat(",",media_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 竞价平台去联现金
-                             ,sum(case  when instr(",,3573,3570,3568,3564,3559,3555,3552,3532,3531,3527,3506,3500,2501,3284,3481,3486,,",concat(",",media_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 竞价平台成本
-                             ,sum(case  when instr(",,5403,7221,6810,6910,6329,4736,7459,5402,3171,7344,7478,6742,7508,6476,7482,6677,7360,5908,5303,5909,6749,1766,7610,7223,5302,6705,,",concat(",",a.adzone_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 百度媒体去联现金
-                             ,sum(case  when instr(",,5403,7221,6810,6910,6329,4736,7459,5402,3171,7344,7478,6742,7508,6476,7482,6677,7360,5908,5303,5909,6749,1766,7610,7223,5302,6705,,",concat(",",a.adzone_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 百度媒体成本
-                             ,sum(case  when instr(",,7309,6694,,",concat(",",a.adzone_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 骑士卡媒体去联现金
-                             ,sum(case  when instr(",,7309,6694,,",concat(",",a.adzone_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 骑士卡媒体成本
-                             ,sum(case  when instr(",,3545,599,,",concat(",",a.media_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 淘礼金媒体去联现金
-                             ,sum(case  when instr(",,3545,599,,",concat(",",a.media_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 淘礼金媒体成本
+                             ,sum(case  when instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 竞价平台去联现金
+                             ,sum(case  when instr("{tmpJingJiaMediaID}",concat(",",media_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 竞价平台成本
+                             ,sum(case  when instr("{tmpBaiDuAdzoneID}",concat(",",a.adzone_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 百度媒体去联现金
+                             ,sum(case  when instr("{tmpBaiDuAdzoneID}",concat(",",a.adzone_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 百度媒体成本
+                             ,sum(case  when instr("{tmpQiShiKaAdzoneID}",concat(",",a.adzone_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 骑士卡媒体去联现金
+                             ,sum(case  when instr("{tmpQiShiKaAdzoneID}",concat(",",a.adzone_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 骑士卡媒体成本
+                             ,sum(case  when instr("{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0  then ifnull(a.cash_consume,0)-ifnull(linkage_cash_consume,0) else 0 end) as 淘礼金媒体去联现金
+                             ,sum(case  when instr("{tmpTaoLiJinAdzoneID}",concat(",",a.adzone_id,","))>0  then ifnull(adzone_cost,0) else 0 end) as 淘礼金媒体成本
                              ,sum(b.百度现金消耗) as 百度现金消耗
                              ,sum(a.adzone_cost/a.ad_show*b.百度曝光) as 百度成本
                              ,sum(b.百度现金消耗)-sum(a.adzone_cost/a.ad_show*b.百度曝光) as 百度毛利
@@ -254,7 +283,7 @@ class myreport(object):
                             and date between "{begin2}" and "{end2}"    group by date
                         ) addata on adzonedata.date=addata.date;'''.format(begin1=self.begintime, end1=self.endtime,
                                                                            begin2=self.begintime,
-                                                                           end2=self.endtime)
+                                                                           end2=self.endtime,tmpJingJiaMediaID=self.tmpJingJiaMediaID,tmpBaiDuAdzoneID=self.tmpBaiDuAdzoneID,tmpQiShiKaAdzoneID=self.tmpQiShiKaAdzoneID,tmpTaoLiJinAdzoneID=self.tmpTaoLiJinAdzoneID)
         print tmpsql
         res, filed = db.selectsqlnew('devtidb', tmpsql)
         res = self.getresfloadtoint(res)
@@ -492,6 +521,7 @@ class myreport(object):
             ,concat(round(ifnull(sum(ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num))/sum(ad_click),0)*100,2),"%") as 转化率
             '''
         tmpsql1=''
+        tmpsqlCPM=''
         tmpsql2=''
         tmpsql3=''
         tmpsql6=''
@@ -500,10 +530,14 @@ class myreport(object):
         UnmatchedEffectNum1=''
 
         for i in range(0,24):
-            tmpsql1=tmpsql1+''' ,round(ifnull(sum(case hour when {0} then consume-linkage_consume else 0 end)/
+            tmpsql1=tmpsql1+''' 
+                             , round(ifnull(sum(case hour when {0} then consume-linkage_consume else 0 end)/
                                 sum(case hour when {1} then
                                 ELT(b.effect_type, t1_num, t2_num,t3_num,t4_num,t5_num,t6_num,t7_num,t8_num,t9_num,t10_num,t11_num,t12_num,t13_num,t14_num,t15_num,t16_num) 
-                                else 0 end),0),2) as "{2}"'''.format(i,i,i)  #效果成本
+                                else 0 end),0),2)
+                              as "{2}"
+                                '''.format(i,i,i)  #效果成本
+            tmpsqlCPM=tmpsqlCPM+'''  , round(ifnull(sum(case hour when {0} then consume-linkage_consume else 0 end)/sum(case hour when {1} then ad_show else 0 end),0)*1000,0)  as "{2}" '''.format(i,i,i)  #CPM
             tmpsql2=tmpsql2+''' ,round(ifnull(sum(case hour when "{0}" then consume-linkage_consume else 0 end)/sum(case hour when "{1}" then ad_click else 0 end),0),2) as "{2}" '''.format(i,i,i)  #CPC
             tmpsql3=tmpsql3+''' ,round(ifnull(sum(case hour when "{0}" then consume-linkage_consume else 0 end),0),0) as "{1}" '''.format(i,i)  #消耗
             #转化率
@@ -577,13 +611,13 @@ class myreport(object):
         else:
             tmpsql5=' '
         tmpsql6 = ''' group by azh.date,azh.advertiser_id '''+tmpt03
-        tmpsqlall=tmpsql+tmpsql1+tmpsql2+tmpsql3+tmpcvr+tmpt05+tmpsql4+tmpsql5+tmpt02+tmpsql6
+        tmpsqlall=tmpsql+tmpsql1+tmpsqlCPM+tmpsql2+tmpsql3+tmpcvr+tmpt05+tmpsql4+tmpsql5+tmpt02+tmpsql6
 
         res,filed=db.selectsqlnew('devtidb',tmpsqlall)
         res = self.getresfloadtoint(res)
         self.exportexcel(filed,res,"reportmtpingguhour")
 
-        UnmatchedSQL = '''select ''' + UnmatchedHead + ''' ,"","","","","","","","","","",count(1),"" '''+ UnmatchedEffectNum+ UnmatchedEffectNum1+ UnmatchedEffectNum1+ UnmatchedEffectNum1 +''',999 from voyagerlog.ad_effect_log_{month1} where (adzone_id is null or adzone_id="" or adzone_id=0 or advertiser_id is null or advertiser_id=""  or advertiser_id=0) and date_format(create_time,"%Y-%m-%d") = "{begin}"  '''.format(month1=self.begintime[5:7],begin=self.begintime)
+        UnmatchedSQL = '''select ''' + UnmatchedHead + ''' ,"","","","","","","","","","",count(1),"" '''+ UnmatchedEffectNum+ UnmatchedEffectNum1+ UnmatchedEffectNum1+ UnmatchedEffectNum1+ UnmatchedEffectNum1 +''',999 from voyagerlog.ad_effect_log_{month1} where (adzone_id is null or adzone_id="" or adzone_id=0 or advertiser_id is null or advertiser_id=""  or advertiser_id=0) and date_format(create_time,"%Y-%m-%d") = "{begin}"  '''.format(month1=self.begintime[5:7],begin=self.begintime)
 
         ressum=""
         tmpsqlsum = '''(''' +UnmatchedSQL+''') union all('''+ tmpsqlall.replace(tmpt01,tmpt01sum).replace(tmpsql000,tmpsql000sum).replace(tmpsql6,"").replace(tmpt04,"").replace(tmpt05,",999")+''')'''
@@ -679,8 +713,8 @@ class myreport(object):
         self.exportexcel(filed,res,"reportregionbyday")
         return res,filed,tmpall,colspanx
 
-#菜单名：广告主地域效果
-#查询项：广告位ID，日期  #省（查出来在页面上）
+    #菜单名：广告主地域效果
+    #查询项：广告位ID，日期  #省（查出来在页面上）
     def getregionbyadv(self):
         daylist=self.gettimelist()
         tmp='''select aar.advertiser_id as 广告主ID
@@ -941,6 +975,12 @@ class myreport(object):
     def getreportPreProfitbyDay(self):
         daylist=self.gettimelist()
 
+        tmpshowbaidu=''
+        if self.showbaidu == '1':
+            tmpshowbaidu = ''' and a.adzone_id in ({tmpBaiDuAdzoneID}) '''.format(tmpBaiDuAdzoneID=self.tmpBaiDuAdzoneID.replace(",,",""))
+        else:
+            tmpshowbaidu = ''
+
         adzonecost=""
         adzoneepc=""
         adzonePassIF=""
@@ -990,9 +1030,10 @@ class myreport(object):
                 
                           ) a
                  where a.date between "{begin}" and "{end}"
+                 {tmpshowbaidu}
                  group by a.date
                  order by a.date
-            '''.format(beginPass=self.begintime,begin=self.begintime,end=self.endtime,adzonePassIF=adzonePassIF,adzoneDetail=adzoneDetail)
+            '''.format(beginPass=self.begintime,begin=self.begintime,end=self.endtime,adzonePassIF=adzonePassIF,adzoneDetail=adzoneDetail,tmpshowbaidu=tmpshowbaidu)
 
 
         res, filed = db.selectsqlnew('devtidb', tmpsql)
@@ -1000,6 +1041,111 @@ class myreport(object):
         self.exportexcel(filed, res, "reportPreProfitbyDay")
 
         return res, filed, tmpsql
+
+
+
+
+        # 菜单名：活动维度广告主效果
+    def getreportAdzoneActEffect(self):
+        daylist = self.gettimelist()
+
+        tmpad = ''
+        tmpadz = ''
+        tmpact = ''
+        if self.advertiser_id <> '' and self.advertiser_id <> 'mytest':
+            tmpad = ''' and a.advertiser_id in ({0}) '''.format(self.advertiser_id)
+        else:
+            tmpad = ' '
+
+        if self.adzoneids <> '' and self.adzoneids <> 'mytest':
+            tmpadz = ''' and a.adzone_id in ({0}) '''.format(self.adzoneids)
+        else:
+            tmpadz = ''
+
+        if self.actid <> '' and self.actid <> 'mytest':
+            tmpact = ''' and a.act_id in ({0}) '''.format(self.actid)
+        else:
+            tmpact = ''
+
+        colspanx = 0
+        tmpIIR = ''
+        tmpADShow = ''
+        tmpADClick = ''
+        tmpCPC = ''
+        tmpConsume = ''
+        tmpEffectCost = ''
+        tmpEffectNum = ''
+        tmpActShow = ''
+        for i in daylist:  # 转化成本
+            colspanx = colspanx + 1
+            tmpIIR = tmpIIR + ''' , round(ifnull(sum(case when date="{begin1}" then a.iir else 0 end),0),2) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", "")) #IIR
+            tmpADShow = tmpADShow + ''' , ifnull(sum(case when date="{begin1}" then a.ad_show else 0 end),0) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", "")) #ADShow
+            tmpADClick = tmpADClick + ''' , ifnull(sum(case when date="{begin1}" then a.ad_click else 0 end),0) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", "")) #ADClick
+            tmpCPC = tmpCPC + ''' , round(ifnull(sum(case when date="{begin1}" then a.nolinkconsume else 0 end),0)/ifnull(sum(case when date="{begin1}" then a.ad_click else 0 end),0),2) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", "")) #CPC
+            tmpConsume = tmpConsume + ''' , round(ifnull(sum(case when date="{begin1}" then a.nolinkconsume else 0 end),0),0) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", "")) #Consume
+            tmpEffectCost = tmpEffectCost + ''' , round(ifnull(sum(case when date="{begin1}" then a.nolinkconsume else 0 end),0)/ifnull(sum(case when date="{begin1}" then a.enum else 0 end),0),2) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", "")) #EffectCost
+            tmpEffectNum = tmpEffectNum + ''' , ifnull(sum(case when date="{begin1}" then a.enum else 0 end),0) as "{begin2}" '''.format(begin1=i, begin2=i.replace("2020-", "")) #EffectNum
+            if colspanx==1:
+                tmpActShow = tmpActShow + ''' (select date_format(create_time,"%Y-%m-%d") as date,adzone_id,act_id,count(1) as s from voyagerlog.act_click_log{begin} where status=1 group by adzone_id,act_id)  '''.format(begin=i.replace("-", "")) #tmpActShow
+            else:
+                tmpActShow = tmpActShow + ''' union all (select date_format(create_time,"%Y-%m-%d") as date,adzone_id,act_id,count(1) as s from voyagerlog.act_click_log{begin} where status=1 group by adzone_id,act_id) '''.format(begin=i.replace("-", "")) #tmpActShow
+
+        tmpHead = ''' select   concat(a.act_name,"(",a.act_id,")") as 活动名称
+                              , a.advertiser_id as 广告主ID
+                              , a.advertiser_name as 广告主名称
+                              , a.tag as 广告类别
+                              , concat(a.adzone_name,"(",a.adzone_id,")") as 广告位名称
+                 '''
+        tmp = '''            {tmpIIR} {tmpADShow} {tmpADClick} {tmpCPC} {tmpConsume} {tmpEffectCost} {tmpEffectNum}
+                from (
+                         select a.date
+                              , a.advertiser_id
+                              , a.advertiser_name
+                              , a.tag
+                              , a.adzone_id
+                              , a.adzone_name
+                              , a.act_id
+                              , a.act_name
+                              , ifnull(d.ad_show / c.s,0)   as IIR
+                              , ifnull(sum(a.ad_show),0)  as ad_show
+                              , ifnull(sum(a.ad_click),0)  as ad_click
+                              , ifnull(sum(a.consume - a.linkage_consume),0)   as nolinkconsume
+                              , ifnull(sum(ELT(b.effect_type, t1_num, t2_num, t3_num, t4_num, t5_num, t6_num, t7_num, t8_num, t9_num, t10_num, t11_num, t12_num, t13_num, t14_num, t15_num, t16_num)),0) as enum
+                         from tt.tt_advertiser_act a
+                                  left join tt.tt_advertiser_effect_standard b on a.advertiser_id = b.advertiser_id
+                                  left join 
+                                   ({tmpActShow}) c on a.adzone_id = c.adzone_id and a.date = c.date  and a.act_id=c.act_id
+                                   left join (
+                                     select a.date , a.advertiser_id , a.adzone_id , a.act_id , ifnull(sum(a.ad_show),0)  as ad_show
+                                     from tt.tt_advertiser_act a
+                                     where a.date between "{begin1}" and "{end1}"
+                                     group by a.date,a.adzone_id,a.act_id
+                                    ) d on a.adzone_id = d.adzone_id and a.date = d.date  and a.act_id=d.act_id
+                         where a.date between "{begin}" and "{end}"
+                         group by a.date,
+                                  a.advertiser_id,
+                                  a.adzone_id,
+                                  a.act_id
+                     ) a 
+                     where 1=1 {tmpad} {tmpadz} {tmpact}
+                 '''.format(begin=self.begintime, end=self.endtime,begin1=self.begintime, end1=self.endtime,tmpIIR=tmpIIR,tmpADShow=tmpADShow,tmpADClick=tmpADClick,tmpCPC=tmpCPC,tmpConsume=tmpConsume,tmpEffectCost=tmpEffectCost,tmpEffectNum=tmpEffectNum,tmpad=tmpad,tmpadz=tmpadz,tmpact=tmpact,tmpActShow=tmpActShow)
+        tmpFood = ''' group by  a.advertiser_id, a.adzone_id, a.act_id  '''
+        tmpsql = tmpHead + tmp + tmpFood
+
+        res, filed = db.selectsqlnew('devtidb', tmpsql)
+        res = self.getresfloadtoint(res)
+        self.exportexcel(filed, res, "reportAdzoneActEffect")
+
+        tmpsqlsum = ''' select "","","","","" ''' + tmp
+        ressum, filedsum = db.selectsqlnew('devtidb', tmpsqlsum)
+        ressum = self.getresfloadtoint(ressum)
+
+        return res, filed, tmpsql, colspanx, ressum
+
+
+
+
+
 
 
 if __name__ == '__main__':

@@ -60,7 +60,7 @@ loop.index 由1开始
            <tr>
                <td>
                    {{ form.begindate.label }}{{form.begindate(autocomplete="off")}}
-                   {{ form.enddate.label }}{{form.enddate(autocomplete="off")}}
+                   {{ form.enddate.label }}{{form.enddate(autocomplete="off")}}&nbsp;&nbsp;&nbsp;&nbsp;{{form.showbaidu(autocomplete="off")}}{{ form.showbaidu.label }}
                &nbsp;   &nbsp;{{ form.submit() }}
                    <font color="red">{{ form.begindate.errors[0] }}{{ form.enddate.errors[0] }}</font></td>
                </tr>

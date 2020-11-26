@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/env python
 #encoding: utf-8
 #version:2018/07/10,增加接口统计视图函数
-import os
+import os,base64
 
 from flask import jsonify,redirect,session
 from flask import Flask,request,render_template,flash
@@ -37,6 +37,7 @@ from bp.hdt_redis.hdt_redis import  hdtredis
 from bp.infor.infor import hdtgetother
 from bp.miniprogram.miniprogram import miniprogram
 from bp.ocpa.ocpa import ocpa
+from bp.ttpt.ttpt import ttpt
 from bp.mypig.mypig import mypig
 from bp.hour_report.hour_report import  hour_report
 from bp.test_case.test_case import testCase
@@ -48,6 +49,7 @@ from bp.yiqifa.egoubaobei import *
 from business_modle.querytool.orderQueryCreative import *
 from bp.TestToolsTracker.ToolsTracker import ToolsTracker
 from business_modle.querytool.report_byadzone import *
+from business_modle.querytool.manis_error import *
 from business_modle.querytool.reportbymin import *
 from business_modle.querytool.crmproduct_info import *
 from bp.TestToolsTracker.ToolsTrackerForm import ToolsTrackerForm
@@ -74,6 +76,7 @@ app.register_blueprint(act,url_prefix='/act')
 app.register_blueprint(hdtredis,url_prefix='/hdtredis')
 app.register_blueprint(hdtgetother,url_prefix='/getinfor')
 app.register_blueprint(ocpa,url_prefix='/ocpa')
+app.register_blueprint(ttpt,url_prefix='/ttpt')
 app.register_blueprint(mypig,url_prefix='/mypig')
 app.register_blueprint(hour_report,url_prefix='/hour_report')
 app.register_blueprint(miniprogram,url_prefix='/miniprogram')
@@ -717,6 +720,31 @@ def report_byadzone():
         return render_template('report_byadzone.html')
 
 
+
+@app.route('/manis_error/',methods=['get','post'])
+
+def manis_error():
+    if request.method == 'POST':
+        begin_time=request.form.get('begin_date')
+        begin_time_re=begin_time.replace('-','')
+        rd=Manis_error(begin_time_re,False)
+        paras=rd.show_result()
+        return render_template('manis_error.html',paras=paras,begin_time=begin_time_re,begintime=begin_time)
+    else:
+        return render_template('manis_error.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route('/basetools/',methods=['get','post'])
 
 def basetools():
@@ -906,7 +934,7 @@ def bidding_gray():
 def islogin():
     businessuser=['zhounan','zhouying']
     # 客户运营
-    businessuser1=['houlixiu','yunying','jiangshan','sheqingqing','shicuicui','zhouying','yuanchaoxia']
+    businessuser1=['houlixiu','yunying','jiangshan','sheqingqing','shicuicui','zhouying','yuanchaoxia','lishichun','wangyixin','zhouying']
     # 活动模板
     businessuser2=['guoxuchang']
     #短信验证码
@@ -923,6 +951,10 @@ def islogin():
     businessuser7=['meitiyunying']
     # 修改易购宝贝用户状态
     businessuser8 = ['hugengwei','liuyujing','wangsha','caiwenqing','yangjinsong']
+
+    ###查看穿山甲视频播放错误
+    businessuser9 = ['ouyangtuliang']
+
     REMOTE_ADDR=str(request.remote_addr)
     method=str(request.path)
     if  session.get('username'):
@@ -944,12 +976,37 @@ def islogin():
 
     if (request.path == '/lpm_test_zhaojing/'):
         return None
+    #     使用了静态图片，这边访问需要放开 使用了绝对路径不需要这段代码
+    # if (request.path == '/static/qrcodepic/test.png'):
+    # if (request.path == session.get('picurl')):
+    #     if session.get('otp'):
+    #         return None
+    # 为otp登录增加特殊逻辑-直接访问otpindex页面判断是否有session没有不能直接访问
+    if (request.path == '/login/otpindex/'):
+        if not session.get('otp'):
+            return redirect('/login/loginnew/')
+        if not session.get('username'):
+            return None
+    # 为互动推报表跳转到测试平台单独处理的逻辑
+    if (request.path=='/hdtreport/reportmtpinggu/' or request.path == '/hdtreport/reportmtpingguhour/'):
+        # if request.args.get('key')=='1234' and request.args.get('username') :
+        if request.args.get('key'):
+            try:
+                tmp=base64.b64decode(request.args.get('key')).split('_')
+                user=l.login(username=tmp[0],password=tmp[1])
+                if user.loginvoyager()>=1:
+                    session['username']=tmp[0]
+                    return None
+            except Exception as e:
+                print e.message
 
 
-    if request.path=='/login/login111/':
+    if request.path=='/login/loginnew/':
         return None
     if not session.get('username'):
-        return redirect('/login/login111/')
+        return redirect('/login/loginnew/')
+        # return redirect('/login/login111/')
+
     # 报表
     if (session.get('username') in businessuser) :
         # if (request.path == '/report_byadzone/' or req；。uest.path=='/hdt_cssc/'):
@@ -1011,6 +1068,14 @@ def islogin():
             return None
         else:
             return redirect('/hdtreport/reportmtpinggu/')
+
+    if (session.get('username') in businessuser9):
+
+        if (request.path =='/manis_error/'):
+
+            return None
+        else:
+            return redirect('/manis_error/')
 
 @app.route('/lpm_test/')
 def lpm_page():

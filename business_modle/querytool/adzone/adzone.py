@@ -78,6 +78,27 @@ class adzoneinfo(object):
             END 类别,item 变更项,data_id, `before` 变更前, `after` 变更后 , create_time,operator,ip from voyager.core_effect_change_log
         WHERE create_time>'{begintime}' and create_time<'{endtime} 23:59:59' ORDER   by id desc limit 3000;'''.format(begintime=self.begintime,endtime=self.endtime)
             tmp,filed=self.getindb(tmpsql)
+        if self.mytype=='3':
+            tmpsql='''SELECT  operation_content,operator,create_time from voyager.um_operation_log where create_time>'{begintime}' and create_time<'{endtime} 23:59:59'
+             and operation_content LIKE '%{adzoneid}%' and operation_target ='订单基本设置修改' ORDER BY create_time desc;
+             '''.format(begintime=self.begintime,endtime=self.endtime,adzoneid=self.adzoneid)
+            res,filed=self.getindb(tmpsql)
+            filed=['智能增量','初始广告位','操作人','操作时间']
+            tmp=[]
+            if len(res)>0:
+                for inf in res:
+                    tmpdict={}
+                    if 'ocpaAdzone'  in inf[0]:
+                        ocpaAdzone=eval(inf[0])
+                        tmpdict['ocpa']='YES'
+                        tmpdict['adzone']=ocpaAdzone['ocpaAdzone']
+                    else:
+                        tmpdict['ocpa']='NO'
+                        tmpdict['adzone']=''
+                    tmpdict['operator']=inf[1]
+                    tmpdict['create_time']=inf[2]
+                    tmp.append(tmpdict)
+            tmp=self.setcolor(tmp)
         return tmp,filed,tmpsql
     # 如果有key值不存，添加key，value赋值为空
     # 替换value值为中文
@@ -134,12 +155,12 @@ class adzoneinfo(object):
         return diff
 if __name__ == '__main__':
     # re=getadzoneinfo('dev',mytype='1',begintime='2020-04-02',endtime='2020-05-01',adzoneid='6469')
-    adzon=adzoneinfo(env='test',begintime='2020-08-21',endtime='2020-08-23',adzoneid='6174',mytype='1')
-    re=adzon.getadzoneinfo()
+    adzon=adzoneinfo(env='test',begintime='2020-11-21',endtime='2020-11-30',adzoneid='32646',mytype='3')
+    tmp,filed,tmpsql=adzon.getadzoneinfo()
 
     # tmplist=[{"A":"123","B":"456"},{"A":"123444","B":"456"},{"A":"123444","B":"45611111"}]
     # re=setcolor(tmplist)
-    print re
+    print tmp
 
     # strdict='{"key1":null,"key2":"3"}'
     # null=''

@@ -35,12 +35,12 @@ class BaseTools(object):
         return json.dumps(re, ensure_ascii=False)
         # return re
 if __name__ == '__main__':
-    tmpstr = ['B0H39DC11KFNSFPALD']
+    tmpstr = ['E0H39D9S1KLGRY0JKX']
     print len(tmpstr)
     result=[]
     for i in range(0,len(tmpstr)):
 
-      tmp=BaseTools('B0H39DC11KFNSFPALD')
+      tmp=BaseTools('E0H39D9S1KLGRY0JKX')
 
       re=tmp.do()
       result.append(re)

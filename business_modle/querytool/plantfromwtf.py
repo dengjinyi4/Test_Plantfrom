@@ -35,6 +35,14 @@ class Mylogin(Form):
     username = StringField('用户名', validators=[Length(min=1, max=25)])
     password = PasswordField('密   码', validators=[Length(min=1, max=25)])
     submit=SubmitField(u'登录')
+class Myloginotp(Form):
+    username = StringField('动态验证码', validators=[Length(min=1, max=25)])
+    password = PasswordField('密   码', validators=[Length(min=1, max=25)])
+    submit=SubmitField(u'登录')
+class myotp(Form):
+    otppass = StringField('动态密码验证', validators=[Length(min=1, max=25)])
+    # password = PasswordField('密   码', validators=[Length(min=1, max=25)])
+    submit=SubmitField(u'校验')
 class egoubaobei_orderpay(Form):
     order_status=RadioField(u'订单支付状态',choices=[('True',u'支付成功'),('False',u'支付失败'),('ing',u'待支付')],default='True')
     orderid = StringField(u'订单id', validators=[DataRequired(),Length(min=5, max=20,message=u'订单id长度5-20')],render_kw={'placeholder':u'订单id'})
@@ -54,12 +62,13 @@ class myadzone(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
     myenv=RadioField('orderstatus',choices=[('dev',u'生产环境'),('test',u'测试环境')],default='dev')
-    type=RadioField('type',choices=[('1',u'广告位高级屏蔽'),('2',u'核心效果数据日志')],default='1')
+    type=RadioField('type',choices=[('1',u'广告位高级屏蔽'),('2',u'核心效果数据日志'),('3',u'智能增量订单')],default='1')
     adzone_id = StringField(u'广告位id', validators=[DataRequired(),Length(min=1, max=20,message=u'广告位长度1-20')])
     submit=SubmitField(u'提交')
 class myreportall(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
+    searchword = StringField(u'search', render_kw={'placeholder': u'search', 'style': 'width350'}, default='')
     submit=SubmitField(u'提交')
 
 class myreportptmaoliadtag(Form):
@@ -96,6 +105,7 @@ class myreportOrderState(Form):
 class myreportPreProfitbyDay(Form):
     begindate = StringField(u'开始时间', validators=[DataRequired(), Regexp( "^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")], default=str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
+    showbaidu = BooleanField('百度毛利', default=False)
     submit = SubmitField(u'提交')
 
 
@@ -103,6 +113,14 @@ class myreportZoneTrend(Form):
     begindate=StringField(u'开始时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now()+datetime.timedelta(days=-7))[0:10])
     enddate=StringField(u'结束时间',validators=[DataRequired(),Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="结束时间请输入正确的日期: 2019-03-20 ")],default= str(datetime.datetime.now())[0:10])
     submit=SubmitField(u'提交')
+
+class myreportAdzoneActEffect(Form):
+    begindate = StringField(u'开始时间', render_kw={ 'style': 'width:80px'}, validators=[DataRequired(), Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$",0, message="开始时间请输入正确的日期: 2019-03-20 ")], default=str(datetime.datetime.now() + datetime.timedelta(days=-7))[0:10])
+    enddate = StringField(u'结束时间', render_kw={ 'style': 'width:80px'}, validators=[DataRequired(), Regexp("^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$", 0, message="结束时间请输入正确的日期: 2019-03-20 ")], default=str(datetime.datetime.now())[0:10])
+    adzoneid = StringField(u'广告位id', render_kw={'placeholder': u'广告位id（1,2)', 'style': 'width:80px'}, default='')
+    advertiser = StringField(u'广告主ID', render_kw={'placeholder': u'广告主ID（1,2)', 'style': 'width:80px'}, default='')
+    act = StringField(u'活动ID', render_kw={'placeholder': u'活动ID（1,2)', 'style': 'width:80px'}, default='')
+    submit = SubmitField(u'提交')
 
 
 class myreporregionbyday(Form):

@@ -18,11 +18,12 @@ def reportall():
     if myform.validate_on_submit():
         begintime=str(myform.data['begindate'])[0:10]
         endtime=str(myform.data['enddate'])[0:10]
+        searchword=str(myform.data['searchword'])
         # data=adzone.getadzoneinfo(mytype=type,begintime=begintime,endtime=endtime,adzoneid=adzone_id)
         # rp=mr.myreport(begintime='2020-04-17',endtime='2020-04-17')
-        rp=mr.myreport(begintime=begintime,endtime=endtime)
-        data,filed,tmpsql,headtr=rp.getallreport()
-        return render_template('reportall.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,headtr=headtr)
+        rp=mr.myreport(begintime=begintime,endtime=endtime,searchword=searchword)
+        data,filed,tmpsql,headtr,datasum=rp.getallreport()
+        return render_template('reportall.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,headtr=headtr,datasum=datasum)
     data=[]
     return render_template('reportall.html',data=data,form=myform)
 
@@ -79,10 +80,19 @@ def reportptmaoliadtag():
 
 
 #菜单名：媒体效果-评估-日表
+# http://mytest.adhudong.com/hdtreport/reportmtpinggu/?adzoneid=7915&begindate=2020-11-18&enddate=2020-11-25&key=dGVzdF83NjBjYWU0OWM1ZTI3MDYzY2ZkZTI0MWQwZjBmMzViZg==
+# key=用户名_密码 base64加密
 @hdtreport.route('/reportmtpinggu/',methods=('POST','GET'))
 def reportmtpinggu():
     myform=ft.myreporpingguday()
     addfieldnum=0
+    if request.args.get('enddate')  and  request.args.get('begindate'):
+        adzoneid=request.args.get('adzoneid')
+        begindate=request.args.get('begindate')
+        enddate=request.args.get('enddate')
+        myform.adzoneid.data=adzoneid
+        myform.begindate.data=begindate
+        myform.enddate.data=enddate
     if myform.validate_on_submit():
         begintime=str(myform.data['begindate'])[0:10]
         endtime=str(myform.data['enddate'])[0:10]
@@ -100,10 +110,19 @@ def reportmtpinggu():
 
 
 #菜单名：媒体效果-评估-小时表 4、媒体效果-去联动-评估-小时表
+# http://mytest.adhudong.com/hdtreport/reportmtpingguhour/?adzoneid=7915&begindate=2020-11-18&enddate=2020-11-25&key=dGVzdF83NjBjYWU0OWM1ZTI3MDYzY2ZkZTI0MWQwZjBmMzViZg==
+# key=用户名_密码 base64加密
 @hdtreport.route('/reportmtpingguhour/',methods=('POST','GET'))
 def reportmtpingguhour():
     myform=ft.myreporpingguhour()
     addfieldnum=0
+    if  request.args.get('begindate') and request.args.get('enddate'):
+        adzoneid=request.args.get('adzoneid')
+        begindate=request.args.get('begindate')
+        enddate=request.args.get('enddate')
+        myform.adzoneid.data=adzoneid
+        myform.begindate.data=begindate
+        myform.enddate.data=enddate
     if myform.validate_on_submit():
         begintime=str(myform.data['begindate'])[0:10]
         endtime=str(myform.data['enddate'])[0:10]
@@ -116,7 +135,7 @@ def reportmtpingguhour():
         rp=mr.myreport(begintime=begintime,endtime=endtime,adzoneids=adzoneid,advertiser_id=advertiser)
         data,filed,tmpsql,datasum=rp.getmtpinguhour()
         return render_template('reportmtpingguhour.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,datasum=datasum,advertiser=advertiser,addfieldnum=addfieldnum)
-    return render_template('reportmtpingguhour.html',form=myform,addfieldnum=addfieldnum)
+    return render_template('reportmtpingguhour.html',form=myform)
 
 #菜单名：媒体效果-评估-广告主类型
 @hdtreport.route('/reportByadvtag/',methods=('POST','GET'))
@@ -200,7 +219,32 @@ def reportPreProfitbyDay():
     if myform.validate_on_submit():
         begintime=str(myform.data['begindate'])[0:10]
         endtime=str(myform.data['enddate'])[0:10]
-        rp=mr.myreport(begintime=begintime,endtime=endtime)
+        if myform.data['showbaidu']:
+            showbaidu='1'
+        else:
+            showbaidu='0'
+        rp=mr.myreport(begintime=begintime,endtime=endtime,showbaidu=showbaidu)
         data,filed,tmpsql=rp.getreportPreProfitbyDay()
         return render_template('reportPreProfitbyDay.html',form=myform,data=data,filed=filed,tmpsql=tmpsql)
     return render_template('reportPreProfitbyDay.html',form=myform)
+
+
+
+#菜单名：活动维度广告主效果
+@hdtreport.route('/reportAdzoneActEffect/',methods=('POST','GET'))
+def reportAdzoneActEffect():
+    myform=ft.myreportAdzoneActEffect()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
+        adzoneid=str(myform.data['adzoneid'])
+        advertiser=str(myform.data['advertiser'])
+        act=str(myform.data['act'])
+        rp=mr.myreport(begintime=begintime,endtime=endtime,adzoneids=adzoneid,advertiser_id=advertiser,actid=act)
+        data,filed,tmpsql,colspanx,datasum=rp.getreportAdzoneActEffect()
+        return render_template('reportAdzoneActEffect.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,colspanx=colspanx,datasum=datasum)
+    return render_template('reportAdzoneActEffect.html',form=myform)
+
+
+
+

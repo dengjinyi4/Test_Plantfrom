@@ -3,7 +3,12 @@
 
 <script>
         $(document).ready(function() {
-    $('#example').DataTable();
+    $('#example').DataTable({
+    processing: true,//是否显示处理状态(排序的时候，数据很多耗费时间长的话，也会显示这个)
+    lengthChange: true,//是否允许用户改变表格每页显示的记录数
+    orderMulti: true, //启用多列排序
+    autoWidth: true,//自动计算宽度
+    });
 } );</script>
 
 <p hidden="hidden">{{tmpsql|safe}}</p>
@@ -21,7 +26,6 @@
                  </tr>
            <tr>
                <td>{{ form.begindate.label }}{{form.begindate}} {{ form.enddate.label }}{{form.enddate}}</td>
-
            </tr>
            <tr> <td>{{ form.adzone_id.label }}{{form.adzone_id}}<font color="red">{{ form.adzone_id.errors[0]}}</font> {{ form.submit() }}</td></tr>
        </table>
@@ -104,6 +108,15 @@
                 {% for k in i%}
                     <td>{{k|safe}}</td>
                 {% endfor %}
+            </tr>
+            {% endfor %}
+            {% elif type=='3' %}
+            {% for i  in data %}
+            <tr>
+                <td>{{i["ocpa"]|safe}}</td>
+                <td>{{i["adzone"]|safe}}</td>
+                <td>{{i["operator"]|safe}}</td>
+                <td>{{i["create_time"]|safe}}</td>
             </tr>
             {% endfor %}
             {% endif %}
