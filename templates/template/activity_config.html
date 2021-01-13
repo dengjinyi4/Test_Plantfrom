@@ -4,7 +4,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>互动推平台配置表</title>
+    <title>互动推,易积分平台配置表</title>
 </head>
 <script type="text/javascript">
 {#    调用接口获取数据，但是在body中怎么使用还不知道。。。。#}
@@ -111,6 +111,31 @@
                         <a target="_blank" href="{{ url_for("act.voyager_configs",env='testvoyager',selected_table=r[0])}}">测试</a>
                         <span style="margin: 0 8px">|</span>
                         <a target="_blank" href="{{ url_for("act.voyager_configs",env='devvoyager',selected_table=r[0])}}">线上</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        <table class="table table-hover table-bordered">
+        <caption><span class="glyphicon glyphicon-heart">  易积分配置，默认查询结果为测试环境数据</caption>
+            <thead>
+                <tr>
+                    {% for c in yjf_ctfgs[1] %}
+                    <td>{{ c|safe }}</td>
+                    {% endfor %}
+                    <td>操作</td>
+                </tr>
+            </thead>
+            {% for r in yjf_ctfgs[0] %}
+                <tr>
+                    {% for c in r %}
+                        <td>{{ c|safe }}</td>
+                    {% endfor %}
+                    <td>
+                        <a target="_blank" href="{{ url_for("act.yijifen_configs",env='testvoyager',selected_table=r[0])}}">测试</a>
+                        <span style="margin: 0 8px">|</span>
+                        <a target="_blank" href="{{ url_for("act.yijifen_configs",env='devvoyager',selected_table=r[0])}}">线上</a>
                     </td>
                 </tr>
             {% endfor %}

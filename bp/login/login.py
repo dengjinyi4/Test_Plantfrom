@@ -6,7 +6,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 from utils import login as l
 from business_modle.querytool import plantfromwtf as ft
-from flask import session,request,g
+from flask import session,request,g,current_app
 from flask import render_template,Blueprint,redirect,url_for,flash
 mylogin = Blueprint('plantfrom_login', __name__,template_folder='templates')
 
@@ -43,6 +43,7 @@ def loginnew():
         user=l.login(username,password,REMOTE_ADDR,HTTP_HOST)
         r=user.loginuserotp()
         if (len(r)>0):
+            current_app.logger.info("login ok user is {0}".format(username))
             # 如果是内网
             if HTTP_HOST.split('.')[0]=='127':
                 session['username']=str(r[0][1])
@@ -66,6 +67,7 @@ def loginnew():
                     return redirect(url_for('index'))
             # return render_template('logintest.html',flag=u'登录成功',form=myform)
         else:
+            current_app.logger.warning("login fail user is {0} pass is {1}".format(username,password))
             flash(u'登录失败')
             return render_template('logintestotp.html',form=myform)
     else:

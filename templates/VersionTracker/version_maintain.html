@@ -143,7 +143,7 @@ function setSecond(obj){
     sec.options[58] = new Option("normandy-dealeradmin","1085");
     sec.options[59] = new Option("normandy-logisticsservices","1118");
     }
-     if(val == '4'){
+    if(val == '4'){
     var sec = document.getElementById('job_id');
     $("#job_id").find("option").remove();
     sec.options[0] = new Option("ddyz-ad","1086");
@@ -178,6 +178,15 @@ function setSecond(obj){
     sec.options[29] = new Option("ddyz-uc","1115");
     }
 
+    if(val == '5'){
+    var sec = document.getElementById('job_id');
+    $("#job_id").find("option").remove();
+    sec.options[0] = new Option("voyager-apiyijifen","1117");
+    sec.options[1] = new Option("yijifen.admin","1120");
+    sec.options[2] = new Option("yijifen.h5","1121");
+    sec.options[3] = new Option("yijifen.api.admin","1122");
+    sec.options[4] = new Option("developer.yijifen","1123");
+    }
 
 
 }

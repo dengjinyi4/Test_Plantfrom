@@ -18,12 +18,21 @@ def ttpt_errorlog():
     else:
 
         env_dict= {u'测试环境':True,u'生产环境':False}
+        platform_dict={u'竞价平台':1,u'自建站':2}
         env=request.form.get('env').strip()
+        platform=request.form.get('platform').strip()
         day = request.form.get('begin_date')
         begin_time_re=day.replace('-','')
         te=Ttpt_errorlog(day,env_dict[env])
-        paras=te.show_result()
-        return render_template('ttpt_errorlog.html',paras=paras,begin_time=begin_time_re,begintime=day,env_value='<option selected="selected">'+env+'</option>')
+
+        if platform=='竞价平台':
+            paras=te.show_result()
+
+        else:
+            paras=te.show2_result()
+
+
+        return render_template('ttpt_errorlog.html',paras=paras,begin_time=begin_time_re,begintime=day,env_value='<option selected="selected">'+env+'</option>',platform='<option selected="selected">'+platform+'</option>')
 
 if __name__=='__main__':
 

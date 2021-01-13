@@ -37,6 +37,27 @@ class Ttpt_errorlog(object):
 
         return result
 
+    def show2_result(self):
+        sql='''
+          SELECT
+          user_id 用户ID,
+          adzone_id 广告位ID,
+          platform_id 平台ID,
+          message 错误信息,
+          create_time 产生时间
+          FROM
+          voyager.sbs_error_log
+          WHERE DATE(create_time) = '{}' ORDER BY create_time DESC'''.format(self.begin_date)
+
+        result = self.db.execute_sql(sql)
+
+        print result
+        if result<>():
+            self.export_xls(result)
+        return result
+
+
+
     def export_xls(self,result):
 
         if len(str(result))>0:
@@ -55,8 +76,9 @@ class Ttpt_errorlog(object):
 
 if __name__=='__main__':
 
-    Te=Ttpt_errorlog('2020-11-12',False)
+    Te=Ttpt_errorlog('2020-11-10',False)
     re=Te.show_result()
-    print re
+    re1=Te.show2_result()
+    print re,re1
 
 

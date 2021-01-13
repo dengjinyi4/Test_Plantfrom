@@ -1,0 +1,442 @@
+ [2021-01-05 15:58:30,145][show.py:1126][INFO][17024] -teeeeeesttttt
+[2021-01-05 16:00:37,138][show.py:1126][INFO][14228] -teeeeeesttttt
+[2021-01-05 16:00:39,075][show.py:1126][INFO][12788] -teeeeeesttttt
+[2021-01-05 16:00:39,321][show.py:1126][INFO][17284] -teeeeeesttttt
+[2021-01-05 16:00:39,532][show.py:1126][INFO][16088] -teeeeeesttttt
+[2021-01-05 16:00:39,710][show.py:1126][INFO][16228] -teeeeeesttttt
+[2021-01-05 16:00:39,924][show.py:1126][INFO][14980] -teeeeeesttttt
+[2021-01-05 16:00:40,085][show.py:1126][INFO][12372] -teeeeeesttttt
+[2021-01-05 16:00:40,233][show.py:1126][INFO][3860] -teeeeeesttttt
+[2021-01-05 16:00:40,431][show.py:1126][INFO][12048] -teeeeeesttttt
+[2021-01-05 16:00:40,676][show.py:1126][INFO][3244] -teeeeeesttttt
+[2021-01-05 16:02:13,901][show.py:1126][INFO][13716] -teeeeeesttttt11111
+[2021-01-05 16:02:56,013][show.py:1126][INFO][5348] -teeeeeesttttt11111
+[2021-01-05 16:02:56,214][show.py:1126][INFO][7920] -teeeeeesttttt11111
+[2021-01-05 16:02:56,378][show.py:1126][INFO][13032] -teeeeeesttttt11111
+[2021-01-05 16:02:56,551][show.py:1126][INFO][17108] -teeeeeesttttt11111
+[2021-01-05 16:02:56,726][show.py:1126][INFO][12172] -teeeeeesttttt11111
+[2021-01-05 16:02:56,996][show.py:1126][INFO][16896] -teeeeeesttttt11111
+[2021-01-05 16:02:57,032][show.py:1126][INFO][12680] -teeeeeesttttt11111
+[2021-01-05 16:02:57,243][show.py:1126][INFO][14896] -teeeeeesttttt11111
+[2021-01-05 16:02:57,480][show.py:1126][INFO][15752] -teeeeeesttttt11111
+[2021-01-05 16:03:26,677][show.py:1126][INFO][16928] -teeeeeesttttt11111
+[2021-01-05 16:09:53,513][login.py:70][WARNING][16684] -login fail user is dengjinyi
+[2021-01-05 16:10:17,211][login.py:70][WARNING][2512] -login fail user is dengjinyi
+[2021-01-05 16:10:22,176][login.py:46][INFO][16632] -login user is dengjinyi
+[2021-01-05 16:19:51,160][login.py:70][WARNING][12212] -login fail user is dengjinyi pass is 2323321123123123123
+[2021-01-05 16:22:15,127][login.py:70][WARNING][16856] -login fail user is dengjinyi pass is 12212
+[2021-01-05 16:22:17,219][login.py:70][WARNING][15532] -login fail user is dengjinyi pass is 111
+[2021-01-05 16:22:22,549][login.py:70][WARNING][14064] -login fail user is dengjinyi pass is 333334
+[2021-01-05 16:34:09,256][login.py:70][WARNING][17340] -login fail user is 112321 pass is 321312
+[2021-01-05 16:35:41,766][login.py:70][WARNING][10884] -login fail user is 112321 pass is 121212
+[2021-01-05 16:35:44,565][login.py:70][WARNING][16196] -login fail user is 112321 pass is 12221212
+[2021-01-05 16:35:46,477][login.py:70][WARNING][16120] -login fail user is 112321 pass is 333
+[2021-01-05 16:36:50,693][login.py:70][WARNING][10268] -login fail user is 112321 pass is 2312312
+[2021-01-05 16:36:58,421][login.py:70][WARNING][9204] -login fail user is 112321 pass is 11111111111111111111
+[2021-01-05 17:03:32,213][login.py:70][WARNING][3384] -login fail user is dengjinyi pass is 1111
+[2021-01-05 17:10:07,266][login.py:46][INFO][13324] -login ok user is dengjinyi
+[2021-01-05 17:14:13,094][login.py:70][WARNING][16056] -login fail user is wqwqw pass is 211212
+[2021-01-05 17:33:06,483][login.py:70][WARNING][12536] -login fail user is 123 pass is 777444
+[2021-01-05 17:33:33,571][login.py:70][WARNING][16812] -login fail user is 123 pass is 454556565656
+[2021-01-05 17:45:35,128][login.py:70][WARNING][16088] -login fail user is 11111 pass is 2222
+[2021-01-05 17:45:51,526][login.py:70][WARNING][9532] -login fail user is 11111 pass is 3333
+[2021-01-05 17:46:06,881][login.py:70][WARNING][9272] -login fail user is 11111 pass is 32432432234
+[2021-01-05 17:49:14,641][login.py:70][WARNING][14388] -login fail user is 11111432 pass is 43234234234
+[2021-01-05 17:51:01,193][show.py:1126][INFO][15968] -teeeeeesttttt11111
+[2021-01-06 10:07:08,510][login.py:70][WARNING][8164] -login fail user is dengjinyi pass is 12121212
+[2021-01-06 10:07:56,522][login.py:70][WARNING][9204] -login fail user is dengjinyi pass is 2121212
+[2021-01-06 10:09:39,997][show.py:1132][ERROR][1412] -teeeeeesttttt11111
+[2021-01-06 10:09:45,736][show.py:1132][ERROR][11124] -teeeeeesttttt11111
+[2021-01-06 10:09:53,743][login.py:70][WARNING][17004] -login fail user is dengjinyi pass is 1221
+[2021-01-06 10:14:02,286][show.py:1132][ERROR][7136] -teeeeeesttttt11111
+[2021-01-06 10:14:14,667][login.py:70][WARNING][13340] -login fail user is dengjinyi pass is 111
+[2021-01-06 10:17:53,778][show.py:1133][ERROR][2416] -teeeeeesttttt11111
+[2021-01-06 10:18:05,953][show.py:1133][ERROR][12556] -teeeeeesttttt11111
+[2021-01-06 10:18:16,974][show.py:1133][ERROR][17184] -teeeeeesttttt11111
+[2021-01-06 10:28:27,434][show.py:1133][ERROR][900] -teeeeeesttttt11111
+[2021-01-06 10:28:33,052][show.py:1133][ERROR][16796] -teeeeeesttttt11111
+[2021-01-06 10:33:06,697][show.py:1133][ERROR][17236] -teeeeeesttttt11111
+[2021-01-06 10:33:51,950][show.py:1133][ERROR][9188] -teeeeeesttttt11111
+[2021-01-06 10:34:40,315][show.py:1133][ERROR][7688] -teeeeeesttttt11111
+[2021-01-06 10:34:42,434][show.py:1133][ERROR][13820] -teeeeeesttttt11111
+[2021-01-06 10:34:42,609][show.py:1133][ERROR][6252] -teeeeeesttttt11111
+[2021-01-06 10:34:42,854][show.py:1133][ERROR][15984] -teeeeeesttttt11111
+[2021-01-06 10:34:43,039][show.py:1133][ERROR][8904] -teeeeeesttttt11111
+[2021-01-06 10:34:43,298][show.py:1133][ERROR][12624] -teeeeeesttttt11111
+[2021-01-06 10:34:43,460][show.py:1133][ERROR][9364] -teeeeeesttttt11111
+[2021-01-06 10:34:43,846][show.py:1133][ERROR][5092] -teeeeeesttttt11111
+[2021-01-06 10:35:07,661][show.py:1133][ERROR][9192] -teeeeeesttttt11111
+[2021-01-06 10:35:08,117][show.py:1133][ERROR][15676] -teeeeeesttttt11111
+[2021-01-06 10:35:08,249][show.py:1133][ERROR][12648] -teeeeeesttttt11111
+[2021-01-06 10:35:08,608][show.py:1133][ERROR][15616] -teeeeeesttttt11111
+[2021-01-06 10:35:08,838][show.py:1133][ERROR][9972] -teeeeeesttttt11111
+[2021-01-06 10:35:09,049][show.py:1133][ERROR][17200] -teeeeeesttttt11111
+[2021-01-06 10:35:09,263][show.py:1133][ERROR][16712] -teeeeeesttttt11111
+[2021-01-06 10:35:09,535][show.py:1133][ERROR][9316] -teeeeeesttttt11111
+[2021-01-06 10:35:09,907][show.py:1133][ERROR][15544] -teeeeeesttttt11111
+[2021-01-06 10:35:10,190][show.py:1133][ERROR][924] -teeeeeesttttt11111
+[2021-01-06 10:35:14,859][show.py:1133][ERROR][16888] -teeeeeesttttt11111
+[2021-01-06 10:35:15,273][show.py:1133][ERROR][13864] -teeeeeesttttt11111
+[2021-01-06 10:35:15,529][show.py:1133][ERROR][7136] -teeeeeesttttt11111
+[2021-01-06 10:35:15,724][show.py:1133][ERROR][2464] -teeeeeesttttt11111
+[2021-01-06 10:35:15,970][show.py:1133][ERROR][16528] -teeeeeesttttt11111
+[2021-01-06 10:35:59,892][login.py:70][WARNING][7900] -login fail user is ddddd pass is 111111
+[2021-01-06 10:38:10,825][login.py:70][WARNING][15624] -login fail user is 23342432 pass is 32342234
+[2021-01-06 10:39:48,423][login.py:70][WARNING][12644] -login fail user is 23342432 pass is 33333
+[2021-01-06 10:39:54,171][show.py:1133][ERROR][15484] -teeeeeesttttt11111
+[2021-01-06 10:39:55,862][show.py:1133][ERROR][12564] -teeeeeesttttt11111
+[2021-01-06 10:39:56,609][show.py:1133][ERROR][12432] -teeeeeesttttt11111
+[2021-01-06 10:39:56,792][show.py:1133][ERROR][5092] -teeeeeesttttt11111
+[2021-01-06 10:39:56,976][show.py:1133][ERROR][3836] -teeeeeesttttt11111
+[2021-01-06 10:49:28,461][login.py:70][WARNING][16988] -login fail user is 23342432 pass is 111
+[2021-01-06 10:57:23,226][show.py:1133][ERROR][3008] -teeeeeesttttt11111
+[2021-01-06 11:02:36,756][show.py:1134][ERROR][14120] -teeeeeesttttt11111
+[2021-01-06 11:02:50,191][show.py:1134][ERROR][16080] -teeeeeesttttt11111
+[2021-01-06 11:07:55,119][show.py:1134][ERROR][9316] -teeeeeesttttt11111
+[2021-01-06 11:07:56,243][show.py:1134][ERROR][16084] -teeeeeesttttt11111
+[2021-01-06 11:07:56,471][show.py:1134][ERROR][3044] -teeeeeesttttt11111
+[2021-01-06 11:07:56,647][show.py:1134][ERROR][16856] -teeeeeesttttt11111
+[2021-01-06 11:07:56,875][show.py:1134][ERROR][16004] -teeeeeesttttt11111
+[2021-01-06 11:07:57,046][show.py:1134][ERROR][9936] -teeeeeesttttt11111
+[2021-01-06 11:07:57,229][show.py:1134][ERROR][14252] -teeeeeesttttt11111
+[2021-01-06 11:07:57,440][show.py:1134][ERROR][10036] -teeeeeesttttt11111
+[2021-01-06 11:07:57,684][show.py:1134][ERROR][3048] -teeeeeesttttt11111
+[2021-01-06 11:18:52,776][show.py:1134][ERROR][17180] -teeeeeesttttt11111
+[2021-01-06 11:18:52,776][show.py:1135][INFO][17180] -1231312321
+[2021-01-06 11:18:52,776][show.py:1136][DEBUG][17180] -debug
+[2021-01-06 11:18:52,776][show.py:1137][WARNING][17180] -waring
+[2021-01-06 11:19:00,355][show.py:1134][ERROR][16976] -teeeeeesttttt11111
+[2021-01-06 11:19:00,355][show.py:1135][INFO][16976] -1231312321
+[2021-01-06 11:19:00,357][show.py:1136][DEBUG][16976] -debug
+[2021-01-06 11:19:00,357][show.py:1137][WARNING][16976] -waring
+[2021-01-06 11:19:00,632][show.py:1134][ERROR][16096] -teeeeeesttttt11111
+[2021-01-06 11:19:00,634][show.py:1135][INFO][16096] -1231312321
+[2021-01-06 11:19:00,634][show.py:1136][DEBUG][16096] -debug
+[2021-01-06 11:19:00,634][show.py:1137][WARNING][16096] -waring
+[2021-01-06 11:19:00,864][show.py:1134][ERROR][10644] -teeeeeesttttt11111
+[2021-01-06 11:19:00,865][show.py:1135][INFO][10644] -1231312321
+[2021-01-06 11:19:00,865][show.py:1136][DEBUG][10644] -debug
+[2021-01-06 11:19:00,865][show.py:1137][WARNING][10644] -waring
+[2021-01-06 11:19:01,150][show.py:1134][ERROR][14408] -teeeeeesttttt11111
+[2021-01-06 11:19:01,151][show.py:1135][INFO][14408] -1231312321
+[2021-01-06 11:19:01,151][show.py:1136][DEBUG][14408] -debug
+[2021-01-06 11:19:01,151][show.py:1137][WARNING][14408] -waring
+[2021-01-06 11:19:01,227][show.py:1134][ERROR][9188] -teeeeeesttttt11111
+[2021-01-06 11:19:01,229][show.py:1135][INFO][9188] -1231312321
+[2021-01-06 11:19:01,229][show.py:1136][DEBUG][9188] -debug
+[2021-01-06 11:19:01,230][show.py:1137][WARNING][9188] -waring
+[2021-01-06 11:19:01,460][show.py:1134][ERROR][17156] -teeeeeesttttt11111
+[2021-01-06 11:19:01,460][show.py:1135][INFO][17156] -1231312321
+[2021-01-06 11:19:01,461][show.py:1136][DEBUG][17156] -debug
+[2021-01-06 11:19:01,461][show.py:1137][WARNING][17156] -waring
+[2021-01-06 11:19:01,687][show.py:1134][ERROR][17332] -teeeeeesttttt11111
+[2021-01-06 11:19:01,687][show.py:1135][INFO][17332] -1231312321
+[2021-01-06 11:19:01,687][show.py:1136][DEBUG][17332] -debug
+[2021-01-06 11:19:01,687][show.py:1137][WARNING][17332] -waring
+[2021-01-06 11:19:01,913][show.py:1134][ERROR][5844] -teeeeeesttttt11111
+[2021-01-06 11:19:01,913][show.py:1135][INFO][5844] -1231312321
+[2021-01-06 11:19:01,913][show.py:1136][DEBUG][5844] -debug
+[2021-01-06 11:19:01,913][show.py:1137][WARNING][5844] -waring
+[2021-01-06 11:19:14,582][show.py:1134][ERROR][2260] -teeeeeesttttt11111
+[2021-01-06 11:19:14,582][show.py:1135][INFO][2260] -1231312321
+[2021-01-06 11:19:14,582][show.py:1136][DEBUG][2260] -debug
+[2021-01-06 11:19:14,582][show.py:1137][WARNING][2260] -waring
+[2021-01-06 11:19:19,388][show.py:1134][ERROR][1304] -teeeeeesttttt11111
+[2021-01-06 11:19:19,390][show.py:1135][INFO][1304] -1231312321
+[2021-01-06 11:19:19,390][show.py:1136][DEBUG][1304] -debug
+[2021-01-06 11:19:19,390][show.py:1137][WARNING][1304] -waring
+[2021-01-06 11:19:28,249][show.py:1134][ERROR][16688] -teeeeeesttttt11111
+[2021-01-06 11:19:28,249][show.py:1135][INFO][16688] -1231312321
+[2021-01-06 11:19:28,249][show.py:1136][DEBUG][16688] -debug
+[2021-01-06 11:19:28,250][show.py:1137][WARNING][16688] -waring
+[2021-01-06 11:19:44,947][show.py:1134][ERROR][1416] -teeeeeesttttt11111
+[2021-01-06 11:19:44,947][show.py:1135][INFO][1416] -1231312321
+[2021-01-06 11:19:44,948][show.py:1136][DEBUG][1416] -debug
+[2021-01-06 11:19:44,948][show.py:1137][WARNING][1416] -waring
+[2021-01-06 11:30:24,601][login.py:70][WARNING][12536] -login fail user is dengjinyi pass is 212211212121212
+[2021-01-06 11:30:56,799][login.py:70][WARNING][6988] -login fail user is dengjinyi pass is jkhhjkghjkghjkghjkghjk
+[2021-01-06 11:31:28,243][login.py:70][WARNING][4884] -login fail user is dengjinyi pass is 11111
+[2021-01-07 11:56:48,559][login.py:46][INFO][11632] -login ok user is dengjinyi
+[2021-01-07 14:20:54,427][login.py:46][INFO][16252] -login ok user is dengjinyi
+[2021-01-11 14:02:01,382][login.py:46][INFO][172] -login ok user is dengjinyi
+[2021-01-11 19:43:28,993][myreport.py:1316][WARNING][10284] -update yjf_app_inter_config fail error is  execsql() takes exactly 2 arguments (1 given)
+[2021-01-12 11:32:18,783][login.py:46][INFO][9316] -login ok user is dengjinyi
+[2021-01-12 14:10:35,145][login.py:46][INFO][4824] -login ok user is dengjinyi
+[2021-01-12 14:47:39,828][login.py:46][INFO][10356] -login ok user is dengjinyi
+[2021-01-12 16:40:17,892][myreport.py:1299][WARNING][12688] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="text"   id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="text"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:44:43,775][login.py:46][INFO][9200] -login ok user is dengjinyi
+[2021-01-12 16:44:48,276][myreport.py:1299][WARNING][6108] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="text" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="text" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:45:11,355][myreport.py:1299][WARNING][10152] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="text" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="text" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:45:21,446][myreport.py:1299][WARNING][11368] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="text" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="text" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:47:09,930][myreport.py:1299][WARNING][10648] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:47:26,930][myreport.py:1299][WARNING][11032] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:47:38,454][myreport.py:1299][WARNING][8760] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:48:27,780][myreport.py:1299][WARNING][8052] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-05' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:48:34,765][myreport.py:1299][WARNING][12636] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-10' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:48:55,687][myreport.py:1299][WARNING][10468] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-11' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:49:09,641][myreport.py:1299][WARNING][10948] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-11' and riqi<='2021-01-12';
+                     
+[2021-01-12 16:49:33,092][myreport.py:1299][WARNING][9916] -SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\'pv\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\'uv\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow,'广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='2021-01-11' and riqi<='2021-01-12';
+                     

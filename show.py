@@ -56,16 +56,29 @@ from bp.TestToolsTracker.ToolsTrackerForm import ToolsTrackerForm
 from business_modle.querytool.ddyzinfo import *
 from business_modle.testtools.bidding_gray import *
 from business_modle.testtools.create_ad import *
+from business_modle.testtools.adzone_cp import *
 from bp.tools.tools import *
 from bp.login.login import mylogin
+from bp.yijifen_media.yjf_media import myrestful
 from bp.miniprogram.activity_form import *
 from bp.hdtadzone.adzone import hdtadzone
 from bp.newreport.myreport import hdtreport
 from bp.yiqifa.yiqifaquanyi import yiqifaquanyi
 from utils import login as l
+import logging
+from logging.handlers import TimedRotatingFileHandler
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 APP_STATIC_TXT = os.path.join(APP_ROOT, 'txt') #设置一个专门的类似全局变量的东西
 app = Flask(__name__)
+app.debug=True
+# handler=logging.FileHandler(filename="logs/flask.log",encoding="UTF-8")
+handler=TimedRotatingFileHandler(filename="logs/flask.log",when="D",interval=15,backupCount=15,encoding="UTF-8",delay=False,utc=True)
+handler.suffix = "%Y-%m-%d.log"
+handler.setLevel(logging.DEBUG)
+formatter=logging.Formatter("[%(asctime)s][%(filename)s:%(lineno)d][%(levelname)s][%(thread)d] -%(message)s")
+handler.setFormatter(formatter)
+app.logger.addHandler(handler)
+
 #将亿起发蓝图注册到app
 app.register_blueprint(Finace,url_prefix='/finace')
 app.register_blueprint(cdpRoute,url_prefix='/cdp')
@@ -87,6 +100,7 @@ app.register_blueprint(tools,url_prefix='/tools')
 app.register_blueprint(hdtadzone,url_prefix='/hdtadzone')
 app.register_blueprint(hdtreport,url_prefix='/hdtreport')
 app.register_blueprint(yiqifaquanyi,url_prefix='/yiqifaquanyi')
+app.register_blueprint(myrestful,url_prefix='/media')
 
 
 # app.jinja_env.add_extension("chartkick.ext.charts")
@@ -720,6 +734,39 @@ def report_byadzone():
         return render_template('report_byadzone.html')
 
 
+@app.route('/adzone_cp/',methods=['get','post'])
+
+def adzone_cp():
+    if request.method == 'POST':
+        env_dict={u"测试环境":True,u"生产环境":False}
+        target_adzone_id=request.form.get('target_adzone_id')
+        resource_adzone_id = request.form.get('resource_adzone_id')
+        env=request.form.get('env').strip()
+        ac=Adzone_cp(target_adzone_id,resource_adzone_id,env_dict[env])
+        ad_filter=ac.ad_filter()
+        is_super_static=ac.is_super_static()
+        if is_super_static=='否':
+            super_static=''
+        else:
+            super_static=ac.super_static()
+        cpc_limit=ac.cpc_limit()
+        td_filter=ac.td_filter()
+        occurrence=ac.occurrence()
+        url_filter=ac.url_filter()
+        print "============**********"
+        print is_super_static
+        return render_template('adzone_cp.html',ad_filter=ad_filter,is_super_static=is_super_static,
+                               super_static=super_static,cpc_limit=cpc_limit,td_filter=td_filter,
+                               occurrence=occurrence,url_filter=url_filter,target_adzone_id=target_adzone_id,
+                               resource_adzone_id=resource_adzone_id,env_value='<option selected="selected">'+env+'</option>')
+
+
+    else:
+        return render_template('adzone_cp.html')
+
+
+
+
 
 @app.route('/manis_error/',methods=['get','post'])
 
@@ -901,6 +948,7 @@ def adv_consume_amount():
 @app.route('/bidding_gray/',methods=['POST','GET'])
 
 def bidding_gray():
+
         if request.method=='GET':
             return render_template('bidding_gray.html')
         else:
@@ -908,11 +956,15 @@ def bidding_gray():
 
             bidding_gray=Bidding_gray(dbtype)
 
-            time.sleep(5)
+            time.sleep(6)
             alladzon=bidding_gray.check_adzone_click()
+            time.sleep(2)
             alllottery=bidding_gray.check_lottery()
+            time.sleep(2)
             allshow=bidding_gray.check_adshow()
+            time.sleep(2)
             allclick=bidding_gray.check_adclick()
+            time.sleep(2)
             award_show=bidding_gray.check_act_click()
 
             return render_template('bidding_gray.html',alladzon=alladzon,alllottery=alllottery,allshow=allshow,allclick=allclick,award_show=award_show)
@@ -964,7 +1016,8 @@ def islogin():
         login=l.login(username='',REMOTE_ADDR=REMOTE_ADDR,method=method)
         login.user_log()
 
-
+    if ('media' in request.path):
+        return None
     if (request.path == '/lpm_test/'):
         return None
 
@@ -1079,6 +1132,10 @@ def islogin():
 
 @app.route('/lpm_test/')
 def lpm_page():
+    app.logger.error("teeeeeesttttt11111")
+    app.logger.info("1231312321")
+    app.logger.debug("debug")
+    app.logger.warning("waring")
     return render_template('lpm_test.html')
 
 @app.route('/lpm_test_order_order/')
@@ -1099,7 +1156,15 @@ def not_found(error):
 
 
 if __name__ == '__main__':
-    app.run( host="0.0.0.0",port=21312,debug=True,threaded=True)
+
+    # handler = logging.FileHandler('d:/flask1.log', encoding='UTF-8')
+
+
+    # handler.setLevel(logging.INFO)
+    # logging_format = logging.Formatter('[%(asctime)s][%(filename)s:%(lineno)d][%(levelname)s][%(thread)d] -%(message)s')
+    # handler.setFormatter(logging_format)
+    # app.logger.addHandler(handler)
+    app.run(host="0.0.0.0",port=21312,debug=True,threaded=True)
 
 
 

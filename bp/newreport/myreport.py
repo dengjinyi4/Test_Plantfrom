@@ -2,7 +2,7 @@
 __author__ = 'jinyi'
 import time
 from datetime import  datetime
-from flask import Flask,request,render_template,Blueprint,flash,url_for
+from flask import Flask,request,render_template,Blueprint,flash,url_for,jsonify
 from business_modle.querytool import plantfromwtf as ft
 from business_modle.querytool.report import myreport as mr
 
@@ -246,5 +246,43 @@ def reportAdzoneActEffect():
     return render_template('reportAdzoneActEffect.html',form=myform)
 
 
+#易积分后台报表    菜单名---- 易积分后台报表
+@hdtreport.route('/repotyijifen/',methods=('POST','GET'))
+def repotyijifen():
+    myform=ft.myreportyijifen()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
+        type=str(myform.data['type'])[0:10]
+        rp=mr.myreport(begintime=begintime,endtime=endtime,type=type)
+        data,filed,tmpsql,headtr=rp.getyijifen()
+        return render_template('reportyijifenall.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,headtr=headtr)
+    data=[]
+    return render_template('reportyijifenall.html',data=data,form=myform)
+
+#易积分后台报表    菜单名---- 易积分后台报表没有消耗端
+@hdtreport.route('/repotyijifenall/',methods=('POST','GET'))
+def repotyijifenall():
+    myform=ft.myreportyijifen()
+    if myform.validate_on_submit():
+        begintime=str(myform.data['begindate'])[0:10]
+        endtime=str(myform.data['enddate'])[0:10]
+        type=str(myform.data['type'])[0:10]
+        rp=mr.myreport(begintime=begintime,endtime=endtime,type=type)
+        data,filed,tmpsql,headtr=rp.getyijifenall()
+        return render_template('reportyjfall.html',form=myform,data=data,filed=filed,tmpsql=tmpsql,headtr=headtr)
+    data=[]
+    return render_template('reportyjfall.html',data=data,form=myform)
+
+
+#易积分后台报表    菜单名---- 易积分后台报表没有消耗端更新数据接口
+@hdtreport.route('/yjf_update/',methods=('POST','GET'))
+def yjf_update():
+    yjf_data_report_id=request.args.get('yjf_data_report_id')
+    value=request.args.get('value')
+    type=request.args.get('type')
+    rp=mr.myreport(yjf_data_report_id=yjf_data_report_id,value=value,update_type=type)
+    rp.yjf_update()
+    return jsonify({"code":"200"})
 
 

@@ -86,14 +86,14 @@ class VersionTracker(object):
     def get_version_stat(self,year=None):
         '''
         :param year: int类型
-        :return:返回字典，month返回月份，1返回互动推数据，2返回亿起发数据，3返回易购数据
+        :return:返回字典，month返回月份，1返回互动推数据，2返回亿起发数据，3返回易购数据，4返回叮当柚子，5返回易积分
         '''
         if year:
             re = {}
             month_tmp = self.db.execute_sql('''select DISTINCT date_format(a.create_time,'%Y-%m') from test.version_tracker a
                                 where YEAR(a.create_time)={} group by MONTH(a.create_time);'''.format(year))
             re['month'] = self.to_list(month_tmp,type=2)
-            for group_id in range(1,4):
+            for group_id in range(1,6):
                 sql = '''select count(1) from test.version_tracker a
                             join test.`group` b on b.id =a.group_id
                             where a.group_id={} and YEAR(a.create_time)={}
@@ -103,13 +103,19 @@ class VersionTracker(object):
                 #因2018-07月，亿起发和易购没有线上记录，特殊处理，7月的亿起发和易购数据为0
                 if year == 2018 and group_id in (2,3):
                     re[group_id].insert(0,0)
+                    # 因为叮当柚子是项目，没有上线记录，特殊处理，之前的上线数据为0
+                elif group_id == 4:
+                    re[group_id] = [0] * 23 + re[group_id]
+                elif group_id == 5:
+                    # 因为易积分为新项目，没有上线记录，特殊处理，之前的上线数据为0
+                    re[group_id] = [0] * 29 + re[group_id]
             return re
         else:
             re = {}
             month_tmp = self.db.execute_sql('''select  DISTINCT date_format(a.create_time,'%Y-%m') from test.version_tracker a
                             where a.group_id=1 order by YEAR(a.create_time) ,MONTH(a.create_time);''')
             re['month'] = self.to_list(month_tmp,type=2)
-            for group_id in range(1,4):
+            for group_id in range(1,6):
                 sql = '''select count(1) from test.version_tracker a
                             join test.`group` b on b.id =a.group_id
                             where a.group_id={} group by YEAR(a.create_time) ,MONTH(a.create_time);'''.format(group_id)
@@ -118,6 +124,13 @@ class VersionTracker(object):
                 # 因2018-07月，亿起发和易购没有线上记录，特殊处理，7月的亿起发和易购数据为0
                 if group_id in (2,3):
                     re[group_id].insert(0,0)
+                    #因为叮当柚子是项目，没有上线记录，特殊处理，之前的上线数据为0
+                elif group_id == 4:
+                    re[group_id] = [0]*23 + re[group_id]
+                elif group_id == 5:
+                    #因为易积分为新项目，没有上线记录，特殊处理，之前的上线数据为0
+                    re[group_id] = [0] * 29 + re[group_id]
+
             return re
 
 

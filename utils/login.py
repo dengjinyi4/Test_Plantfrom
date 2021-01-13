@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #coding=utf-8
 __author__ = 'jinyi'
-import sys,pyotp,qrcode
+import sys,pyotp,qrcode,requests
 reload(sys)
 sys.setdefaultencoding('utf8')
 from business_modle.querytool import db
@@ -38,7 +38,8 @@ class login(object):
         tmpsql='''SELECT * from voyager.um_user where USERNAME='{username}' and `PASSWORD`='{password}'
         '''.format(username=self.username,password=self.password)
         # 先写到测试环境
-        r=db.selectsql('testvoyager',tmpsql)
+        # r=db.selectsql('testvoyager',tmpsql)
+        r=db.selectsql('devvoyager',tmpsql)
         return len(r)
     def user_log(self):
         insertsql='''INSERT INTO `test`.`user_login_log` (`username`, `ip`, `method`) VALUES ('{username}', '{REMOTE_ADDR}', '{method}');'''.format(username=self.username,REMOTE_ADDR=self.REMOTE_ADDR,method=self.method)
@@ -134,12 +135,18 @@ if __name__ == '__main__':
     print tmp
     tmp=base64.b64decode(tmp)
     print tmp
-    # REMOTE_ADDR = request.META['REMOTE_ADDR'].split(':')[0]
+    tmp=''' SELECT picul from pic where id >217  limit 30000
+    '''
+    re,file=db.selectsqlnew('testtest',tmp)
+    # tmp='http://image.yiqifa.com/img/campaignfile/20205/24/26/58/15896087948497663.png'
+    # tmp='http://image.yiqifa.com/img/campaignfile/20205/24/26/58/15896087948497663'
+    for picurl in re:
+        tmp=''
+        tmp='http:'+picurl[0]
+        picname=picurl[0].split('image.yiqifa.com')[1].split('.')[0][-17:]+'.'+picurl[0].split('image.yiqifa.com')[1].split('.')[1]
+        print picname
+        # r=requests.get(tmp)
+        # with open(picname,'wb') as f:
+        #     f.write(r.content)
 
-    # s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    # s.connect(('8.8.8.8', 80))
-    # ip = s.getsockname()[0]
-    # print 'ipis %s'%ip
-    # print s.getsockname()
 
-    # print REMOTE_ADDR

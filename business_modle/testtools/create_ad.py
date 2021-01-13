@@ -21,7 +21,7 @@ class Create_ad(object):
         self.run_type=run_type
         self.budget=budget
         self.price=price
-        self.t=datetime.datetime.now().strftime("%Y%m%d%H%M")
+        self.t=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         self.today=datetime.datetime.now().strftime("%Y-%m-%d")
         self.db=DbOperations(env_value=env_value)
 ###查询所属广告主
@@ -44,14 +44,14 @@ class Create_ad(object):
     def create_adplan(self):
 
         url = 'https://apidemand.adhudong.com/api/voyager/plan/add.htm'
-        params={'aid':self.advertiser_id,'name':'测试计划'+self.t}
+        params={'aid':self.advertiser_id,'name':u'测试计划'+self.t}
 
         plan=self.r.get(url=url,params=params)
         code=plan.json()['code']
         if code==200:
-           return "广告计划已创建成功"
+           return u"广告计划已创建成功"
         else:
-           return "广告计划创建失败",plan.text
+           return u"广告计划创建失败",plan.text
 
     ##获取测试计划ID
 
@@ -78,9 +78,9 @@ class Create_ad(object):
         add_base=self.r.get(url=url,params=params)
         code=add_base.json()['code']
         if code==200:
-            return "广告订单基本信息已创建完成"
+            return u"广告订单基本信息已创建完成"
         else:
-            return "广告订单基本信息创建失败",add_base.text
+            return u"广告订单基本信息创建失败",add_base.text
 
 
     ###获取订单ID
@@ -102,9 +102,9 @@ class Create_ad(object):
         add_direction=self.r.get(url=url,params=params)
         code=add_direction.json()['code']
         if code==200:
-            return "广告订单定向信息已创建完成"
+            return u"广告订单定向信息已创建完成"
         else:
-            return "广告订单定向信息创建失败",add_direction.text
+            return u"广告订单定向信息创建失败",add_direction.text
 
 
 ##添加创意有效信息
@@ -120,15 +120,15 @@ class Create_ad(object):
         oid=Create_ad(2222559,1,100,0.4,True).get_orderid()
         url='https://apidemand.adhudong.com/api/voyager/creative/add.htm'
 #        params={'aid':self.advertiser_id,'oid':oid,'':'cid','':'','name':'测试创意'+self.t,'profile':'','paper_word':'%3Cp%3E%3Cbr%3E%3C%2Fp%3E','image':'https://img0.adhudong.com/creative/201909/17/e9297c6142b10afc78c222a8cff15255.jpg','thumb':'https://img2.adhudong.com/creative/201909/17/a290f94e06c8acfbddd3ebea35e3f117.jpeg','link_type':1,'device_type':0,'jump_type':1,'type':0,'link_common':'https://ypg.adhudong.com/private/crm/info.html?channel=adhudong&utm_click=${click_tag}&id=171','quali_imgs':''}
-        params={'aid':self.advertiser_id,'oid':oid,'':'cid','':'','name':'测试创意'+self.t,'profile':'','paper_word':'%3Cp%3E%3Cbr%3E%3C%2Fp%3E','image':'https://img0.adhudong.com/creative/201909/17/e9297c6142b10afc78c222a8cff15255.jpg','thumb':'https://img2.adhudong.com/creative/201909/17/a290f94e06c8acfbddd3ebea35e3f117.jpeg','link_type':1,'device_type':0,'jump_type':1,'type':0,'link_common':'https://hongbao.chinayoupin.com/#/landing?chn=hudongtui','quali_imgs':''}
-#         params={'aid':self.advertiser_id,'oid':oid,'':'cid','':'','name':'测试创意'+self.t,'profile':'','paper_word':'%3Cp%3E%3Cbr%3E%3C%2Fp%3E','image':'https://img0.adhudong.com/creative/201909/17/e9297c6142b10afc78c222a8cff15255.jpg','thumb':'https://img2.adhudong.com/creative/201909/17/a290f94e06c8acfbddd3ebea35e3f117.jpeg','link_type':1,'device_type':0,'jump_type':1,'type':0,'link_common':'http://static.adhudong.com/display/public/countly/test/countly-test.html','quali_imgs':''}
+#         params={'aid':self.advertiser_id,'oid':oid,'':'cid','':'','name':'测试创意'+self.t,'profile':'','paper_word':'%3Cp%3E%3Cbr%3E%3C%2Fp%3E','image':'https://img0.adhudong.com/creative/201909/17/e9297c6142b10afc78c222a8cff15255.jpg','thumb':'https://img2.adhudong.com/creative/201909/17/a290f94e06c8acfbddd3ebea35e3f117.jpeg','link_type':1,'device_type':0,'jump_type':1,'type':0,'link_common':'https://hongbao.chinayoupin.com/#/landing?chn=hudongtui','quali_imgs':''}
+        params={'aid':self.advertiser_id,'oid':oid,'':'cid','':'','name':u'测试创意'+self.t,'profile':'','paper_word':'%3Cp%3E%3Cbr%3E%3C%2Fp%3E','image':'https://img0.adhudong.com/creative/201909/17/e9297c6142b10afc78c222a8cff15255.jpg','thumb':'https://img2.adhudong.com/creative/201909/17/a290f94e06c8acfbddd3ebea35e3f117.jpeg','link_type':1,'device_type':0,'jump_type':1,'type':0,'link_common':'https://static.adhudong.com/display/public/countly/test/countly-test.html','quali_imgs':''}
 
         add_creative=self.r.get(url=url,params=params)
         code=add_creative.json()['code']
         if code==200:
-            return "广告订单创意已创建完成"
+            return u"广告订单创意已创建完成"
         else:
-            return "广告订单创意信息创建失败",add_creative.text
+            return u"广告订单创意信息创建失败",add_creative.text
 
 ##获取创意ID
     def get_creativeid(self):
@@ -141,15 +141,16 @@ class Create_ad(object):
 ##保存草稿
     def draft_order(self):
         oid=Create_ad(2222559,1,100,0.4,True).get_orderid()
+        cid=Create_ad(2222559,1,100,0.4,True).get_creativeid()
         url='https://apidemand.adhudong.com/api/voyager/order/draft.htm'
-        params={'oid':oid,'aid':self.advertiser_id}
+        params={'oid':oid,'aid':self.advertiser_id,'cid':cid}
 
         draft_order=self.r.get(url=url,params=params)
         code=draft_order.json()['code']
         if code==200:
-            return "订单已创建成功"
+            return u"订单已创建成功"
         else:
-            return "订单创建失败",draft_order.text
+            return u"订单创建失败",draft_order.text
 
 
 
@@ -160,15 +161,16 @@ class Create_ad(object):
 
     def subview_order(self):
         oid=Create_ad(2222559,1,100,0.4,True).get_orderid()
+        cid=Create_ad(2222559,1,100,0.4,True).get_creativeid()
         url='https://apidemand.adhudong.com/api/voyager/order/review.htm'
-        params={'oid':oid,'aid':self.advertiser_id}
+        params={'oid':oid,'aid':self.advertiser_id,'cid':cid}
 
         subview_order=self.r.get(url=url,params=params)
         code=subview_order.json()['code']
         if code==200:
-            return "订单已提交审核"
+            return u"订单已提交审核"
         else:
-            return "订单提交审核失败",subview_order.text
+            return u"订单提交审核失败",subview_order.text
 ##后台审核创意
     def review_creative(self):
         cid=Create_ad(2222559,1,100,0.4,True).get_creativeid()
@@ -177,9 +179,9 @@ class Create_ad(object):
         review_creative=self.s.get(url=url,params=param)
         code=review_creative.json()['code']
         if code==200:
-            return "创意审核成功"
+            return u"创意审核成功"
         else:
-            return "创意审核失败",review_creative.text
+            return u"创意审核失败",review_creative.text
 
 
 

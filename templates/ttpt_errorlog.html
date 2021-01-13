@@ -15,12 +15,12 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>查询竞价平台数据抓取错误</title>
+    <title>查询竞价平台/自建站数据抓取错误</title>
 </head>
 <body>
 
 
-<h1>查询竞价平台数据抓取错误</h1>
+<h1>查询竞价平台/自建站数据抓取错误</h1>
 
 <form action="{{url_for('ttpt.ttpt_errorlog')}}" method="post">
 
@@ -31,6 +31,12 @@
         <option>测试环境</option>
         <option>生产环境</option>
         {{env_value|safe}}
+    </select>
+    <select  name="platform" style="padding: 5px">
+        <option>选择查询平台</option>
+        <option>竞价平台</option>
+        <option>自建站</option>
+        {{platform|safe}}
     </select>
     查询日期:<input type="date" name="begin_date" value="{{begintime}}" />
 

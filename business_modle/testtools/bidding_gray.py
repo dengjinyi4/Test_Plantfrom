@@ -21,8 +21,10 @@ class Bidding_gray(object):
             self.db=DbOperations(True)
             self.appkey='adhu225e7fc828c248b2'
             self.adzone_id=98
-            self.ip_display='101.254.242.11:17081'
-            self.ip_bidding='101.254.242.11:17091'
+            # self.ip_display='101.254.242.11:17081'
+            # self.ip_bidding='101.254.242.11:17091'
+            self.ip_display='testapidisplay.adhudong.com'
+            self.ip_bidding='testbid.adhudong.com'
             param={"app_key":self.appkey,"thirdPartJson":"{}","ip":"172.16.144.19","node_server_name":"display.adhudong.com"}
             url = "http://{}/node/site_login_ijf.htm".format(self.ip_display)
             self.re=requests.get(url,params=param)
@@ -36,19 +38,25 @@ class Bidding_gray(object):
             url1=url.split('.com',1)[1]
             urlnew='http://'+self.ip_bidding+url1
             # param={"positionId":"1","logType":"2"}
+            time.sleep(3)
             click=requests.get(urlnew,params=param)
 
 
 
         else :
+
             self.db=DbOperations(False)
             self.appkey='adhu1abc6dd46a8a4dbb'
             self.adzone_id=4620
-            self.ip_display='123.59.17.106:17280'
-            self.ip_bidding='123.59.17.106:17200'
-            param={"app_key":self.appkey,"thirdPartJson":"{}","ip":"172.16.144.19","node_server_name":"display.adhudong.com"}
+            # self.ip_display='123.59.17.106:17280'
+            # self.ip_bidding='123.59.17.106:17200'
+            self.ip_display='apidisplay.adhudong.com'
+            self.ip_bidding='bid.adhudong.com'
+            param={"app_key":self.appkey,"thirdPartJson":"{}","mediaGetUrl":"https:/site_login_ijf.htm?app_key=adhu1abc6dd46a8a4dbb","ip":"172.16.144.19","node_server_name":"display.adhudong.com"}
             url = "http://{}/node/site_login_ijf.htm".format(self.ip_display)
             self.re=requests.get(url,params=param)
+            print "+++++++++"
+            print  self.re.json()
             self.adzone_click_id=self.re.json()['data']['logId']
             print self.adzone_click_id
             self.act_id=self.re.json()['data']['actId']
@@ -59,6 +67,7 @@ class Bidding_gray(object):
             url1=url.split('.com',1)[1]
             urlnew='http://'+self.ip_bidding+url1
             # param={"positionId":"1","logType":"2"}
+            time.sleep(3)
             click=requests.get(urlnew,params=param)
 
 
@@ -285,15 +294,18 @@ class Bidding_gray(object):
     def lottery(self):
         # re_adzone = self.adzone_click()
         #url=http://display.eqigou.com/new/api/lottery.htm?act_id=577&adzone_click_id=B3W1CD6H1KCPK75VHD&device=IOS&token=&temp_name=rotate_drivingTest&ctm_code=Mi8vMTYxMC8vMi8vMi8vNzk4NjMvLzE1ODk3ODE2NTczNzgvL2Y0NWRkNzBiNGI0NGYwNjc3ZmQ4YzAzNGRiOTExNjIzLy9lNjMwZjNjYmI1NzM%3D
-        param={"ip":"172.16.144.19","device":"IOS","token":"","temp_name":"rotate_drivingTest","node_server_name":"display.adhuodong.com","isIntercept":"1"}
+        param={"ip":"172.16.144.19","device":"IOS","token":"","temp_name":"rotate_drivingTest","node_server_name":"display.adhuodong.com","isIntercept":"1","referer":"https://display.eqigou.com/new/lightAct_flop.html?logId=B3W1CD6H1L1J6BRASH&adzoneId=2774&actId=5161&ref=&mediaId=40&ctm_code=Mi8vNzg1NC8vMi8vMi8vODIzNDMvLzE2MDg1Mjk0NDYyNzcvLzUyYTY0OTZhZTRlYWNkYTI2ZTkzMWE3MDk1ODU1ODljLy8zMGJlYTc4M2QzMGM=&isIntercept=1"}
         param['act_id']=self.re.json()['data']['actId']
         param['adzone_click_id']=self.re.json()['data']['logId']
         param['ctm_code']=self.re.json()['data']['ctm_code']
         url="http://{}/node/lottery.htm".format(self.ip_display)
-        # url="http://{}/new/api/lottery.htm".format(self.ip_display)
         re= requests.get(url,params=param)
         print "==========lottery==============="
+        print url
+        print re.json
         return re.json()['data']['ad']['ad_url']
+
+
 #
 # act_id=577&adzone_click_id=B3W1CD6H1KCPSF05Z5&device=IOS
 # &token=&temp_name=rotate_drivingTest&

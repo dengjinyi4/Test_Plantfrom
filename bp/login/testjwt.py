@@ -45,12 +45,21 @@ def protected():
 if __name__ == '__main__':
     # app.run()
     # sec=pyotp.random_base32()
-    sec='base32secret3232'
+    # sec='base32secret3232'
     # sec= base64.b32encode(os.urandom(10)).decode('utf-8')
-    topt=pyotp.TOTP(sec)
+    # topt=pyotp.TOTP(sec)
     # qr_uri = pyotp.totp.TOTP(sec).provisioning_uri('test1111')
     # print qr_uri
     # img = qrcode.make(qr_uri)
     # img.get_image().show()
-    print topt
-    print topt.verify(524923)
+    # print topt
+    # print topt.verify(524923)
+    tmplist=[1,2,3]
+    tmp=4
+    fun1=lambda x:x**x
+    h=fun1(tmp)
+    print h
+    print list(map(fun1,tmplist))
+    print map(fun1,tmplist)
+    newlist=[item for item in tmplist if item>2]
+    print newlist

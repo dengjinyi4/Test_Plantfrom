@@ -4,10 +4,11 @@ from business_modle.querytool import db
 import datetime
 from dateutil.relativedelta import relativedelta
 from openpyxl import  Workbook,load_workbook
+from flask import current_app
 import os
 
 class myreport(object):
-    def __init__(self,begintime='',endtime='',adzoneids='',advertiser_id='',actid='',region='',showadzone='',tagorad='',isstatus='',showbaidu='',searchword=''):
+    def __init__(self,begintime='',endtime='',adzoneids='',advertiser_id='',actid='',region='',showadzone='',tagorad='',isstatus='',showbaidu='',searchword='',type='',yjf_data_report_id='',value='',update_type=''):
         self.begintime=begintime
         self.endtime=endtime
         self.adzoneids=adzoneids
@@ -23,6 +24,10 @@ class myreport(object):
         self.tmpBaiDuAdzoneID = ''',,3171,4736,5302,5303,5402,5403,5908,5909,6329,6476,6677,6705,6742,6749,6810,6910,7221,7223,7344,7360,7396,7459,7482,7491,7492,7493,7508,7510,7566,7604,7605,7607,7608,7609,7610,7611,7612,7613,7768,,'''
         self.tmpQiShiKaAdzoneID = ''',,7309,6694,7587,,'''
         self.tmpTaoLiJinAdzoneID = ''',,6917,7601,3105,7434,7626,7646,7466,7642,7240,7673,7709,7710,7765,7730,,'''
+        self.type=type
+        self.yjf_data_report_id=yjf_data_report_id
+        self.value=value
+        self.update_type=update_type
 
     # 根据输入的日期返回时间列表
     # ['2020-04-01', '2020-04-02', '2020-04-03', '2020-04-04', '2020-04-05', '2020-04-06']
@@ -37,8 +42,11 @@ class myreport(object):
 
 
 
-    # 处理fload展示小数据点.0的问题
+
     def getresfloadtoint(self,res):
+        '''
+        处理fload展示小数据点.0的问题
+        '''
         tmpres=[]
         for i in res:
             # print i
@@ -66,6 +74,14 @@ class myreport(object):
                 print e.message
         return ''
 
+    def getfieldname(self,field,tmpdit):
+        '''
+        根据字段名称增加描述，鼠标停留后可见
+        '''
+        tmp='''<td title="{0}">{1}</td>'''
+        tmpv='''<td>{0}</td>'''
+        field=[tmp.format(tmpdit[x],x) if x in tmpdit.keys() else tmpv.format(x) for x in field]
+        return field
 
 
     # 汇总 菜单名---- 毛利表-分媒体毛利
@@ -352,11 +368,18 @@ class myreport(object):
 
         colspanx = 0
         tmp1 = ''
+        tmpMLL = ''
         tmp1CB = ''
         for i in daylist:  # 转化成本
             colspanx = colspanx + 1
             tmp1 = tmp1 + ''' , round(ifnull(sum(case aa.date when "{begin1}" then aa.cash_consume-aa.linkage_cash_consume-ifnull(b.singleshowvalue,0)*ifnull(aa.ad_show,0) else 0 end), 0), 0) as "{begin2}" '''.format(
                 begin1=i, begin2=i.replace("2020-", ""))
+            tmpMLL = tmpMLL + ''' , concat(round(ifnull(
+                                    (sum(case aa.date when "{begin1}" then aa.cash_consume-aa.linkage_cash_consume else 0 end)
+                                      - sum(case aa.date when "{begin2}" then ifnull(b.singleshowvalue,0)*ifnull(aa.ad_show,0) else 0 end))
+                                    /sum(case aa.date when "{begin3}" then aa.cash_consume-aa.linkage_cash_consume else 0 end)   
+                                ,0)*100 , 0),"%") as "{begin4}" '''.format(
+                begin1=i, begin2=i, begin3=i, begin4=i.replace("2020-", "")+"毛利率")
             tmp1CB = tmp1CB + ''' ,round(ifnull(sum(case aa.date when "{begin1}" then aa.consume - aa.linkage_consume else 0 end) / sum(case aa.date when "{begin1}" then ELT(c.effect_type, aa.t1_num, aa.t2_num, aa.t3_num, aa.t4_num, aa.t5_num, aa.t6_num, aa.t7_num, aa.t8_num, aa.t9_num, aa.t10_num, aa.t11_num,
                             aa.t12_num, aa.t13_num, aa.t14_num, aa.t15_num, aa.t16_num)  else 0 end), 0), 2)  as "转化成本{begin2}" '''.format(
                 begin1=i, begin2=i.replace("2020-", ""))
@@ -370,11 +393,14 @@ class myreport(object):
                  , round(ifnull(sum(aa.ad_show), 0), 0)                                                               as 曝光
                  , round(ifnull(sum(aa.ad_click), 0), 0)                                                              as 点击
                  , round(ifnull(sum(aa.consume) - sum(aa.linkage_consume), 0), 0)                                        as 消耗
+                 , round(ifnull(sum(aa.cash_consume) - sum(aa.linkage_cash_consume), 0), 0)                                        as 去联现金
+                 , concat(round(ifnull(sum(aa.cash_consume) - sum(aa.linkage_cash_consume), 0)/ifnull(sum(aa.consume) - sum(aa.linkage_consume), 0)*100, 0) ,"%")                                       as 现金占比
                  , round(ifnull(sum(aa.cash_consume-aa.linkage_cash_consume),0)-sum(ifnull(b.singleshowvalue,0)*ifnull(aa.ad_show,0)),0) as 总盈亏
+                 , concat(round((ifnull(sum(aa.cash_consume-aa.linkage_cash_consume),0)-sum(ifnull(b.singleshowvalue,0)*ifnull(aa.ad_show,0)))/(ifnull(sum(aa.cash_consume) - sum(aa.linkage_cash_consume), 0))*100,0),"%")  as 毛利率
                  , round(ifnull((sum(aa.consume) - sum(aa.linkage_consume)) / sum(aa.ad_click), 0), 2)       as CPC
                  , concat(round(ifnull(sum(aa.ad_click) / sum(aa.ad_show) *100 , 0), 0),"%")       as CTR
                  , round(ifnull((sum(aa.consume) - sum(aa.linkage_consume)) / sum(aa.ad_show) * 1000, 0), 0)       as CPM
-                 {tmpCB}  {tmp1}  {tmp1CB}
+                 {tmpCB}  {tmp1} {tmpMLL} {tmp1CB}
                  ''' + '''
             from tt.tt_advertiser_adzone aa
                      left join (select adzone_id,date,adzone_cost/ad_show as singleshowvalue,ad_show from tt.tt_adzone_data where adzone_name not like "%亿起发%" or (adzone_name  like "%亿起发%" and adzone_name not like "%anyi%" and adzone_name not like "%马上%")) b on aa.adzone_id = b.adzone_id and aa.date=b.date
@@ -384,14 +410,14 @@ class myreport(object):
             group by   {tmptagorad1}  {tmpshowadzone1} '''
 
         tmpsql = tmp.format(tmptagorad=tmptagorad, tmpshowadzone=tmpshowadzone, tmptagorad1=tmptagorad1,
-                            tmpshowadzone1=tmpshowadzone1,tmpCB=tmpCB,tmp1=tmp1,tmp1CB=tmp1CB)
+                            tmpshowadzone1=tmpshowadzone1,tmpCB=tmpCB,tmp1=tmp1,tmpMLL=tmpMLL,tmp1CB=tmp1CB)
 
         res, filed = db.selectsqlnew('devtidb', tmpsql)
         res = self.getresfloadtoint(res)
         self.exportexcel(filed, res, "reportptmaoliadtag")
 
         tmpsqlsum = tmp.format(tmptagorad=tmptagoradsum, tmpshowadzone=tmpshowadzonesum, tmptagorad1='',
-                               tmpshowadzone1='',tmpCB=tmpCBsum,tmp1=tmp1,tmp1CB=" ").replace("group by", "")
+                               tmpshowadzone1='',tmpCB=tmpCBsum,tmp1=tmp1,tmpMLL=tmpMLL,tmp1CB=" ").replace("group by", "")
         ressum, filedsum = db.selectsqlnew('devtidb', tmpsqlsum)
         ressum = self.getresfloadtoint(ressum)
 
@@ -1142,6 +1168,158 @@ class myreport(object):
 
         return res, filed, tmpsql, colspanx, ressum
 
+    #易积分后台报表    菜单名---- 易积分后台报表
+    def getyijifen(self):
+        headtr=''
+        # 全部报表
+        if self.type=='0':
+            # yjf_dau	'媒体DAU',' '  商城pv,' ' 商城uv,total_amount	'总订单数',total_income	'总收益',arpu	'arpu',valid_amount	'有效订单数',valid_payment	'有效实付金额',valid_cost	'有效成本',valid_income	'有效收益',settle_amount	'结算订单数',settle_payment	'结算实付金额',settle_cost	'结算成本',settle_income	'结算收益',update_time,
+            tmpsql='''SELECT app_id	'应用id',app_name '应用名称',riqi	'日期',
+                    yjf_dau	'媒体DAU',' '  商城pv,' ' 商城uv,total_income	'总收益',arpu	'arpu',update_time,
+                    yjf_earn_yjf_val	'赚易积分数量',yjf_consume_yjf_val	'消易积分数量',yjf_consume_yjf_uv	'消易积分人数',' ' 积分价值,
+                    hdt_media_id	'媒体id',hdt_income	'广告收益',hdt_voyager_income	'互动推收益',hdt_gdt_income	'广点通收益',hdt_csj_income	'穿山甲收益',hdt_adzone_uv	'广告位uv',hdt_lottery_uv	'抽奖uv',hdt_adshow_uv	'广告曝光uv',hdt_adclick_uv	'广告点击uv',hdt_adzone_effect_num	'广告位有效点击数量',hdt_lottery_effect_num	'抽奖有效点击数量',hdt_ad_show_effect_num	'广告曝光有效点击数量',hdt_ad_click_effect_num	'广告点击有效点击数量',
+                    shqy_total_amount	'总订单数',shqy_total_payment	'总实付金额',shqy_total_cost	'总成本',shqy_total_income	'总收益',shqy_valid_amount	'有效订单数',shqy_valid_payment	'有效实付金额',shqy_valid_cost	'有效成本',shqy_valid_income	'有效收益',shqy_settle_amount	'结算订单数',shqy_settle_payment	'结算实付金额',shqy_settle_cost	'结算成本',shqy_settle_income	'结算收益',
+                    yhxb_total_amount	'总订单数',yhxb_total_payment	'总实付金额',yhxb_total_cost	'总成本',yhxb_total_income	'总收益',yhxb_valid_amount	'有效订单数',yhxb_valid_payment	'有效实付金额',yhxb_valid_cost	'有效成本',yhxb_valid_income	'有效收益',yhxb_settle_amount	'结算订单数',yhxb_settle_payment	'结算实付金额',yhxb_settle_cost	'结算成本',yhxb_settle_income	'结算收益',
+                    ygbb_total_amount	'总订单数',ygbb_total_payment	'总实付金额',ygbb_total_cost	'总成本',ygbb_total_income	'总收益',ygbb_valid_amount	'有效订单数',ygbb_valid_payment	'有效实付金额',ygbb_valid_cost	'有效成本',ygbb_valid_income	'有效收益',ygbb_settle_amount	'结算订单数',ygbb_settle_payment	'结算实付金额',ygbb_settle_cost	'结算成本',ygbb_settle_income	'结算收益'
+                    from yjf_data_report  where riqi>='{begin1}' and riqi<='{end1}';
+            '''.format(begin1=self.begintime,end1=self.endtime)
+            headtr='''<tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td align="center" colspan=6>汇总</td>
+        <td align="center" colspan=4>积分运营</td>
+        <td align="center" colspan=14>互动推</td>
+        <td align="center" colspan=12>生活权益</td>
+        <td align="center" colspan=12>优惠线报</td>
+        <td align="center" colspan=12>易购宝贝</td></tr>
+            '''
+        #     生活权益
+        elif self.type=='1':
+            tmpsql='''SELECT app_id 应用id,riqi 日期, total_amount 总订单数,ROUND(total_payment/1,2) 总实付金额,
+                    ROUND(total_cost/1,2) 总成本, ROUND(total_income/1,2) 总收益,valid_amount 有效订单数,ROUND(valid_payment/1,2) 有效实付金额,ROUND(valid_cost/1,2) 有效成本,valid_income 有效收益 ,
+                     settle_amount 结算订单数,ROUND(settle_payment/1,2) 结算实付金额,ROUND(settle_cost/1,2) 结算成本,settle_income 结算收益,update_time
+                        from yjf_origin_order_pool_shqy where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     优惠线报
+        elif self.type=='2':
+            tmpsql='''SELECT app_id 应用id,riqi 日期, total_amount 总订单数,ROUND(total_payment/1,2) 总实付金额,
+                    ROUND(total_cost/1,2) 总成本, ROUND(total_income/1,2) 总收益,valid_amount 有效订单数,ROUND(valid_payment/1,2) 有效实付金额,ROUND(valid_cost/1,2) 有效成本,valid_income 有效收益 ,
+                     settle_amount 结算订单数,ROUND(settle_payment/1,2) 结算实付金额,ROUND(settle_cost/1,2) 结算成本,settle_income 结算收益,update_time
+                        from yjf_origin_order_yhxb where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     易购宝贝
+        elif self.type=='3':
+            tmpsql='''SELECT app_id 应用id,riqi 日期, total_amount 总订单数,ROUND(total_payment/1,2) 总实付金额,
+                    ROUND(total_cost/1,2) 总成本, ROUND(total_income/1,2) 总收益,valid_amount 有效订单数,ROUND(valid_payment/1,2) 有效实付金额,ROUND(valid_cost/1,2) 有效成本,valid_income 有效收益 ,
+                     settle_amount 结算订单数,ROUND(settle_payment/1,2) 结算实付金额,ROUND(settle_cost/1,2) 结算成本,settle_income 结算收益,update_time
+                        from yjf_origin_order_ygbb where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     互动推广告
+        elif self.type=='4':
+            tmpsql='''SELECT app_id 应用id,riqi 日期,media_id 媒体id,ROUND(income/1,2) 广告收益,ROUND(voyager_income/1,2) 互动推收益,ROUND(gdt_income/1,2) 广点通收益,ROUND(csj_income/1,2) 穿山甲收益,adzone_uv 广告位uv,lottery_uv 抽奖uv,
+                    adshow_uv 广告曝光uv,adclick_uv 广告点击uv,adzone_effect_num 广告位有效点击数量,lottery_effect_num 抽奖有效点击数量,ad_show_effect_num 广告曝光有效点击数量,ad_click_effect_num 广告点击有效点击数量
+                     from yjf_origin_report_voyager where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     易积分
+        elif self.type=='5':
+            tmpsql='''SELECT app_id 应用id,riqi 日期,dau 日活,earn_yjf_val 赚易积分数量,consume_yjf_uv 消易积分人数 ,update_time
+                        from yjf_origin_report_yjf  where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        tmpdit={"媒体DAU":"媒体日活-统计当日该应用下设备号数量（需去重）"}
+        res,filed=db.selectsqlnew('devtidb',tmpsql)
+        res=self.getresfloadtoint(res)
+        self.exportexcel(filed,res,"reportgetyijifen")
+        filed=self.getfieldname(filed,tmpdit)
+        return res,filed,tmpsql,headtr
+
+    #易积分后台报表    菜单名---- 易积分后台报表
+    def getyijifenall(self):
+        headtr=''
+        # 全部报表
+        if self.type=='0':
+            # yjf_dau	'媒体DAU',' '  商城pv,' ' 商城uv,total_amount	'总订单数',total_income	'总收益',arpu	'arpu',valid_amount	'有效订单数',valid_payment	'有效实付金额',valid_cost	'有效成本',valid_income	'有效收益',settle_amount	'结算订单数',settle_payment	'结算实付金额',settle_cost	'结算成本',settle_income	'结算收益',update_time,
+            tmpsql='''SELECT yjf_data_report_id,riqi '日期',app_id '应用id',app_name '应用名称',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="row-3-age" name="row-4-age" onblur="saveTabeleData(this',',\\'pv\\'',')" value="',ifnull(yjf_shangcheng_pv,''),'"/>') '商城pv',
+                    concat('<input type="number" oninput="value=value.replace(/[^\d]/g,'')"  id="row-4-age" name="row-4-age" onblur="saveTabeleData(this',',\\'uv\\'',')" value="',ifnull(yjf_shangcheng_uv,''),'"/>') '商城uv',
+                    total_income '总收益',
+                    CASE  WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN ROUND(total_income/yjf_shangcheng_uv,2) END 'arpu',
+                    hdt_adzone_uv '广告位uv',
+                    CASE WHEN yjf_shangcheng_uv=0 THEN 0 WHEN yjf_shangcheng_uv>=0 THEN   ROUND(hdt_adzone_uv/yjf_shangcheng_uv,2) END '广告位点击率',
+                    hdt_lottery_uv '抽奖uv',
+                    CASE WHEN hdt_adzone_uv=0 THEN 0 WHEN hdt_adzone_uv>=0 THEN ROUND(hdt_lottery_uv/hdt_adzone_uv,2) END  '参与率',
+                    hdt_adshow_uv '广告曝光uv',hdt_ad_show_effect_num '广告曝光数',
+                    CASE WHEN hdt_adshow_uv=0 THEN 0 WHEN hdt_adshow_uv>=0 THEN ROUND(hdt_ad_show_effect_num/hdt_adshow_uv,2) END  '人均广告曝光次数',
+                    hdt_adclick_uv '广告点击uv',hdt_ad_click_effect_num '广告点击数',
+                    CASE WHEN hdt_ad_show_effect_num=0 THEN 0 WHEN hdt_ad_show_effect_num>=0 THEN ROUND(hdt_ad_click_effect_num/hdt_ad_show_effect_num,2) END  '点击率CTR' ,
+                    hdt_income '广告收益',hdt_voyager_income '互动推收益',hdt_voyager_adshow '互动推广告曝光',
+                    CASE WHEN hdt_voyager_adshow=0 THEN 0 WHEN hdt_voyager_adshow>=0 THEN ROUND(hdt_voyager_income/(hdt_voyager_adshow*1000),2) END  '互动推CPM' ,
+                    hdt_gdt_income '广点通收益',hdt_gdt_adshow '广点通曝光',
+                    CASE WHEN hdt_gdt_adshow=0 THEN 0 WHEN hdt_gdt_adshow>=0 THEN ROUND(hdt_gdt_income/(hdt_gdt_adshow*1000),2) END  '广点通CPM' ,
+					hdt_csj_income '穿山甲收益', hdt_csj_adshow '穿山甲曝光',
+                    CASE WHEN hdt_csj_adshow=0 THEN 0 WHEN hdt_csj_adshow>=0 THEN ROUND(hdt_csj_income/(hdt_csj_adshow*1000),2) END  '穿山甲CPM' ,
+					valid_amount '有效订单数',yjf_earn_yjf_val '赚积分金额',yjf_consume_yjf_val '消积分金额'
+                    from tt.yjf_data_report
+                    where app_name<>''and riqi>='{begin1}' and riqi<='{end1}';
+                     '''.format(begin1=self.begintime,end1=self.endtime)
+
+        #     生活权益
+        elif self.type=='1':
+            tmpsql='''SELECT app_id 应用id,riqi 日期, total_amount 总订单数,ROUND(total_payment/1,2) 总实付金额,
+                    ROUND(total_cost/1,2) 总成本, ROUND(total_income/1,2) 总收益,valid_amount 有效订单数,ROUND(valid_payment/1,2) 有效实付金额,ROUND(valid_cost/1,2) 有效成本,valid_income 有效收益 ,
+                     settle_amount 结算订单数,ROUND(settle_payment/1,2) 结算实付金额,ROUND(settle_cost/1,2) 结算成本,settle_income 结算收益,update_time
+                        from yjf_origin_order_pool_shqy where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     优惠线报
+        elif self.type=='2':
+            tmpsql='''SELECT app_id 应用id,riqi 日期, total_amount 总订单数,ROUND(total_payment/1,2) 总实付金额,
+                    ROUND(total_cost/1,2) 总成本, ROUND(total_income/1,2) 总收益,valid_amount 有效订单数,ROUND(valid_payment/1,2) 有效实付金额,ROUND(valid_cost/1,2) 有效成本,valid_income 有效收益 ,
+                     settle_amount 结算订单数,ROUND(settle_payment/1,2) 结算实付金额,ROUND(settle_cost/1,2) 结算成本,settle_income 结算收益,update_time
+                        from yjf_origin_order_yhxb where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     易购宝贝
+        elif self.type=='3':
+            tmpsql='''SELECT app_id 应用id,riqi 日期, total_amount 总订单数,ROUND(total_payment/1,2) 总实付金额,
+                    ROUND(total_cost/1,2) 总成本, ROUND(total_income/1,2) 总收益,valid_amount 有效订单数,ROUND(valid_payment/1,2) 有效实付金额,ROUND(valid_cost/1,2) 有效成本,valid_income 有效收益 ,
+                     settle_amount 结算订单数,ROUND(settle_payment/1,2) 结算实付金额,ROUND(settle_cost/1,2) 结算成本,settle_income 结算收益,update_time
+                        from yjf_origin_order_ygbb where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     互动推广告
+        elif self.type=='4':
+            tmpsql='''SELECT app_id 应用id,riqi 日期,media_id 媒体id,ROUND(income/1,2) 广告收益,ROUND(voyager_income/1,2) 互动推收益,ROUND(gdt_income/1,2) 广点通收益,ROUND(csj_income/1,2) 穿山甲收益,adzone_uv 广告位uv,lottery_uv 抽奖uv,
+                    adshow_uv 广告曝光uv,adclick_uv 广告点击uv,adzone_effect_num 广告位有效点击数量,lottery_effect_num 抽奖有效点击数量,ad_show_effect_num 广告曝光有效点击数量,ad_click_effect_num 广告点击有效点击数量
+                     from yjf_origin_report_voyager where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        #     易积分
+        elif self.type=='5':
+            tmpsql='''SELECT app_id 应用id,riqi 日期,dau 日活,earn_yjf_val 赚易积分数量,consume_yjf_uv 消易积分人数 ,update_time
+                        from yjf_origin_report_yjf  where riqi>='{begin1}' and riqi<='{end1}'
+            '''.format(begin1=self.begintime,end1=self.endtime)
+        tmpdit={"媒体DAU":"媒体日活-统计当日该应用下设备号数量（需去重）"}
+        current_app.logger.warning("{0}".format(tmpsql))
+        res,filed=db.selectsqlnew('devtidb',tmpsql)
+        res=self.getresfloadtoint(res)
+        self.exportexcel(filed,res,"reportgetyijifen")
+        filed=self.getfieldname(filed,tmpdit)
+        return res,filed,tmpsql,headtr
+    def yjf_update(self):
+        if self.update_type=='shangchengpv':
+            tmpsql='''
+            UPDATE yjf_data_report set yjf_shangcheng_pv={yjf_shangcheng_pv} where yjf_data_report_id={yjf_data_report_id}
+            '''.format(yjf_shangcheng_pv=self.value,yjf_data_report_id=self.yjf_data_report_id)
+
+            # tmpsql='''
+            # UPDATE yjf_app_inter_config set app_name='{yjf_shangcheng_pv}' where yjf_data_report_id={yjf_data_report_id}
+            # '''.format(yjf_shangcheng_pv=self.value,yjf_data_report_id=self.yjf_data_report_id)
+        else:
+            tmpsql='''
+            UPDATE yjf_data_report set yjf_shangcheng_uv={yjf_shangcheng_uv} where yjf_data_report_id={yjf_data_report_id}
+            '''.format(yjf_shangcheng_uv=self.value,yjf_data_report_id=self.yjf_data_report_id)
+        try:
+            db.execsql('devtidb',tmpsql)
+        except Exception as e:
+            current_app.logger.warning("update yjf_app_inter_config fail error is  {0}".format(e.message))
+        return 1
 
 
 
@@ -1150,8 +1328,25 @@ class myreport(object):
 
 if __name__ == '__main__':
     # test=myreport(begintime='2020-04-1',endtime='2020-04-02',adzoneids='21')
-    test=myreport(begintime='2020-04-01',endtime='2020-04-11',adzoneids='22222',advertiser_id=1,region='北京')
-    tmp=test.getallreport()
+    # test=myreport(begintime='2020-04-01',endtime='2020-04-11',adzoneids='22222',advertiser_id=1,region='北京')
+    # tmp=test.getallreport()
+    tmp='''<td title="{0}">状态</font></td>'''
+    fild=['a','b','c']
+    tmpdit={'a':'test'}
+    tmplist=[]
+
+    fild=[tmp.format(tmpdit[x]) if x in tmpdit.keys() else x for x in fild]
+    # print fild
+    #
+    # for i in fild:
+    #     if i in tmpdit.keys():
+    #         i=tmp.format(tmpdit[i])
+    #         tmplist.append(i)
+    #     else:
+    #         tmplist.append(i)
+    print fild
+
+
     # print tmp
     # print get_date_list('2018-01-01','2018-02-28')
     # cwd = os.getcwd()

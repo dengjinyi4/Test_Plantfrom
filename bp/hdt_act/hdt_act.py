@@ -186,18 +186,20 @@ def activity_config():
         pig_game_cfgs = vc.get_pig_act_game_cfgs()
         act_game_cfgs = vc.get_act_game_cfgs()
         other_cfgs = vc.get_other_cfgs()
-        return render_template('template/activity_config.html',pig_game_cfgs=pig_game_cfgs,act_game_cfgs =act_game_cfgs, other_cfgs=other_cfgs)
+        yjf_ctfgs = vc.get_yijifen_cfgs()
+        return render_template('template/activity_config.html',pig_game_cfgs=pig_game_cfgs,act_game_cfgs =act_game_cfgs,
+                               other_cfgs=other_cfgs, yjf_ctfgs=yjf_ctfgs)
     else:
         return render_template('template/activity_config.html')
 
-@act.route('voyager_configs',methods=['GET','POST'])
+@act.route('/voyager_configs/',methods=['GET','POST'])
 def voyager_configs():
     if request.method == 'GET':
         env = request.args.get('env')
         env_ch={'devvoyager':'线上环境','testvoyager':'测试环境'}
         selected_table = request.args.get('selected_table')
         tc = VoyagerConfigs(db_env=env)
-        voyager_configs = tc.get_selected_table_cfg(selected_table)
+        voyager_configs = tc.get_selected_table_cfg(selected_table, 'voyager')
         print 'sssssssssssssssssss'
         print voyager_configs
         print type(voyager_configs)
@@ -207,14 +209,31 @@ def voyager_configs():
             return render_template('template/voyager_config.html', flag=1, data_re=voyager_configs[0],
                                    structure_re=voyager_configs[1], env_ch=env_ch[env], selected_table=selected_table)
 
-@act.route('voyager_pig_configs',methods=['GET','POST'])
+@act.route('/voyager_pig_configs/',methods=['GET','POST'])
 def voyager_pig_configs():
     if request.method == 'GET':
         env = request.args.get('env')
         env_ch={'devvoyager':'线上环境','testvoyager':'测试环境'}
         selected_table = request.args.get('selected_table')
         tc = VoyagerConfigs(db_env=env)
-        voyager_configs = tc.get_pig_selected_table_cfg(selected_table)
+        voyager_configs = tc.get_pig_selected_table_cfg(selected_table, 'voyager')
+        print 'sssssssssssssssssss'
+        print voyager_configs
+        print type(voyager_configs)
+        if isinstance(voyager_configs,str):
+            return render_template('template/voyager_config.html', flag=0, voyager_configs=voyager_configs,env_ch=env_ch[env], selected_table=selected_table)
+        else:
+            return render_template('template/voyager_config.html', flag=1, data_re=voyager_configs[0],
+                                   structure_re=voyager_configs[1], env_ch=env_ch[env], selected_table=selected_table)
+
+@act.route('/yijifen_configs/',methods=['GET','POST'])
+def yijifen_configs():
+    if request.method == 'GET':
+        env = request.args.get('env')
+        env_ch={'devvoyager':'线上环境','testvoyager':'测试环境'}
+        selected_table = request.args.get('selected_table')
+        tc = VoyagerConfigs(db_env=env)
+        voyager_configs = tc.get_selected_table_cfg(selected_table, 'yijifen')
         print 'sssssssssssssssssss'
         print voyager_configs
         print type(voyager_configs)
